@@ -122,21 +122,23 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section style={{ background: "var(--surface-alt)", borderBlock: "1px solid var(--border)" }}>
+      <section>
         <div className="wrap">
-          <div className="section-head">
-            <span className="eyebrow">Our Story</span>
-            <h2>History &amp; Milestones</h2>
-          </div>
-          {/* Real milestones will be added from /admin once the timeline is wired to Supabase (see project plan, Phase 4) */}
-          <div className="coming-soon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-              <path d="M12 8v5l3 3" />
-              <circle cx="12" cy="12" r="9" />
-            </svg>
-            <div>
-              <h3>The school&apos;s story, in progress</h3>
-              <p>Founding year, CBSE affiliation date, and campus milestones will appear here once added from the admin panel.</p>
+          <div className="section-tint">
+            <div className="section-head">
+              <span className="eyebrow">Our Story</span>
+              <h2>History &amp; Milestones</h2>
+            </div>
+            {/* Real milestones will be added from /admin once the timeline is wired to Supabase (see project plan, Phase 4) */}
+            <div className="coming-soon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                <path d="M12 8v5l3 3" />
+                <circle cx="12" cy="12" r="9" />
+              </svg>
+              <div>
+                <h3>The school&apos;s story, in progress</h3>
+                <p>Founding year, CBSE affiliation date, and campus milestones will appear here once added from the admin panel.</p>
+              </div>
             </div>
           </div>
         </div>

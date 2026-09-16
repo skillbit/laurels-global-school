@@ -66,6 +66,10 @@ img{max-width:100%;}
 }
 section{padding-block:clamp(2.6rem, 2rem + 3vw, 5rem);}
 .wrap{max-width:1180px; margin-inline:auto; padding-inline:clamp(20px, 4vw, 32px);}
+.section-tint{
+  background:var(--surface-alt); border:1px solid var(--border); border-radius:var(--radius-lg);
+  padding:clamp(1.8rem, 3vw, 2.6rem) clamp(1.2rem, 3vw, 2.4rem);
+}
 .divider{height:1px; background:var(--border); border:0; margin:0;}
 
 a:focus-visible, button:focus-visible, .navlink:focus-visible{

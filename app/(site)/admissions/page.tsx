@@ -56,13 +56,15 @@ export default function AdmissionsPage() {
         </div>
       </section>
 
-      <section id="enquiry" style={{ background: "var(--surface-alt)", borderBlock: "1px solid var(--border)" }}>
+      <section id="enquiry">
         <div className="wrap">
-          <div className="section-head">
-            <span className="eyebrow">Enquiry Form</span>
-            <h2>Request a Callback</h2>
+          <div className="section-tint">
+            <div className="section-head">
+              <span className="eyebrow">Enquiry Form</span>
+              <h2>Request a Callback</h2>
+            </div>
+            <EnquiryForm />
           </div>
-          <EnquiryForm />
         </div>
       </section>
     </>

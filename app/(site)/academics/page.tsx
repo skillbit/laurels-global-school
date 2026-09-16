@@ -52,17 +52,19 @@ export default function AcademicsPage() {
         </div>
       </section>
 
-      <section style={{ background: "var(--surface-alt)", borderBlock: "1px solid var(--border)" }}>
+      <section>
         <div className="wrap">
-          <div className="section-head">
-            <span className="eyebrow">Core Subjects</span>
-            <h2>What Students Study</h2>
-          </div>
-          {/* TODO: confirm exact subject list per stage */}
-          <div className="chip-grid">
-            {SUBJECTS.map((s) => (
-              <span className="chip" key={s}>{s}</span>
-            ))}
+          <div className="section-tint">
+            <div className="section-head">
+              <span className="eyebrow">Core Subjects</span>
+              <h2>What Students Study</h2>
+            </div>
+            {/* TODO: confirm exact subject list per stage */}
+            <div className="chip-grid">
+              {SUBJECTS.map((s) => (
+                <span className="chip" key={s}>{s}</span>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -80,13 +82,14 @@ export default function AcademicsPage() {
         </div>
       </section>
 
-      <section style={{ background: "var(--surface-alt)", borderBlock: "1px solid var(--border)" }}>
+      <section>
         <div className="wrap">
-          <div className="section-head">
-            <span className="eyebrow">Campus</span>
-            <h2>Built for Learning</h2>
-          </div>
-          <div className="facility-grid">
+          <div className="section-tint">
+            <div className="section-head">
+              <span className="eyebrow">Campus</span>
+              <h2>Built for Learning</h2>
+            </div>
+            <div className="facility-grid">
             <FacilityCard
               title="Smart Classrooms"
               icon={
@@ -130,6 +133,7 @@ export default function AcademicsPage() {
             >
               Outdoor space for physical activity, games and team sports.
             </FacilityCard>
+            </div>
           </div>
         </div>
       </section>

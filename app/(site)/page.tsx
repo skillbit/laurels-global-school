@@ -97,34 +97,36 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section style={{ background: "var(--surface-alt)", borderBlock: "1px solid var(--border)" }}>
+      <section>
         <div className="wrap">
-          <div className="section-head">
-            <span className="eyebrow">Academics</span>
-            <h2>From Nursery to Class 10</h2>
-          </div>
-          <div className="ladder">
-            <StageCard num="01" grades="Nursery – UKG" title="Pre-Primary">
-              Play-based learning that builds early language, motor skills and curiosity.
-            </StageCard>
-            <StageCard num="02" grades="Classes 1 – 5" title="Primary">
-              Foundational literacy, numeracy and inquiry-based learning across core subjects.
-            </StageCard>
-            <StageCard num="03" grades="Classes 6 – 8" title="Middle School">
-              Wider subject exposure with a focus on conceptual clarity and project work.
-            </StageCard>
-            <StageCard num="04" grades="Classes 9 – 10" title="Secondary">
-              CBSE curriculum with focused preparation for board examinations.
-            </StageCard>
-          </div>
-          <div className="board-note">
-            <span className="pill">CBSE</span>
-            <span>Curriculum follows the Central Board of Secondary Education framework.</span>
-          </div>
-          <div style={{ marginTop: "2rem" }}>
-            <Link className="btn btn-ghost" href="/academics">
-              More on Academics &rarr;
-            </Link>
+          <div className="section-tint">
+            <div className="section-head">
+              <span className="eyebrow">Academics</span>
+              <h2>From Nursery to Class 10</h2>
+            </div>
+            <div className="ladder">
+              <StageCard num="01" grades="Nursery – UKG" title="Pre-Primary">
+                Play-based learning that builds early language, motor skills and curiosity.
+              </StageCard>
+              <StageCard num="02" grades="Classes 1 – 5" title="Primary">
+                Foundational literacy, numeracy and inquiry-based learning across core subjects.
+              </StageCard>
+              <StageCard num="03" grades="Classes 6 – 8" title="Middle School">
+                Wider subject exposure with a focus on conceptual clarity and project work.
+              </StageCard>
+              <StageCard num="04" grades="Classes 9 – 10" title="Secondary">
+                CBSE curriculum with focused preparation for board examinations.
+              </StageCard>
+            </div>
+            <div className="board-note">
+              <span className="pill">CBSE</span>
+              <span>Curriculum follows the Central Board of Secondary Education framework.</span>
+            </div>
+            <div style={{ marginTop: "2rem" }}>
+              <Link className="btn btn-ghost" href="/academics">
+                More on Academics &rarr;
+              </Link>
+            </div>
           </div>
         </div>
       </section>
