@@ -23,7 +23,7 @@ export default function AboutPage() {
       <section className="wrap" style={{ paddingTop: 0 }}>
         <div className="about-grid">
           <div className="mission-block">
-            <svg className="leaf" viewBox="0 0 24 24" fill="none" style={{ color: "var(--gold)" }}>
+            <svg className="leaf" viewBox="0 0 24 24" fill="none" style={{ color: "var(--gold)" }} aria-hidden="true">
               <use href="#leaf-icon" />
             </svg>
             <p>

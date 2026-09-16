@@ -36,7 +36,7 @@ export default function GalleryPage() {
         </p>
         <div className="gallery-grid">
           {ICONS.map((icon, i) => (
-            <div className="tile" key={i}>
+            <div className="tile" key={i} aria-hidden="true">
               {icon}
             </div>
           ))}

@@ -49,7 +49,7 @@ export default function EnquiryForm() {
         Send Enquiry
       </button>
       {status === "err" && (
-        <p className="form-status err" role="status">
+        <p className="form-status err" role="alert">
           Online enquiries aren&apos;t connected yet — please call the office directly for now.
         </p>
       )}

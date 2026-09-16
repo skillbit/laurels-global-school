@@ -11,7 +11,7 @@ export default function FacilityCard({
 }) {
   return (
     <div className="facility-card">
-      <span className="icon-wrap">{icon}</span>
+      <span className="icon-wrap" aria-hidden="true">{icon}</span>
       <h3>{title}</h3>
       <p>{children}</p>
     </div>

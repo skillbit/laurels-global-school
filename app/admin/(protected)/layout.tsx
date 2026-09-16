@@ -29,8 +29,13 @@ export default async function AdminProtectedLayout({
 
   return (
     <div className="admin-shell">
+      <a className="skip-link" href="#admin-main">
+        Skip to content
+      </a>
       <AdminSidebar email={user.email ?? ""} />
-      <div className="admin-main">{children}</div>
+      <main id="admin-main" className="admin-main">
+        {children}
+      </main>
     </div>
   );
 }

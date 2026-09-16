@@ -11,7 +11,7 @@ export default function ValueCard({
 }) {
   return (
     <div className="value-card">
-      {icon}
+      <span aria-hidden="true">{icon}</span>
       <h3>{title}</h3>
       <p>{children}</p>
     </div>

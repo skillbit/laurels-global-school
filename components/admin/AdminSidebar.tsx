@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import SignOutButton from "./SignOutButton";
 
 // Grows as each admin section gets built (see project plan, Phases 3-4) —
@@ -9,19 +12,28 @@ const SECTIONS = [
 ];
 
 export default function AdminSidebar({ email }: { email: string }) {
+  const pathname = usePathname();
+
   return (
     <aside className="admin-sidebar">
-      <div style={{ padding: ".6rem .8rem 1rem", fontSize: ".8rem", color: "var(--ink-faint)" }}>
+      <div className="admin-sidebar-who">
         Signed in as
         <br />
         <strong style={{ color: "var(--ink)" }}>{email}</strong>
       </div>
-      {SECTIONS.map((s) => (
-        <Link key={s.href} href={s.href}>
-          {s.label}
-        </Link>
-      ))}
-      <div style={{ marginTop: "auto", paddingTop: "1rem" }}>
+      <nav aria-label="Admin sections" style={{ display: "contents" }}>
+        {SECTIONS.map((s) => (
+          <Link
+            key={s.href}
+            href={s.href}
+            className={pathname === s.href ? "active" : undefined}
+            aria-current={pathname === s.href ? "page" : undefined}
+          >
+            {s.label}
+          </Link>
+        ))}
+      </nav>
+      <div className="admin-sidebar-signout">
         <SignOutButton />
       </div>
     </aside>

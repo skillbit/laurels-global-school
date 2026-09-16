@@ -21,7 +21,7 @@ export default async function AdminUsersPage({
       </div>
 
       {params.error && (
-        <p className="form-status err" role="status">
+        <p className="form-status err" role="alert">
           {params.error}
         </p>
       )}
@@ -31,40 +31,48 @@ export default async function AdminUsersPage({
         </p>
       )}
 
-      <table className="admin-table" style={{ marginBottom: "2rem" }}>
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Added</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {(admins ?? []).map((a) => (
-            <tr key={a.id}>
-              <td>{a.email}</td>
-              <td>{a.full_name ?? "—"}</td>
-              <td>
-                <span className={`badge ${a.is_active ? "badge-published" : "badge-draft"}`}>
-                  {a.is_active ? "Active" : "Disabled"}
-                </span>
-              </td>
-              <td className="mono">{new Date(a.created_at).toLocaleDateString()}</td>
-              <td>
-                <form action={toggleAdminActive}>
-                  <input type="hidden" name="id" value={a.id} />
-                  <input type="hidden" name="nextActive" value={(!a.is_active).toString()} />
-                  <button className="btn btn-ghost" type="submit" style={{ padding: ".35rem .8rem", fontSize: ".8rem" }}>
-                    {a.is_active ? "Disable" : "Enable"}
-                  </button>
-                </form>
-              </td>
+      {admins && admins.length > 0 ? (
+        <table className="admin-table" style={{ marginBottom: "2rem" }}>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Added</th>
+              <th>
+                <span className="visually-hidden">Actions</span>
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {admins.map((a) => (
+              <tr key={a.id}>
+                <td>{a.email}</td>
+                <td>{a.full_name ?? "—"}</td>
+                <td>
+                  <span className={`badge ${a.is_active ? "badge-published" : "badge-draft"}`}>
+                    {a.is_active ? "Active" : "Disabled"}
+                  </span>
+                </td>
+                <td className="mono">{new Date(a.created_at).toLocaleDateString()}</td>
+                <td>
+                  <form action={toggleAdminActive}>
+                    <input type="hidden" name="id" value={a.id} />
+                    <input type="hidden" name="nextActive" value={(!a.is_active).toString()} />
+                    <button className="btn btn-ghost btn-row" type="submit">
+                      {a.is_active ? "Disable" : "Enable"}
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div className="admin-empty" style={{ marginBottom: "2rem" }}>
+          No admin accounts found.
+        </div>
+      )}
 
       <div className="section-head">
         <h2 style={{ fontSize: "var(--step-1)" }}>Add an Admin Account</h2>
