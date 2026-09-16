@@ -1,14 +1,61 @@
-export default function AdminDashboardPage() {
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+
+export default async function AdminDashboardPage() {
+  const supabase = await createClient();
+  const [{ count: noticeCount }, { count: imageCount }, { count: adminCount }] = await Promise.all([
+    supabase.from("notices").select("id", { count: "exact", head: true }),
+    supabase.from("gallery_images").select("id", { count: "exact", head: true }),
+    supabase.from("admin_users").select("id", { count: "exact", head: true }),
+  ]);
+
+  const cards = [
+    {
+      href: "/admin/notices",
+      label: "Notices",
+      count: noticeCount ?? 0,
+      description: "Post announcements to the public Notices page.",
+    },
+    {
+      href: "/admin/gallery",
+      label: "Gallery",
+      count: imageCount ?? 0,
+      description: "Upload or remove campus and event photos.",
+    },
+    {
+      href: "/admin/users",
+      label: "Admin Accounts",
+      count: adminCount ?? 0,
+      description: "Manage who can log into this admin panel.",
+    },
+  ];
+
   return (
     <>
       <div className="section-head">
         <span className="eyebrow">Admin</span>
         <h1>Dashboard</h1>
       </div>
-      <p style={{ color: "var(--ink-soft)", maxWidth: "60ch" }}>
-        Welcome to The Laurels Global School admin panel. Content sections (Notices, Gallery,
-        Enquiries, and more) will appear in the sidebar as they&apos;re built out.
+      <p style={{ color: "var(--ink-soft)", maxWidth: "60ch", marginBottom: "1.6rem" }}>
+        Welcome to The Laurels Global School admin panel. More sections (Staff, Events, Documents
+        and more) will appear here as they&apos;re built out.
       </p>
+      <div className="admin-cards">
+        {cards.map((c) => (
+          <Link
+            key={c.href}
+            href={c.href}
+            className="value-card"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <span className="mono" style={{ color: "var(--gold)", fontSize: "1.6rem" }}>
+              {c.count}
+            </span>
+            <h3>{c.label}</h3>
+            <p>{c.description}</p>
+          </Link>
+        ))}
+      </div>
     </>
   );
 }

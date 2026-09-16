@@ -1,29 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Notices",
   description: "Latest notices and announcements from The Laurels Global School.",
 };
 
-// Placeholder rows — Phase 3 wires this list to the `notices` Supabase table,
-// managed from /admin/notices.
-const PLACEHOLDER_NOTICES = [
-  {
-    date: "TODO",
-    tag: "Admissions",
-    title: "Admissions open for the current academic year",
-    body: "Nursery to Class 10 — call the office or use the admissions enquiry form to begin.",
-  },
-  {
-    date: "TODO",
-    tag: "General",
-    title: "This is a placeholder notice",
-    body: "Real notices posted from the admin panel will replace this list automatically.",
-  },
-];
+export default async function NoticesPage() {
+  const supabase = await createClient();
+  const { data: notices } = await supabase
+    .from("notices")
+    .select("id, title, body, notice_date, attachment_url")
+    .eq("is_published", true)
+    .order("notice_date", { ascending: false });
 
-export default function NoticesPage() {
   return (
     <>
       <div className="wrap page-header">
@@ -35,18 +26,36 @@ export default function NoticesPage() {
       </div>
 
       <section className="wrap" style={{ paddingTop: 0 }}>
-        <div className="notice-list">
-          {PLACEHOLDER_NOTICES.map((n) => (
-            <div className="notice" key={n.title}>
-              <span className="date mono">{n.date}</span>
-              <div>
-                <h3>{n.title}</h3>
-                <p>{n.body}</p>
+        {notices && notices.length > 0 ? (
+          <div className="notice-list">
+            {notices.map((n) => (
+              <div className="notice" key={n.id}>
+                <span className="date mono">
+                  {new Date(n.notice_date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                </span>
+                <div>
+                  <h3>{n.title}</h3>
+                  <p>{n.body}</p>
+                  {n.attachment_url && (
+                    <a href={n.attachment_url} style={{ color: "var(--laurel)", fontSize: ".85rem", fontWeight: 600 }}>
+                      View attachment &rarr;
+                    </a>
+                  )}
+                </div>
               </div>
-              <span className="tag">{n.tag}</span>
+            ))}
+          </div>
+        ) : (
+          <div className="coming-soon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+              <path d="M4 5h16v11H8l-4 4V5Z" />
+            </svg>
+            <div>
+              <h3>No notices posted yet</h3>
+              <p>Check back soon — announcements will appear here as the school posts them.</p>
             </div>
-          ))}
-        </div>
+          </div>
+        )}
       </section>
     </>
   );

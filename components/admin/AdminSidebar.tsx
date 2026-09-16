@@ -8,6 +8,8 @@ import SignOutButton from "./SignOutButton";
 // only sections that exist are linked here, to avoid dead links.
 const SECTIONS = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/notices", label: "Notices" },
+  { href: "/admin/gallery", label: "Gallery" },
   { href: "/admin/users", label: "Admin Accounts" },
 ];
 
@@ -22,16 +24,19 @@ export default function AdminSidebar({ email }: { email: string }) {
         <strong style={{ color: "var(--ink)" }}>{email}</strong>
       </div>
       <nav aria-label="Admin sections" style={{ display: "contents" }}>
-        {SECTIONS.map((s) => (
-          <Link
-            key={s.href}
-            href={s.href}
-            className={pathname === s.href ? "active" : undefined}
-            aria-current={pathname === s.href ? "page" : undefined}
-          >
-            {s.label}
-          </Link>
-        ))}
+        {SECTIONS.map((s) => {
+          const isActive = s.href === "/admin" ? pathname === s.href : pathname?.startsWith(s.href);
+          return (
+            <Link
+              key={s.href}
+              href={s.href}
+              className={isActive ? "active" : undefined}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {s.label}
+            </Link>
+          );
+        })}
       </nav>
       <div className="admin-sidebar-signout">
         <SignOutButton />

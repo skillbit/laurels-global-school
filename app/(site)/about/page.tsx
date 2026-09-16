@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ValueCard from "@/components/site/ValueCard";
-import PersonCard from "@/components/site/PersonCard";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -129,28 +128,15 @@ export default function AboutPage() {
             <span className="eyebrow">Our Story</span>
             <h2>History &amp; Milestones</h2>
           </div>
-          {/* TODO: replace with real founding year and milestones via /admin once the timeline is wired to Supabase */}
-          <div className="timeline">
-            <div className="item">
-              <span className="yr mono">TODO</span>
-              <div>
-                <h3>School founded</h3>
-                <p>Add the founding year and a line about how the school began.</p>
-              </div>
-            </div>
-            <div className="item">
-              <span className="yr mono">TODO</span>
-              <div>
-                <h3>CBSE affiliation</h3>
-                <p>Add the year of CBSE affiliation and affiliation number.</p>
-              </div>
-            </div>
-            <div className="item">
-              <span className="yr mono">TODO</span>
-              <div>
-                <h3>Campus expansion</h3>
-                <p>Add any milestones — new blocks, labs, expanded grades, etc.</p>
-              </div>
+          {/* Real milestones will be added from /admin once the timeline is wired to Supabase (see project plan, Phase 4) */}
+          <div className="coming-soon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+              <path d="M12 8v5l3 3" />
+              <circle cx="12" cy="12" r="9" />
+            </svg>
+            <div>
+              <h3>The school&apos;s story, in progress</h3>
+              <p>Founding year, CBSE affiliation date, and campus milestones will appear here once added from the admin panel.</p>
             </div>
           </div>
         </div>
@@ -161,17 +147,16 @@ export default function AboutPage() {
           <span className="eyebrow">Leadership</span>
           <h2>Meet the Team</h2>
         </div>
-        {/* TODO: replace with real staff entries managed from /admin/staff */}
-        <div className="people-grid">
-          <PersonCard name="Principal's Name" role="Principal">
-            A short note on their background and vision for the school — TODO.
-          </PersonCard>
-          <PersonCard name="Vice Principal's Name" role="Vice Principal">
-            A short note on their role and experience — TODO.
-          </PersonCard>
-          <PersonCard name="Academic Coordinator" role="Coordinator">
-            A short note on their role and experience — TODO.
-          </PersonCard>
+        {/* Real staff entries will be added from /admin/staff (see project plan, Phase 4) */}
+        <div className="coming-soon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6" />
+          </svg>
+          <div>
+            <h3>Leadership profiles coming soon</h3>
+            <p>Photos, names and roles for the principal and academic team will be added from the admin panel.</p>
+          </div>
         </div>
       </section>
     </>

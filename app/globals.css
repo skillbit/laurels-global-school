@@ -1,19 +1,22 @@
 /* The Laurels Global School — design system (ported from the original static site) */
 
 :root{
-  --bg:#f4f4f4;
+  color-scheme: light;
+  --bg:#faf8f4;
   --surface:#ffffff;
-  --surface-alt:#eaeaea;
-  --ink:#222222;
-  --ink-soft:#5b5b5b;
-  --ink-faint:#8a8a8a;
-  --laurel:#d31f2c;
+  --surface-alt:#f3f0e8;
+  --surface-warm:#fbf1e3;
+  --ink:#241f1a;
+  --ink-soft:#5c5348;
+  --ink-faint:#8f8577;
+  --laurel:#c81e2b;
   --laurel-deep:#7c1017;
-  --laurel-tint:#f6dcdc;
+  --laurel-tint:#faeaea;
   --gold:#a9782e;
-  --gold-soft:#f1e2bd;
-  --border:#dcdcdc;
-  --shadow: 0 18px 40px -22px rgba(20,20,20,.3);
+  --gold-soft:#f5e9cd;
+  --border:#e6e0d3;
+  --shadow: 0 20px 44px -24px rgba(60,45,20,.22);
+  --shadow-sm: 0 6px 18px -10px rgba(60,45,20,.18);
   --radius-lg: 22px;
   --radius-md: 14px;
   --step--1: clamp(.83rem, .8rem + .1vw, .9rem);
@@ -23,21 +26,18 @@
   --step-3: clamp(2.05rem, 1.75rem + 1.3vw, 2.7rem);
   --step-4: clamp(2.7rem, 2.1rem + 2.6vw, 4.2rem);
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#161616; --surface:#202020; --surface-alt:#272727;
-    --ink:#f1f1f1; --ink-soft:#b9b9b9; --ink-faint:#8a8a8a;
-    --laurel:#ef5a56; --laurel-deep:#8f1f1f; --laurel-tint:#3a1c1c;
-    --gold:#dcac5f; --gold-soft:#3a2f1c; --border:#343434;
-    --shadow: 0 18px 40px -22px rgba(0,0,0,.6);
-  }
-}
+/* Dark mode intentionally not auto-enabled (prefers-color-scheme) — the
+   school site targets a single, well-tuned light theme. The tokens below
+   are kept so a manual toggle can be added later via [data-theme="dark"]
+   without redesigning anything. */
 :root[data-theme="dark"]{
-  --bg:#161616; --surface:#202020; --surface-alt:#272727;
-  --ink:#f1f1f1; --ink-soft:#b9b9b9; --ink-faint:#8a8a8a;
+  color-scheme: dark;
+  --bg:#18140f; --surface:#231e18; --surface-alt:#2b241c; --surface-warm:#332921;
+  --ink:#f4efe6; --ink-soft:#c9bfb0; --ink-faint:#948a7b;
   --laurel:#ef5a56; --laurel-deep:#8f1f1f; --laurel-tint:#3a1c1c;
-  --gold:#dcac5f; --gold-soft:#3a2f1c; --border:#343434;
-  --shadow: 0 18px 40px -22px rgba(0,0,0,.6);
+  --gold:#dcac5f; --gold-soft:#3a2f1c; --border:#3a332a;
+  --shadow: 0 20px 44px -24px rgba(0,0,0,.6);
+  --shadow-sm: 0 6px 18px -10px rgba(0,0,0,.5);
 }
 
 *{box-sizing:border-box;}
@@ -167,7 +167,8 @@ nav.links{display:flex; gap:1.6rem; align-items:center;}
 .mission-block .leaf{position:absolute; top:-16px; left:28px; width:34px; height:34px;}
 .mission-block p{font-family:var(--font-fraunces), serif; font-style:italic; font-weight:500; font-size:var(--step-1); line-height:1.6; color:var(--ink);}
 .values-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1rem;}
-.value-card{border:1px solid var(--border); border-radius:var(--radius-md); padding:1.1rem 1.2rem; background:var(--surface); display:flex; flex-direction:column; gap:.5rem;}
+.value-card{border:1px solid var(--border); border-radius:var(--radius-md); padding:1.1rem 1.2rem; background:var(--surface); display:flex; flex-direction:column; gap:.5rem; transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;}
+a.value-card:hover{border-color:var(--gold); box-shadow:var(--shadow-sm); transform:translateY(-2px);}
 .value-card svg{width:22px; height:22px; color:var(--laurel);}
 .value-card h3{font-size:1rem; font-weight:600; font-family:var(--font-public-sans),sans-serif;}
 .value-card p{color:var(--ink-soft); font-size:.9rem;}
@@ -323,6 +324,20 @@ footer{border-top:1px solid var(--border); padding-block:2.4rem; margin-top:1rem
 .badge-published{background:#e1f0e5; color:#1e6b34;}
 .badge-draft{background:var(--surface-alt); color:var(--ink-faint);}
 .admin-empty{border:1px dashed var(--border); border-radius:var(--radius-md); padding:2rem; text-align:center; color:var(--ink-soft); font-size:.9rem;}
+.admin-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem;}
+@media (max-width:860px){ .admin-cards{grid-template-columns:1fr 1fr;} }
+@media (max-width:520px){ .admin-cards{grid-template-columns:1fr;} }
+
+/* Honest, non-alarming placeholder for content not yet added — replaces
+   raw "TODO" text on public pages until the admin panel populates it. */
+.coming-soon{
+  border:1.5px dashed var(--border); border-radius:var(--radius-md);
+  padding:1.5rem 1.7rem; background:var(--surface-warm);
+  display:flex; align-items:flex-start; gap:.9rem;
+}
+.coming-soon svg{width:22px; height:22px; color:var(--gold); flex:none; margin-top:.1rem;}
+.coming-soon h3{font-size:.98rem; font-weight:600; font-family:var(--font-public-sans),sans-serif; margin-bottom:.3rem;}
+.coming-soon p{color:var(--ink-soft); font-size:.88rem;}
 .field-toggle-wrap{position:relative;}
 .field-toggle-wrap input{padding-right:3rem;}
 .field-toggle-btn{
