@@ -46,8 +46,8 @@ body{
   margin:0; background:var(--bg); color:var(--ink);
   font-family:var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
   font-size:var(--step-0); line-height:1.6;
-  padding-inline: max(28px, calc((100vw - 1180px)/2));
   -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
 }
 h1,h2,h3,.display{
   font-family:var(--font-fraunces), ui-serif, Georgia, serif;
@@ -65,7 +65,7 @@ img{max-width:100%;}
   color:var(--laurel);
 }
 section{padding-block:clamp(2.6rem, 2rem + 3vw, 5rem);}
-.wrap{max-width:1180px; margin-inline:auto;}
+.wrap{max-width:1180px; margin-inline:auto; padding-inline:clamp(20px, 4vw, 32px);}
 .divider{height:1px; background:var(--border); border:0; margin:0;}
 
 a:focus-visible, button:focus-visible, .navlink:focus-visible{
