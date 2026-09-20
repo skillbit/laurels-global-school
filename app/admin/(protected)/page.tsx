@@ -3,13 +3,15 @@ import { createClient } from "@/lib/supabase/server";
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
-  const [{ count: noticeCount }, { count: imageCount }, { count: staffCount }, { count: eventCount }, { count: documentCount }, { count: achievementCount }, { count: enquiryCount }, { count: adminCount }] = await Promise.all([
+  const [{ count: noticeCount }, { count: imageCount }, { count: staffCount }, { count: eventCount }, { count: documentCount }, { count: achievementCount }, { count: openJobCount }, { count: newApplicationCount }, { count: enquiryCount }, { count: adminCount }] = await Promise.all([
     supabase.from("notices").select("id", { count: "exact", head: true }),
     supabase.from("gallery_images").select("id", { count: "exact", head: true }),
     supabase.from("staff").select("id", { count: "exact", head: true }),
     supabase.from("events").select("id", { count: "exact", head: true }),
     supabase.from("documents").select("id", { count: "exact", head: true }),
     supabase.from("achievements").select("id", { count: "exact", head: true }),
+    supabase.from("job_postings").select("id", { count: "exact", head: true }).eq("is_active", true),
+    supabase.from("career_applications").select("id", { count: "exact", head: true }).eq("status", "new"),
     supabase.from("enquiries").select("id", { count: "exact", head: true }).eq("status", "new"),
     supabase.from("admin_users").select("id", { count: "exact", head: true }),
   ]);
@@ -44,6 +46,18 @@ export default async function AdminDashboardPage() {
       label: "Achievements",
       count: achievementCount ?? 0,
       description: "Board results, awards and student achievements.",
+    },
+    {
+      href: "/admin/careers",
+      label: "Careers",
+      count: openJobCount ?? 0,
+      description: "Open job postings shown on the Careers page.",
+    },
+    {
+      href: "/admin/careers/applications",
+      label: "Job Applications",
+      count: newApplicationCount ?? 0,
+      description: "New applications and resumes from candidates.",
     },
     {
       href: "/admin/staff",

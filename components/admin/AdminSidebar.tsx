@@ -13,6 +13,8 @@ const SECTIONS = [
   { href: "/admin/events", label: "Events" },
   { href: "/admin/documents", label: "Documents" },
   { href: "/admin/achievements", label: "Achievements" },
+  { href: "/admin/careers", label: "Careers" },
+  { href: "/admin/careers/applications", label: "Job Applications" },
   { href: "/admin/staff", label: "Staff" },
   { href: "/admin/enquiries", label: "Enquiries" },
   { href: "/admin/settings", label: "Site Settings" },
@@ -21,6 +23,10 @@ const SECTIONS = [
 
 export default function AdminSidebar({ email }: { email: string }) {
   const pathname = usePathname();
+  // Highlight only the most specific matching section (Careers vs Job Applications).
+  const activeHref = SECTIONS.filter((s) =>
+    s.href === "/admin" ? pathname === s.href : pathname?.startsWith(s.href)
+  ).sort((a, b) => b.href.length - a.href.length)[0]?.href;
 
   return (
     <aside className="admin-sidebar">
@@ -31,7 +37,7 @@ export default function AdminSidebar({ email }: { email: string }) {
       </div>
       <nav aria-label="Admin sections" style={{ display: "contents" }}>
         {SECTIONS.map((s) => {
-          const isActive = s.href === "/admin" ? pathname === s.href : pathname?.startsWith(s.href);
+          const isActive = s.href === activeHref;
           return (
             <Link
               key={s.href}

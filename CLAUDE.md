@@ -44,6 +44,9 @@ mobile responsiveness → enquiry form → Site settings → Staff → rest of P
 ## 3f. Achievements admin — DONE (2026-09-20)
 - `/admin/achievements` CRUD (title, date, category, description, optional photo to `public/achievements/`, publish toggle). Public `/achievements` card grid; linked from the footer only.
 
+## 3g. Careers — DONE (2026-09-20)
+- `/admin/careers` job posting CRUD (open/close toggle) + `/admin/careers/applications` inbox (status toggle, delete, resumes via 1-hour signed URLs from the `private` bucket). Public `/careers` lists open roles + application form (`app/(site)/careers/actions.ts`; resume PDF/DOC/DOCX ≤3 MB uploaded server-side with the service-role client). `next.config.ts` sets `serverActions.bodySizeLimit: "4mb"`. Linked from footer only. Not tested end-to-end against live Supabase.
+
 ## 5. Enquiry form — DONE (2026-09-20)
 - Wired to `enquiries` via `app/(site)/admissions/actions.ts`; admin inbox at `/admin/enquiries` (+ sidebar and dashboard card). Not yet tested end-to-end against live Supabase.
 
