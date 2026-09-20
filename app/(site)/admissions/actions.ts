@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { alertNewEnquiry } from "@/lib/notify";
 
 export type EnquiryState = {
   status: "idle" | "ok" | "err";
@@ -53,6 +54,15 @@ export async function submitEnquiry(_prev: EnquiryState, formData: FormData): Pr
       values,
     };
   }
+
+  // WhatsApp alert to the office (sent after the response; never blocks or fails the form).
+  alertNewEnquiry({
+    parentName: values.parentName,
+    phone: values.phone,
+    grade: values.grade,
+    childAge: values.childAge,
+    message: values.message,
+  });
 
   return { status: "ok" };
 }

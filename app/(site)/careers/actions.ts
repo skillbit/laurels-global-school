@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { alertNewApplication } from "@/lib/notify";
 
 export type ApplicationState = {
   status: "idle" | "ok" | "err";
@@ -46,15 +47,17 @@ export async function submitApplication(_prev: ApplicationState, formData: FormD
 
   // Only accept applications for positions that are currently open.
   let jobId: string | null = null;
+  let jobTitle: string | null = null;
   if (values.job) {
     const { data: job } = await supabase
       .from("job_postings")
-      .select("id")
+      .select("id, title")
       .eq("id", values.job)
       .eq("is_active", true)
       .maybeSingle();
     if (!job) return fail("That position is no longer open. Please pick another or choose a general application.");
     jobId = job.id;
+    jobTitle = job.title;
   }
 
   // Resumes go to the private bucket; anonymous visitors can't write there, so upload with the service role.
@@ -80,6 +83,14 @@ export async function submitApplication(_prev: ApplicationState, formData: FormD
     if (resumePath) await storage.remove([resumePath]);
     return fail("Something went wrong sending your application. Please call the office directly.");
   }
+
+  // WhatsApp alert to the office (sent after the response; never blocks or fails the form).
+  alertNewApplication({
+    name: values.applicantName,
+    phone: values.phone,
+    position: jobTitle ?? "a general application",
+    hasResume: Boolean(resumePath),
+  });
 
   return { status: "ok" };
 }

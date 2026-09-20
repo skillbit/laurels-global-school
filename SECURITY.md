@@ -73,7 +73,7 @@ Security review and checklists for **The Laurels Global School** website and adm
    create policy "Anyone can submit an application" on public.career_applications
      for insert with check (status = 'new' and (resume_path is null or resume_path like 'resumes/%'));
    ```
-2. *Rate limiting / bot protection.* Add Cloudflare Turnstile (free CAPTCHA) or Vercel's bot protection to both forms, plus a per-IP limit (for example 5 submissions per hour) using Upstash Ratelimit or Vercel WAF rules.
+2. *Rate limiting / bot protection.* (WhatsApp alerts already pause after more than 8 submissions in 10 minutes, but the entries are still saved.) Add Cloudflare Turnstile (free CAPTCHA) or Vercel's bot protection to both forms, plus a per-IP limit (for example 5 submissions per hour) using Upstash Ratelimit or Vercel WAF rules.
 3. *Better still:* stop accepting direct database inserts from the public key altogether. Make the Server Actions the only way in (insert with the service role) and remove the public insert policies.
 4. Confirm with `npm run security:probe`; the last check should turn to PASS.
 
@@ -129,7 +129,7 @@ frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'
 
 **S7:** replace `?error=<text>` with short error codes mapped to fixed messages.
 
-**S10 privacy:** add a Privacy Policy page and a consent line under the enquiry and career forms ("We use these details only to contact you about admissions/jobs"); delete enquiries and applications after a fixed period (for example 12 months); name a person responsible for data requests.
+**S10 privacy:** WhatsApp alerts (when enabled) send the parent's name, phone number and a short note through WhatsApp/Meta or CallMeBot, so include that in the privacy notice and send alerts only to staff who handle admissions. Add a Privacy Policy page and a consent line under the enquiry and career forms ("We use these details only to contact you about admissions/jobs"); delete enquiries and applications after a fixed period (for example 12 months); name a person responsible for data requests.
 
 **S11 backups:** schedule a monthly export of the database and storage (or upgrade the Supabase plan for point-in-time recovery) and test one restore.
 

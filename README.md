@@ -24,7 +24,7 @@ Parents find everything they need. The school office updates it all without touc
 
 ## Contents
 
-[Highlights](#highlights) · [Screenshots](#screenshots) · [Tech stack](#tech-stack) · [Quick start](#quick-start) · [Database setup](#database-setup) · [Admin guide](#admin-guide) · [How it works](#how-it-works) · [Project structure](#project-structure) · [Scripts](#scripts) · [Security](#security) · [Deployment](#deployment) · [Status and roadmap](#status-and-roadmap)
+[Highlights](#highlights) · [Screenshots](#screenshots) · [Tech stack](#tech-stack) · [Quick start](#quick-start) · [Database setup](#database-setup) · [WhatsApp alerts](#whatsapp-alerts) · [Admin guide](#admin-guide) · [How it works](#how-it-works) · [Project structure](#project-structure) · [Scripts](#scripts) · [Security](#security) · [Deployment](#deployment) · [Status and roadmap](#status-and-roadmap)
 
 ---
 
@@ -38,6 +38,7 @@ Parents find everything they need. The school office updates it all without touc
 | Careers page with **online application and resume upload** | **Publish or unpublish** anything with one click; drafts stay hidden |
 | Staff, achievements, alumni and school history timeline | Edit the banner, phone numbers, map, social links, logo and homepage text |
 | **Works on phones**: tap-to-call, fast, easy to read | Sign in securely; add or disable other admins |
+| | **WhatsApp alert** the moment an enquiry or job application arrives |
 
 ## Screenshots
 
@@ -91,6 +92,8 @@ Create `.env.local` (never commit it):
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API | Everywhere |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API | Public reads, sign-in |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Project Settings → API | **Server only**: creating admin accounts and saving résumés. Never expose it. |
+| `NEXT_PUBLIC_SITE_URL` | Your site address | Links in alerts, sitemap, canonical and share links. Set to the custom domain once live. |
+| `WHATSAPP_*` (optional) | See [WhatsApp alerts](#whatsapp-alerts) | Office alert on new enquiries and applications |
 
 > Tip: use a separate Supabase project for development so testing never touches live data. See [SECURITY.md](SECURITY.md).
 
@@ -105,6 +108,43 @@ Open Supabase → **SQL editor** and run these once, in order (all are safe to r
 | 3 | [`supabase/migrations/0003_milestones.sql`](supabase/migrations/0003_milestones.sql) | School history timeline |
 
 **First admin:** Supabase → Authentication → Users → *Add user*, then add a row to the `admin_users` table with the same `id` and `is_active = true`. After that, sign in at `/admin/login` and add more admins from **Admin Accounts**.
+
+## WhatsApp alerts
+
+When a parent sends an admissions enquiry (or a candidate applies for a job), the office gets a short WhatsApp message, for example:
+
+> New admission enquiry: Riya's parent (9000000001) for Class 1, child age 6. Note: … Reply from https://…/admin/enquiries
+
+It is **optional**, sent after the form is saved, and it can never make the form fail. If several submissions arrive within minutes (a spam flood), alerts pause automatically; the entries are still saved.
+
+Turn it on by setting environment variables (in `.env.local` for testing, and in Vercel → Settings → Environment Variables → **Production** for the live site), then redeploy. Pick **one** provider:
+
+**Option A: Meta WhatsApp Cloud API (official, recommended for the school)**
+
+1. Create a Meta developer app and add the **WhatsApp** product (business.facebook.com and developers.facebook.com). Add a business phone number and note its **Phone number ID**.
+2. Create a permanent **system-user access token** with the `whatsapp_business_messaging` permission.
+3. In WhatsApp Manager create a message template (category *Utility*, language English) named `school_alert` with this body, using **one** variable: `School website alert: {{1}}`. Wait for approval.
+4. Set:
+   ```
+   WHATSAPP_PROVIDER=cloud
+   WHATSAPP_TOKEN=<system-user token>
+   WHATSAPP_PHONE_NUMBER_ID=<phone number id>
+   WHATSAPP_TEMPLATE_NAME=school_alert
+   WHATSAPP_TO=919771020700          # who receives it; several numbers allowed, comma separated
+   ```
+
+**Option B: CallMeBot (free, quick, uses a personal number)**
+
+1. From the phone that should get the alerts, send `I allow callmebot to send me messages` to **+34 644 51 95 23** on WhatsApp. You will receive an API key.
+2. Set:
+   ```
+   WHATSAPP_PROVIDER=callmebot
+   CALLMEBOT_API_KEY=<the key>
+   WHATSAPP_TO=919771020700
+   ```
+   (For several receivers, list numbers and keys in the same order, comma separated.) CallMeBot is an unofficial free service; use Option A for anything important.
+
+Alerts contain the parent's name, phone number and a short note, so they pass through the WhatsApp provider. Send them only to staff who handle admissions (see the privacy notes in [SECURITY.md](SECURITY.md)).
 
 ## Admin guide
 
