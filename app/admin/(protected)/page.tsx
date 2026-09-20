@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
-  const [{ count: noticeCount }, { count: imageCount }, { count: staffCount }, { count: eventCount }, { count: documentCount }, { count: achievementCount }, { count: openJobCount }, { count: newApplicationCount }, { count: enquiryCount }, { count: adminCount }] = await Promise.all([
+  const [{ count: noticeCount }, { count: imageCount }, { count: staffCount }, { count: eventCount }, { count: documentCount }, { count: achievementCount }, { count: openJobCount }, { count: newApplicationCount }, { count: alumniCount }, { count: enquiryCount }, { count: adminCount }] = await Promise.all([
     supabase.from("notices").select("id", { count: "exact", head: true }),
     supabase.from("gallery_images").select("id", { count: "exact", head: true }),
     supabase.from("staff").select("id", { count: "exact", head: true }),
@@ -12,6 +12,7 @@ export default async function AdminDashboardPage() {
     supabase.from("achievements").select("id", { count: "exact", head: true }),
     supabase.from("job_postings").select("id", { count: "exact", head: true }).eq("is_active", true),
     supabase.from("career_applications").select("id", { count: "exact", head: true }).eq("status", "new"),
+    supabase.from("alumni").select("id", { count: "exact", head: true }),
     supabase.from("enquiries").select("id", { count: "exact", head: true }).eq("status", "new"),
     supabase.from("admin_users").select("id", { count: "exact", head: true }),
   ]);
@@ -58,6 +59,12 @@ export default async function AdminDashboardPage() {
       label: "Job Applications",
       count: newApplicationCount ?? 0,
       description: "New applications and resumes from candidates.",
+    },
+    {
+      href: "/admin/alumni",
+      label: "Alumni",
+      count: alumniCount ?? 0,
+      description: "Former students featured on the Alumni page.",
     },
     {
       href: "/admin/staff",

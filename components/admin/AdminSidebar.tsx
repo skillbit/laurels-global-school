@@ -15,6 +15,7 @@ const SECTIONS = [
   { href: "/admin/achievements", label: "Achievements" },
   { href: "/admin/careers", label: "Careers" },
   { href: "/admin/careers/applications", label: "Job Applications" },
+  { href: "/admin/alumni", label: "Alumni" },
   { href: "/admin/staff", label: "Staff" },
   { href: "/admin/enquiries", label: "Enquiries" },
   { href: "/admin/settings", label: "Site Settings" },

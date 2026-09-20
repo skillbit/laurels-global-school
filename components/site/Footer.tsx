@@ -34,6 +34,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
             <Link href="/achievements">Achievements</Link>
             <Link href="/documents">Documents</Link>
             <Link href="/careers">Careers</Link>
+            <Link href="/alumni">Alumni</Link>
           </div>
           <div className="foot-col">
             <h4>Contact</h4>
