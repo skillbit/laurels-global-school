@@ -4,9 +4,19 @@ import ValueCard from "@/components/site/ValueCard";
 import StageCard from "@/components/site/StageCard";
 import FactsPanel from "@/components/site/FactsPanel";
 import { getSiteSettings } from "@/lib/site-settings";
+import { createPublicClient } from "@/lib/supabase/public";
+import { formatEventDate, splitEvents } from "@/lib/events";
+
+// Refreshed hourly so the upcoming-events list drops events once they have passed.
+export const revalidate = 3600;
 
 export default async function HomePage() {
   const settings = await getSiteSettings();
+  const { data: eventRows } = await createPublicClient()
+    .from("events")
+    .select("id, title, description, event_date, end_date, category")
+    .eq("is_published", true);
+  const upcomingEvents = splitEvents(eventRows ?? []).upcoming.slice(0, 3);
 
   return (
     <>
@@ -132,6 +142,32 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {upcomingEvents.length > 0 && (
+        <section className="wrap">
+          <div className="section-head">
+            <span className="eyebrow">Events</span>
+            <h2>Coming Up</h2>
+          </div>
+          <div className="notice-list">
+            {upcomingEvents.map((e) => (
+              <div className="notice" key={e.id}>
+                <span className="date mono">{formatEventDate(e.event_date, e.end_date)}</span>
+                <div>
+                  <h3>{e.title}</h3>
+                  {e.description && <p>{e.description}</p>}
+                </div>
+                {e.category ? <span className="tag">{e.category}</span> : <span />}
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: "1.4rem" }}>
+            <Link className="btn btn-ghost" href="/events">
+              All events &rarr;
+            </Link>
+          </div>
+        </section>
+      )}
 
       <section className="wrap">
         <div className="admissions">

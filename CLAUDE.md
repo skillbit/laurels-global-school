@@ -35,6 +35,9 @@ mobile responsiveness → enquiry form → Site settings → Staff → rest of P
 ## 3c. Staff admin — DONE (2026-09-20)
 - `/admin/staff` CRUD (list/new/edit, photo upload from browser to `public/staff/`, publish toggle, leadership/faculty groups, display order). About page "Meet the Team" reads published staff; falls back to "coming soon" when empty. Real principal/staff details still need to be entered by the admin.
 
+## 3d. Events admin — DONE (2026-09-20)
+- `/admin/events` CRUD (title, start/end date, category, description, publish toggle). Public `/events` page (upcoming + past, hourly ISR) and a "Coming Up" strip on the homepage (only shown when upcoming events exist); Events added to nav and footer.
+
 ## 5. Enquiry form — DONE (2026-09-20)
 - Wired to `enquiries` via `app/(site)/admissions/actions.ts`; admin inbox at `/admin/enquiries` (+ sidebar and dashboard card). Not yet tested end-to-end against live Supabase.
 

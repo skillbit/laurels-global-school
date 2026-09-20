@@ -29,6 +29,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
             <Link href="/academics">Academics</Link>
             <Link href="/admissions">Admissions</Link>
             <Link href="/gallery">Gallery</Link>
+            <Link href="/events">Events</Link>
             <Link href="/notices">Notices</Link>
           </div>
           <div className="foot-col">
