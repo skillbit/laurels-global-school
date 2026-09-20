@@ -54,6 +54,10 @@ mobile responsiveness → enquiry form → Site settings → Staff → rest of P
 - `/admin/branding` uploads logo (header + footer) and favicon (root `generateMetadata` in `app/layout.tsx`) to `public/branding/`; falls back to the wreath mark and `public/favicon.ico` (moved from `app/favicon.ico`, because file-based icons override config icons). Also fixed leftover hardcoded phone numbers in the Header and Admissions form note (now from site settings).
 - All planned functional admin sections are now built. Remaining: mobile, SEO, domain, placeholder content (Academics TODOs, Affiliation No.), README, UI polish pass.
 
+## 3j. Gallery albums — DONE in code (2026-09-20), needs DB migration
+- Gallery is now albums: title + date (defaults to today, editable) + many photos uploaded at once (`/admin/gallery`, `/admin/gallery/new`, `/admin/gallery/[id]`). Public `/gallery` shows album cards; `/gallery/[id]` shows the album's photos.
+- **Requires running `supabase/migrations/0002_gallery_albums.sql` in the Supabase SQL editor** (creates `gallery_albums`, adds `gallery_images.album_id`, moves existing loose photos into a "Campus Photos" album). Do this before/at deploy or the gallery shows empty.
+
 ## 5. Enquiry form — DONE (2026-09-20)
 - Wired to `enquiries` via `app/(site)/admissions/actions.ts`; admin inbox at `/admin/enquiries` (+ sidebar and dashboard card). Not yet tested end-to-end against live Supabase.
 

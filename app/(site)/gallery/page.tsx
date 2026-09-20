@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 
 export const metadata: Metadata = {
   title: "Gallery",
-  description: "Campus and event photos from The Laurels Global School, Dehri-on-Sone.",
+  description: "Photo albums from events and campus life at The Laurels Global School, Dehri-on-Sone.",
 };
 
 export default async function GalleryPage() {
-  const supabase = await createClient();
-  const { data: images } = await supabase
-    .from("gallery_images")
-    .select("id, image_path, caption, alt_text")
+  const client = createPublicClient();
+  const { data: albums } = await client
+    .from("gallery_albums")
+    .select("id, title, album_date, gallery_images(image_path, sort_order)")
     .eq("is_published", true)
-    .order("sort_order", { ascending: true });
+    .order("album_date", { ascending: false });
 
-  const bucket = supabase.storage.from("public");
+  // Only show albums that already have photos.
+  const visible = (albums ?? []).filter((a) => a.gallery_images.length > 0);
 
   return (
     <>
@@ -28,15 +29,32 @@ export default async function GalleryPage() {
       </div>
 
       <section className="wrap" style={{ paddingTop: 0 }}>
-        {images && images.length > 0 ? (
-          <div className="gallery-grid">
-            {images.map((img) => {
-              const { data: pub } = bucket.getPublicUrl(img.image_path);
+        {visible.length > 0 ? (
+          <div className="album-grid">
+            {visible.map((a) => {
+              const photos = [...a.gallery_images].sort((x, y) => x.sort_order - y.sort_order);
               return (
-                <div className="tile" key={img.id}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={pub.publicUrl} alt={img.alt_text || img.caption || "Laurels campus photo"} loading="lazy" />
-                </div>
+                <Link className="album-card" href={`/gallery/${a.id}`} key={a.id}>
+                  <div className="album-cover">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={client.storage.from("public").getPublicUrl(photos[0].image_path).data.publicUrl}
+                      alt={`${a.title} — cover photo`}
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="album-meta">
+                    <h3>{a.title}</h3>
+                    <span>
+                      {new Date(`${a.album_date}T00:00:00`).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}{" "}
+                      · {photos.length} {photos.length === 1 ? "photo" : "photos"}
+                    </span>
+                  </div>
+                </Link>
               );
             })}
           </div>
@@ -48,7 +66,7 @@ export default async function GalleryPage() {
             </svg>
             <div>
               <h3>Photos coming soon</h3>
-              <p>Campus and event photos will appear here once the school adds them from the admin panel.</p>
+              <p>Photo albums from school events and campus life will appear here.</p>
             </div>
           </div>
         )}

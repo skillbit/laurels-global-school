@@ -5,7 +5,7 @@ export default async function AdminDashboardPage() {
   const supabase = await createClient();
   const [{ count: noticeCount }, { count: imageCount }, { count: staffCount }, { count: eventCount }, { count: documentCount }, { count: achievementCount }, { count: openJobCount }, { count: newApplicationCount }, { count: alumniCount }, { count: enquiryCount }, { count: adminCount }] = await Promise.all([
     supabase.from("notices").select("id", { count: "exact", head: true }),
-    supabase.from("gallery_images").select("id", { count: "exact", head: true }),
+    supabase.from("gallery_albums").select("id", { count: "exact", head: true }),
     supabase.from("staff").select("id", { count: "exact", head: true }),
     supabase.from("events").select("id", { count: "exact", head: true }),
     supabase.from("documents").select("id", { count: "exact", head: true }),
@@ -28,7 +28,7 @@ export default async function AdminDashboardPage() {
       href: "/admin/gallery",
       label: "Gallery",
       count: imageCount ?? 0,
-      description: "Upload or remove campus and event photos.",
+      description: "Photo albums for events and campus life — add a title and upload photos.",
     },
     {
       href: "/admin/events",
