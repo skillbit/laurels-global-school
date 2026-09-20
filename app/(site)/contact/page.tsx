@@ -4,7 +4,7 @@ import { getSiteSettings, telHref } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Visit or contact The Laurels Global School, Dehri-on-Sone, Rohtas, Bihar.",
+  description: "Address, phone numbers and map for The Laurels Global School, Dehri-on-Sone, Rohtas, Bihar. Call, visit or get directions.",
 };
 
 export default async function ContactPage() {

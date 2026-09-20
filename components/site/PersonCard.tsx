@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function PersonCard({
   name,
   role,
@@ -13,8 +15,7 @@ export default function PersonCard({
     <div className="person-card">
       <div className="avatar" aria-hidden={photoUrl ? undefined : "true"}>
         {photoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={photoUrl} alt={name} loading="lazy" />
+          <Image src={photoUrl} alt={name} width={192} height={192} sizes="96px" />
         ) : (
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
             <circle cx="12" cy="8" r="4" />

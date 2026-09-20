@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/site/PageHeader";
+import JsonLd from "@/components/site/JsonLd";
+import { SITE_URL } from "@/lib/site-url";
 import { createPublicClient } from "@/lib/supabase/public";
 import { formatEventDate, splitEvents, type SchoolEvent } from "@/lib/events";
 
@@ -37,8 +39,25 @@ export default async function EventsPage() {
 
   const { upcoming, past } = splitEvents(data ?? []);
 
+  // Lets Google show upcoming school events in search results.
+  const eventsData = {
+    "@context": "https://schema.org",
+    "@graph": upcoming.map((e) => ({
+      "@type": "Event",
+      name: e.title,
+      ...(e.description ? { description: e.description } : {}),
+      startDate: e.event_date,
+      endDate: e.end_date ?? e.event_date,
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      location: { "@type": "Place", name: "The Laurels Global School", address: "Dehri-on-Sone, Rohtas, Bihar, India" },
+      organizer: { "@type": "Organization", name: "The Laurels Global School", url: SITE_URL },
+    })),
+  };
+
   return (
     <>
+      {upcoming.length > 0 && <JsonLd data={eventsData} />}
       <PageHeader crumb="Events" eyebrow="Events &amp; Calendar" title="What&apos;s Happening at Laurels" intro="Holidays, exams and school activities in one calendar." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
@@ -54,7 +73,7 @@ export default async function EventsPage() {
               <path d="M3 10h18M8 3v4M16 3v4" />
             </svg>
             <div>
-              <h3>No upcoming events</h3>
+              <h2>No upcoming events</h2>
               <p>Check back soon — the school will post upcoming events, holidays and activities here.</p>
             </div>
           </div>

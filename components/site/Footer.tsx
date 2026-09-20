@@ -31,7 +31,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
         </div>
 
         <div className="foot-col">
-          <h4>Explore</h4>
+          <p className="foot-h">Explore</p>
           <Link href="/about">About</Link>
           <Link href="/academics">Academics</Link>
           <Link href="/admissions">Admissions</Link>
@@ -40,7 +40,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
         </div>
 
         <div className="foot-col">
-          <h4>School life</h4>
+          <p className="foot-h">School life</p>
           <Link href="/events">Events</Link>
           <Link href="/notices">Notices</Link>
           <Link href="/achievements">Achievements</Link>
@@ -50,7 +50,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
         </div>
 
         <div className="foot-col">
-          <h4>Contact</h4>
+          <p className="foot-h">Contact</p>
           {settings.phones.map((p) => (
             <a key={p} href={telHref(p)}>
               {p}

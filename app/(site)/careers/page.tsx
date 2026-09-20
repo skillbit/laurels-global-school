@@ -5,7 +5,7 @@ import CareerApplicationForm from "@/components/site/CareerApplicationForm";
 
 export const metadata: Metadata = {
   title: "Careers",
-  description: "Teaching and staff openings at The Laurels Global School, Dehri-on-Sone. Apply online.",
+  description: "Teaching and staff jobs at The Laurels Global School, Dehri-on-Sone, Bihar. See current openings and apply online with your resume.",
 };
 
 export default async function CareersPage() {
@@ -47,7 +47,7 @@ export default async function CareersPage() {
               <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
             </svg>
             <div>
-              <h3>No openings right now</h3>
+              <h2>No openings right now</h2>
               <p>You can still send a general application below and we&apos;ll keep it on file.</p>
             </div>
           </div>

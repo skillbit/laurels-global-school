@@ -21,7 +21,7 @@ Security review and checklists for **The Laurels Global School** website and adm
 | Database | Row-level security is on for every table. Verified from the outside with only the public key: it **cannot** read enquiries, job applications or admin accounts, cannot write any content table, and cannot upload files. |
 | Secrets | The service-role key is only used in two server-side places (resume upload, admin account creation). `.env*` is git-ignored and **0** keys were found in the whole git history (the repo is public, so this matters). |
 | Uploads | Resumes go to a private bucket and are opened through signed links that expire after 1 hour. Upload paths are validated against a strict pattern. |
-| Injection / XSS | No `dangerouslySetInnerHTML`, `eval` or raw HTML anywhere; React escapes all output. The map embed only accepts Google Maps / OpenStreetMap URLs. |
+| Injection / XSS | No `eval` or user-supplied HTML anywhere; React escapes all output. The one `dangerouslySetInnerHTML` is the search-engine structured data (`components/site/JsonLd.tsx`), which only carries our own data through `JSON.stringify` with `<` escaped. The map embed only accepts Google Maps / OpenStreetMap URLs, and the photo resizer (`/_next/image`) only accepts photos from our own Supabase storage host. |
 | Dependencies | `npm audit`: 0 vulnerabilities (production and dev). |
 | Transport | HTTPS with HSTS (set by Vercel). |
 | Spam | Honeypot field and server-side validation on the enquiry and career forms. |

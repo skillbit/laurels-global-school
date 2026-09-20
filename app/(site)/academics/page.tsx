@@ -5,7 +5,7 @@ import FacilityCard from "@/components/site/FacilityCard";
 export const metadata: Metadata = {
   title: "Academics",
   description:
-    "CBSE curriculum from Nursery to Class 10 at The Laurels Global School — pre-primary, primary, middle and secondary stages.",
+    "CBSE curriculum from Nursery to Class 10 at The Laurels Global School, Dehri-on-Sone: pre-primary, primary, middle and secondary stages, subjects and activities.",
 };
 
 const STAGES = [

@@ -42,7 +42,7 @@ export default async function AlumniPage() {
               <path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6" />
             </svg>
             <div>
-              <h3>Alumni stories coming soon</h3>
+              <h2>Alumni stories coming soon</h2>
               <p>We&apos;ll feature former students and what they&apos;re doing now right here.</p>
             </div>
           </div>

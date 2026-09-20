@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import PageHeader from "@/components/site/PageHeader";
 import { createPublicClient } from "@/lib/supabase/public";
 
@@ -25,12 +26,14 @@ export default async function AchievementsPage() {
             {items.map((a) => (
               <article className="info-card" key={a.id}>
                 {a.photo_path && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={client.storage.from("public").getPublicUrl(a.photo_path).data.publicUrl}
-                    alt={a.title}
-                    loading="lazy"
-                  />
+                  <div className="info-media">
+                    <Image
+                      src={client.storage.from("public").getPublicUrl(a.photo_path).data.publicUrl}
+                      alt={a.title}
+                      fill
+                      sizes="(max-width: 520px) 100vw, (max-width: 860px) 50vw, 380px"
+                    />
+                  </div>
                 )}
                 <div className="body">
                 <span className="meta">
@@ -54,7 +57,7 @@ export default async function AchievementsPage() {
               <path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3" />
             </svg>
             <div>
-              <h3>Achievements coming soon</h3>
+              <h2>Achievements coming soon</h2>
               <p>Board results, awards and student achievements will be shared here.</p>
             </div>
           </div>

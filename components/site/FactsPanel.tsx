@@ -5,7 +5,7 @@ export default async function FactsPanel() {
 
   return (
     <div className="facts-panel">
-      <h3>Quick Facts</h3>
+      <h2>Quick Facts</h2>
       {quickFacts.map((f) => (
         <div className="fact-row" key={f.label}>
           <span>{f.label}</span>

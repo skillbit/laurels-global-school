@@ -24,7 +24,7 @@ Parents find everything they need. The school office updates it all without touc
 
 ## Contents
 
-[Highlights](#highlights) · [Screenshots](#screenshots) · [Tech stack](#tech-stack) · [Quick start](#quick-start) · [Database setup](#database-setup) · [WhatsApp alerts](#whatsapp-alerts) · [Admin guide](#admin-guide) · [How it works](#how-it-works) · [Project structure](#project-structure) · [Scripts](#scripts) · [Security](#security) · [Deployment](#deployment) · [Status and roadmap](#status-and-roadmap)
+[Highlights](#highlights) · [Screenshots](#screenshots) · [Tech stack](#tech-stack) · [Quick start](#quick-start) · [Database setup](#database-setup) · [WhatsApp alerts](#whatsapp-alerts) · [Admin guide](#admin-guide) · [How it works](#how-it-works) · [Project structure](#project-structure) · [Scripts](#scripts) · [SEO](#seo) · [Security](#security) · [Deployment](#deployment) · [Status and roadmap](#status-and-roadmap)
 
 ---
 
@@ -38,7 +38,7 @@ Parents find everything they need. The school office updates it all without touc
 | Careers page with **online application and resume upload** | **Publish or unpublish** anything with one click; drafts stay hidden |
 | Staff, achievements, alumni and school history timeline | Edit the banner, phone numbers, map, social links, logo and homepage text |
 | **Works on phones**: tap-to-call, fast, easy to read | Sign in securely; add or disable other admins |
-| | **WhatsApp alert** the moment an enquiry or job application arrives |
+| **Found on Google**: sitemap, share previews, school and event data ([SEO.md](SEO.md)) | **WhatsApp alert** the moment an enquiry or job application arrives |
 
 ## Screenshots
 
@@ -93,6 +93,7 @@ Create `.env.local` (never commit it):
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API | Public reads, sign-in |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Project Settings → API | **Server only**: creating admin accounts and saving résumés. Never expose it. |
 | `NEXT_PUBLIC_SITE_URL` | Your site address | Links in alerts, sitemap, canonical and share links. Set to the custom domain once live. |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (optional) | Google Search Console → "HTML tag" | Proves you own the site |
 | `WHATSAPP_*` (optional) | See [WhatsApp alerts](#whatsapp-alerts) | Office alert on new enquiries and applications |
 
 > Tip: use a separate Supabase project for development so testing never touches live data. See [SECURITY.md](SECURITY.md).
@@ -204,6 +205,7 @@ lib/
   supabase/                server, browser, public (cookie-less) and service-role clients
   site-settings.ts         loads the editable settings with safe fallbacks
 scripts/security-probe.mjs re-runnable database/storage security check
+app/sitemap.ts, robots.ts   search-engine files; opengraph-image.tsx = share picture
 supabase/migrations/       SQL schema
 docs/screenshots/          images used in this README
 ```
@@ -217,6 +219,12 @@ docs/screenshots/          images used in this README
 | `npm run start` | Run the production build |
 | `npm run lint` | ESLint |
 | `npm run security:probe` | Check what the public key can and can't do in the database and storage |
+
+## SEO
+
+The site is set up to be found on Google: a sitemap (including photo albums), `robots.txt`, a canonical address and unique title/description on every page, structured data for the school and its events, a branded share image for WhatsApp and Facebook, resized photos, and Lighthouse scores of **100 for SEO, Accessibility and Best practices** (Performance about 90). The admin panel is kept out of search.
+
+A few steps need the school (linking the domain, Google Search Console, Google Business Profile, reviews). **They are listed, in order, in [SEO.md](SEO.md).** Once the domain is live, set `NEXT_PUBLIC_SITE_URL` in Vercel so every link uses it.
 
 ## Security
 
@@ -233,9 +241,9 @@ The app was reviewed end to end: access control, database rules, uploads, header
 
 ## Status and roadmap
 
-**Done:** all public pages, the full admin panel, live map, photo albums, history timeline, mobile layouts, branded 404/error pages, security review.
+**Done:** all public pages, the full admin panel, live map, photo albums, history timeline, mobile layouts, branded 404/error pages, security review, SEO, WhatsApp alerts.
 
-**Next:** link the custom domain · SEO (sitemap, share images, school schema, Search Console) · protect public forms from spam · two-factor sign-in for admins · school-supplied content (real staff, map pin, affiliation number, subjects and facilities).
+**Next:** link the custom domain, then Search Console and Google Business Profile ([SEO.md](SEO.md)) · protect public forms from spam · two-factor sign-in for admins · school-supplied content (real staff, map pin, affiliation number, subjects and facilities).
 
 The working to-do list lives in [`CLAUDE.md`](CLAUDE.md).
 

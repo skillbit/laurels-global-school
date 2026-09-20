@@ -11,8 +11,24 @@ const securityHeaders = [
   { key: "Cross-Origin-Opener-Policy", value: "same-origin-allow-popups" },
 ];
 
+// Photos live in Supabase Storage; let next/image resize and compress them.
+function supabaseHost(): string | null {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").hostname;
+  } catch {
+    return null;
+  }
+}
+const photoHost = supabaseHost();
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  images: {
+    formats: ["image/avif", "image/webp"],
+    remotePatterns: photoHost
+      ? [{ protocol: "https", hostname: photoHost, pathname: "/storage/v1/object/public/**" }]
+      : [],
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

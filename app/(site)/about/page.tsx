@@ -8,7 +8,7 @@ import { createPublicClient } from "@/lib/supabase/public";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "The Laurels Global School's mission, values and approach to education in Dehri-on-Sone, Bihar.",
+    "About The Laurels Global School, a CBSE school in Dehri-on-Sone, Bihar: our mission, values, history and the teachers who lead the school.",
 };
 
 export default async function AboutPage() {
@@ -192,7 +192,7 @@ export default async function AboutPage() {
             <path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6" />
           </svg>
           <div>
-            <h3>Leadership profiles coming soon</h3>
+            <h2>Leadership profiles coming soon</h2>
             <p>Photos, names and roles for the principal and academic team will be added from the admin panel.</p>
           </div>
         </div>

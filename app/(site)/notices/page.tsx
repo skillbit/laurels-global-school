@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Notices",
-  description: "Latest notices and announcements from The Laurels Global School.",
+  description: "Latest notices, circulars and announcements from The Laurels Global School, Dehri-on-Sone.",
 };
 
 export default async function NoticesPage() {
@@ -45,7 +45,7 @@ export default async function NoticesPage() {
               <path d="M4 5h16v11H8l-4 4V5Z" />
             </svg>
             <div>
-              <h3>No notices posted yet</h3>
+              <h2>No notices posted yet</h2>
               <p>Check back soon — announcements will appear here as the school posts them.</p>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import PageHeader from "@/components/site/PageHeader";
 import { createPublicClient } from "@/lib/supabase/public";
 
@@ -31,11 +32,11 @@ export default async function GalleryPage() {
               return (
                 <Link className="album-card" href={`/gallery/${a.id}`} key={a.id}>
                   <div className="album-cover">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={client.storage.from("public").getPublicUrl(photos[0].image_path).data.publicUrl}
                       alt={`${a.title} — cover photo`}
-                      loading="lazy"
+                      fill
+                      sizes="(max-width: 520px) 100vw, (max-width: 860px) 50vw, 380px"
                     />
                   </div>
                   <div className="album-meta">
@@ -60,7 +61,7 @@ export default async function GalleryPage() {
               <path d="M6 18C9 13 13 9 18 6" />
             </svg>
             <div>
-              <h3>Photos coming soon</h3>
+              <h2>Photos coming soon</h2>
               <p>Photo albums from school events and campus life will appear here.</p>
             </div>
           </div>

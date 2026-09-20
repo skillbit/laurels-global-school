@@ -63,7 +63,7 @@ export default async function DocumentsPage() {
               <path d="M14 3v4h4" />
             </svg>
             <div>
-              <h3>No documents yet</h3>
+              <h2>No documents yet</h2>
               <p>The fee structure, admission forms and circulars will be available to download here.</p>
             </div>
           </div>

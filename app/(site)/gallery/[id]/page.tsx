@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import PageHeader from "@/components/site/PageHeader";
 import { notFound } from "next/navigation";
 import { createPublicClient } from "@/lib/supabase/public";
@@ -69,15 +70,19 @@ export default async function AlbumPage({ params }: Props) {
           <div className="photo-grid">
             {photos.map((p) => (
               <a href={p.url} target="_blank" rel="noopener noreferrer" key={p.id}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.url} alt={p.alt_text || album.title} loading="lazy" />
+                <Image
+                  src={p.url}
+                  alt={p.alt_text || album.title}
+                  fill
+                  sizes="(max-width: 520px) 100vw, (max-width: 860px) 50vw, 380px"
+                />
               </a>
             ))}
           </div>
         ) : (
           <div className="coming-soon">
             <div>
-              <h3>No photos in this album yet</h3>
+              <h2>No photos in this album yet</h2>
               <p>
                 Check back soon, or <Link href="/gallery">browse other albums</Link>.
               </p>

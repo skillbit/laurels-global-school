@@ -7,7 +7,7 @@ import { getSiteSettings, telHref } from "@/lib/site-settings";
 export const metadata: Metadata = {
   title: "Admissions",
   description:
-    "Admissions process, quick facts and enquiry form for The Laurels Global School, Dehri-on-Sone. Nursery to Class 10, CBSE.",
+    "How to apply to The Laurels Global School, Dehri-on-Sone (Nursery to Class 10, CBSE): admission steps, quick facts and an online enquiry form.",
 };
 
 export default async function AdmissionsPage() {
@@ -20,6 +20,7 @@ export default async function AdmissionsPage() {
       <section className="wrap" style={{ paddingTop: 0 }}>
         <div className="admissions">
           <div className="steps">
+            <h2 className="visually-hidden">How admissions work</h2>
             <div className="step">
               <span className="idx">1</span>
               <div>
