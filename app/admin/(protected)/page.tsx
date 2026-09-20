@@ -3,11 +3,12 @@ import { createClient } from "@/lib/supabase/server";
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
-  const [{ count: noticeCount }, { count: imageCount }, { count: staffCount }, { count: eventCount }, { count: enquiryCount }, { count: adminCount }] = await Promise.all([
+  const [{ count: noticeCount }, { count: imageCount }, { count: staffCount }, { count: eventCount }, { count: documentCount }, { count: enquiryCount }, { count: adminCount }] = await Promise.all([
     supabase.from("notices").select("id", { count: "exact", head: true }),
     supabase.from("gallery_images").select("id", { count: "exact", head: true }),
     supabase.from("staff").select("id", { count: "exact", head: true }),
     supabase.from("events").select("id", { count: "exact", head: true }),
+    supabase.from("documents").select("id", { count: "exact", head: true }),
     supabase.from("enquiries").select("id", { count: "exact", head: true }).eq("status", "new"),
     supabase.from("admin_users").select("id", { count: "exact", head: true }),
   ]);
@@ -30,6 +31,12 @@ export default async function AdminDashboardPage() {
       label: "Events",
       count: eventCount ?? 0,
       description: "Holidays, exams and school activities on the Events page.",
+    },
+    {
+      href: "/admin/documents",
+      label: "Documents",
+      count: documentCount ?? 0,
+      description: "Fee structure, admission forms, syllabus, circulars and newsletters.",
     },
     {
       href: "/admin/staff",

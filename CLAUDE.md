@@ -38,6 +38,9 @@ mobile responsiveness → enquiry form → Site settings → Staff → rest of P
 ## 3d. Events admin — DONE (2026-09-20)
 - `/admin/events` CRUD (title, start/end date, category, description, publish toggle). Public `/events` page (upcoming + past, hourly ISR) and a "Coming Up" strip on the homepage (only shown when upcoming events exist); Events added to nav and footer.
 
+## 3e. Documents admin — DONE (2026-09-20)
+- `/admin/documents` CRUD (title, category, date, file upload to `public/documents/`, publish toggle; PDF/Word/Excel/image ≤10 MB). Public `/documents` page groups by category with download links; linked from the footer only (not in main nav).
+
 ## 5. Enquiry form — DONE (2026-09-20)
 - Wired to `enquiries` via `app/(site)/admissions/actions.ts`; admin inbox at `/admin/enquiries` (+ sidebar and dashboard card). Not yet tested end-to-end against live Supabase.
 
