@@ -2,6 +2,8 @@
 
 # Pending items (as of 2026-09-20)
 
+**UI redesign (branch `redesign-homepage`, not pushed/merged yet):** homepage, all public pages, footer and the whole admin panel restyled (PageHeader, divided panels, rising academic steps, deep-crimson footer/sidebar, real Google map on Contact). Brand (logo, crimson/gold palette, Fraunces/Public Sans) unchanged. Merge to `main` when approved.
+
 Suggested order (functional first): Site settings → Staff → Events → Documents → Achievements → Careers → Alumni → Branding → dashboard cards; then mobile, domain, SEO. Older list:
 
 mobile responsiveness → enquiry form → Site settings → Staff → rest of Phase 4 → domain → SEO.
@@ -24,10 +26,10 @@ mobile responsiveness → enquiry form → Site settings → Staff → rest of P
 
 ## 4. Hardcoded / placeholder content on the public site
 - `components/site/AnnouncementBanner.tsx`: static text; drive from `site_settings`.
-- Contact page: SVG illustration instead of a real map; use `site_settings.map_embed_url` once address/coordinates are confirmed.
+- Contact page now shows a live Google map (uses `site_settings.map_embed_url` if set, otherwise searches the school name + address). Confirm the pin is on the exact school location; paste the exact embed link in Site Settings if not.
 - About page: "Leadership profiles coming soon"; needs real principal/staff details (Staff CRUD).
 - `app/(site)/academics/page.tsx`: 2 TODOs (confirm subject list per stage; confirm activities/clubs).
-- `components/site/Footer.tsx`: "Affiliation No. — TODO".
+- Footer no longer shows an "Affiliation No." line (removed during the redesign, since it displayed "TODO"). Add it back in `components/site/Footer.tsx` once the number is known.
 
 ## 3b. Site settings — DONE (2026-09-20)
 - `/admin/settings` (sidebar + dashboard card) edits banner, contact info, map embed, socials, hero quote, mission statement, quick facts. Public pages read via `lib/site-settings.ts` (falls back to previous hardcoded text; pages stay static, `revalidatePath("/", "layout")` on save). Branding (logo/favicon) still not built. Map/address/email values still need real data entered by the admin.

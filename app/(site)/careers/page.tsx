@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageHeader from "@/components/site/PageHeader";
 import { createPublicClient } from "@/lib/supabase/public";
 import CareerApplicationForm from "@/components/site/CareerApplicationForm";
 
@@ -17,16 +17,10 @@ export default async function CareersPage() {
 
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / Careers
-        </div>
-        <span className="eyebrow">Careers</span>
-        <h1>Work with Us</h1>
-      </div>
+      <PageHeader crumb="Careers" eyebrow="Careers" title="Work with Us" intro="Join the team that shapes our students. See openings and apply online." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
-        <h2 style={{ fontSize: "1.2rem", marginBottom: ".6rem" }}>Current openings</h2>
+        <h2 className="h2-sm">Current openings</h2>
         {jobs && jobs.length > 0 ? (
           <div className="notice-list">
             {jobs.map((j) => (

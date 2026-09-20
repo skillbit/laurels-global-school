@@ -33,30 +33,22 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "grid",
-        placeItems: "center",
-        background: "var(--bg)",
-        padding: "1.5rem",
-      }}
-    >
+    <div className="login-shell">
       <WreathDefs />
-      <form
-        onSubmit={handleSubmit}
-        className="form-card"
-        style={{ width: "100%", maxWidth: "380px" }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: ".7rem", marginBottom: "1.4rem" }}>
-          <WreathMark />
-          <div>
-            <strong style={{ fontFamily: "var(--font-fraunces), serif", fontWeight: 650, display: "block" }}>
-              The Laurels Global School
-            </strong>
-            <span className="eyebrow" style={{ fontSize: ".7rem" }}>Admin Login</span>
-          </div>
+      <aside className="login-side">
+        <div>
+          <span className="badge-mark">
+            <WreathMark />
+          </span>
+          <h1>The Laurels Global School</h1>
+          <p>Admin panel. Update notices, photos, events, admissions enquiries and everything else on the school website.</p>
         </div>
+        <small style={{ color: "rgba(255,255,255,.65)" }}>Authorised staff only</small>
+      </aside>
+      <main className="login-main">
+      <form onSubmit={handleSubmit} className="form-card">
+        <h2>Sign in</h2>
+        <p className="sub">Use the email and password you were given.</p>
 
         <div className="field">
           <label htmlFor="email">Email</label>
@@ -111,6 +103,7 @@ export default function AdminLoginPage() {
           </p>
         )}
       </form>
+      </main>
     </div>
   );
 }

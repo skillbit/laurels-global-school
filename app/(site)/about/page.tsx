@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageHeader from "@/components/site/PageHeader";
 import ValueCard from "@/components/site/ValueCard";
 import PersonCard from "@/components/site/PersonCard";
 import { getSiteSettings } from "@/lib/site-settings";
@@ -30,22 +30,23 @@ export default async function AboutPage() {
 
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / About
-        </div>
-        <span className="eyebrow">About the School</span>
-        <h1>About The Laurels</h1>
-      </div>
+      <PageHeader crumb="About" eyebrow="About the School" title="About The Laurels" intro="Our mission, our values, and the people behind the school." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
-        <div className="about-grid">
-          <div className="mission-block">
-            <svg className="leaf" viewBox="0 0 24 24" fill="none" style={{ color: "var(--gold)" }} aria-hidden="true">
-              <use href="#leaf-icon" />
-            </svg>
-            <p>&ldquo;{settings.missionStatement}&rdquo;</p>
-          </div>
+        <div className="mission-panel">
+          <svg className="leaf" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <use href="#leaf-icon" />
+          </svg>
+          <p>&ldquo;{settings.missionStatement}&rdquo;</p>
+        </div>
+      </section>
+
+      <section className="wrap">
+        <div className="section-head">
+          <span className="eyebrow">What we build</span>
+          <h2>Eight Things Every Child Grows In</h2>
+        </div>
+        <div>
           <div className="values-grid">
             <ValueCard
               title="Confidence"
@@ -165,7 +166,7 @@ export default async function AboutPage() {
         {groups.length > 0 ? (
           groups.map((g) => (
             <div key={g.label} style={{ marginBottom: "2rem" }}>
-              {groups.length > 1 && <h3 style={{ marginBottom: "1rem" }}>{g.label}</h3>}
+              {groups.length > 1 && <h3 className="h2-sm">{g.label}</h3>}
               <div className="people-grid">
                 {g.people.map((p) => (
                   <PersonCard key={p.id} name={p.name} role={p.role} photoUrl={photoUrl(p.photo_path)}>

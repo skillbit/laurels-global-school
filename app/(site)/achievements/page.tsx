@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageHeader from "@/components/site/PageHeader";
 import { createPublicClient } from "@/lib/supabase/public";
 
 export const metadata: Metadata = {
@@ -17,29 +17,23 @@ export default async function AchievementsPage() {
 
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / Achievements
-        </div>
-        <span className="eyebrow">Results &amp; Achievements</span>
-        <h1>Our Students&apos; Achievements</h1>
-      </div>
+      <PageHeader crumb="Achievements" eyebrow="Results &amp; Achievements" title="Our Students&apos; Achievements" intro="Results and recognition earned by our students." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
         {items && items.length > 0 ? (
-          <div className="values-grid">
+          <div className="card-grid">
             {items.map((a) => (
-              <div className="value-card" key={a.id}>
+              <article className="info-card" key={a.id}>
                 {a.photo_path && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={client.storage.from("public").getPublicUrl(a.photo_path).data.publicUrl}
                     alt={a.title}
                     loading="lazy"
-                    style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", borderRadius: "var(--radius-md)" }}
                   />
                 )}
-                <span className="mono" style={{ color: "var(--ink-faint)", fontSize: ".75rem" }}>
+                <div className="body">
+                <span className="meta">
                   {new Date(`${a.achievement_date}T00:00:00`).toLocaleDateString("en-IN", {
                     day: "2-digit",
                     month: "short",
@@ -49,7 +43,8 @@ export default async function AchievementsPage() {
                 </span>
                 <h3>{a.title}</h3>
                 {a.description && <p>{a.description}</p>}
-              </div>
+                </div>
+              </article>
             ))}
           </div>
         ) : (

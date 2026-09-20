@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageHeader from "@/components/site/PageHeader";
 import { createPublicClient } from "@/lib/supabase/public";
 import { DOCUMENT_CATEGORIES, fileExtension } from "@/lib/documents";
 
@@ -23,19 +23,13 @@ export default async function DocumentsPage() {
 
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / Documents
-        </div>
-        <span className="eyebrow">Downloads</span>
-        <h1>Forms, Fees &amp; Circulars</h1>
-      </div>
+      <PageHeader crumb="Documents" eyebrow="Downloads" title="Forms, Fees &amp; Circulars" intro="Download fee structures, admission forms, syllabus and circulars." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
         {groups.length > 0 ? (
           groups.map((g) => (
             <div key={g.label} style={{ marginBottom: "2rem" }}>
-              <h2 style={{ fontSize: "1.2rem", marginBottom: ".6rem" }}>{g.label}</h2>
+              <h2 className="h2-sm">{g.label}</h2>
               <div className="notice-list">
                 {g.docs.map((d) => (
                   <div className="notice" key={d.id}>

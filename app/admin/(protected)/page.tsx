@@ -1,98 +1,80 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import AdminIcon, { type AdminIconName } from "@/components/admin/admin-icons";
+
+type Card = {
+  href: string;
+  label: string;
+  icon: AdminIconName;
+  count?: number;
+  description: string;
+};
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
-  const [{ count: noticeCount }, { count: imageCount }, { count: staffCount }, { count: eventCount }, { count: documentCount }, { count: achievementCount }, { count: openJobCount }, { count: newApplicationCount }, { count: alumniCount }, { count: enquiryCount }, { count: adminCount }] = await Promise.all([
-    supabase.from("notices").select("id", { count: "exact", head: true }),
-    supabase.from("gallery_albums").select("id", { count: "exact", head: true }),
-    supabase.from("staff").select("id", { count: "exact", head: true }),
-    supabase.from("events").select("id", { count: "exact", head: true }),
-    supabase.from("documents").select("id", { count: "exact", head: true }),
-    supabase.from("achievements").select("id", { count: "exact", head: true }),
-    supabase.from("job_postings").select("id", { count: "exact", head: true }).eq("is_active", true),
-    supabase.from("career_applications").select("id", { count: "exact", head: true }).eq("status", "new"),
-    supabase.from("alumni").select("id", { count: "exact", head: true }),
-    supabase.from("enquiries").select("id", { count: "exact", head: true }).eq("status", "new"),
-    supabase.from("admin_users").select("id", { count: "exact", head: true }),
-  ]);
+  const count = async (table: string, filter?: [string, string | boolean]) => {
+    let q = supabase.from(table).select("id", { count: "exact", head: true });
+    if (filter) q = q.eq(filter[0], filter[1]);
+    const { count: n } = await q;
+    return n ?? 0;
+  };
 
-  const cards = [
+  const [notices, albums, events, documents, achievements, alumni, staff, openJobs, admins, newEnquiries, newApplications] =
+    await Promise.all([
+      count("notices"),
+      count("gallery_albums"),
+      count("events"),
+      count("documents"),
+      count("achievements"),
+      count("alumni"),
+      count("staff"),
+      count("job_postings", ["is_active", true]),
+      count("admin_users"),
+      count("enquiries", ["status", "new"]),
+      count("career_applications", ["status", "new"]),
+    ]);
+
+  const attention = [
     {
-      href: "/admin/notices",
-      label: "Notices",
-      count: noticeCount ?? 0,
-      description: "Post announcements to the public Notices page.",
-    },
-    {
-      href: "/admin/gallery",
-      label: "Gallery",
-      count: imageCount ?? 0,
-      description: "Photo albums for events and campus life — add a title and upload photos.",
-    },
-    {
-      href: "/admin/events",
-      label: "Events",
-      count: eventCount ?? 0,
-      description: "Holidays, exams and school activities on the Events page.",
-    },
-    {
-      href: "/admin/documents",
-      label: "Documents",
-      count: documentCount ?? 0,
-      description: "Fee structure, admission forms, syllabus, circulars and newsletters.",
-    },
-    {
-      href: "/admin/achievements",
-      label: "Achievements",
-      count: achievementCount ?? 0,
-      description: "Board results, awards and student achievements.",
-    },
-    {
-      href: "/admin/careers",
-      label: "Careers",
-      count: openJobCount ?? 0,
-      description: "Open job postings shown on the Careers page.",
+      href: "/admin/enquiries",
+      n: newEnquiries,
+      label: newEnquiries === 1 ? "new admission enquiry" : "new admission enquiries",
+      hint: "Parents waiting for a callback",
     },
     {
       href: "/admin/careers/applications",
-      label: "Job Applications",
-      count: newApplicationCount ?? 0,
-      description: "New applications and resumes from candidates.",
+      n: newApplications,
+      label: newApplications === 1 ? "new job application" : "new job applications",
+      hint: "Candidates and resumes to review",
+    },
+  ];
+
+  const groups: { title: string; cards: Card[] }[] = [
+    {
+      title: "Content",
+      cards: [
+        { href: "/admin/notices", label: "Notices", icon: "notices", count: notices, description: "Post announcements to the Notices page." },
+        { href: "/admin/gallery", label: "Gallery", icon: "gallery", count: albums, description: "Photo albums for events and campus life." },
+        { href: "/admin/events", label: "Events", icon: "events", count: events, description: "Holidays, exams and school activities." },
+        { href: "/admin/documents", label: "Documents", icon: "documents", count: documents, description: "Fee structure, forms, syllabus and circulars." },
+        { href: "/admin/achievements", label: "Achievements", icon: "achievements", count: achievements, description: "Board results, awards and student wins." },
+        { href: "/admin/alumni", label: "Alumni", icon: "alumni", count: alumni, description: "Former students featured on the Alumni page." },
+        { href: "/admin/staff", label: "Staff", icon: "staff", count: staff, description: "Principal, leadership and faculty on the About page." },
+      ],
     },
     {
-      href: "/admin/alumni",
-      label: "Alumni",
-      count: alumniCount ?? 0,
-      description: "Former students featured on the Alumni page.",
+      title: "Hiring",
+      cards: [
+        { href: "/admin/careers", label: "Careers", icon: "careers", count: openJobs, description: "Open job postings on the Careers page." },
+      ],
     },
     {
-      href: "/admin/staff",
-      label: "Staff",
-      count: staffCount ?? 0,
-      description: "Principal, leadership and faculty shown on the About page.",
-    },
-    {
-      href: "/admin/enquiries",
-      label: "Enquiries",
-      count: enquiryCount ?? 0,
-      description: "New admission enquiries from the Admissions page.",
-    },
-    {
-      href: "/admin/settings",
-      label: "Site Settings",
-      description: "Banner, contact details, map, social links and homepage text.",
-    },
-    {
-      href: "/admin/branding",
-      label: "Branding",
-      description: "School logo and browser-tab icon.",
-    },
-    {
-      href: "/admin/users",
-      label: "Admin Accounts",
-      count: adminCount ?? 0,
-      description: "Manage who can log into this admin panel.",
+      title: "Site",
+      cards: [
+        { href: "/admin/settings", label: "Site Settings", icon: "settings", description: "Banner, contact details, map, social links and homepage text." },
+        { href: "/admin/branding", label: "Branding", icon: "branding", description: "School logo and browser-tab icon." },
+        { href: "/admin/users", label: "Admin Accounts", icon: "users", count: admins, description: "Who can sign in to this admin panel." },
+      ],
     },
   ];
 
@@ -102,28 +84,37 @@ export default async function AdminDashboardPage() {
         <span className="eyebrow">Admin</span>
         <h1>Dashboard</h1>
       </div>
-      <p style={{ color: "var(--ink-soft)", maxWidth: "60ch", marginBottom: "1.6rem" }}>
-        Welcome to The Laurels Global School admin panel. More sections (Staff, Events, Documents
-        and more) will appear here as they&apos;re built out.
-      </p>
-      <div className="admin-cards">
-        {cards.map((c) => (
-          <Link
-            key={c.href}
-            href={c.href}
-            className="value-card"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            {c.count !== undefined && (
-              <span className="mono" style={{ color: "var(--gold)", fontSize: "1.6rem" }}>
-                {c.count}
-              </span>
-            )}
-            <h3>{c.label}</h3>
-            <p>{c.description}</p>
+      <p className="dash-intro">Everything you can change on the public site, in one place. Start with anything that needs a reply.</p>
+
+      <div className="dash-attn">
+        {attention.map((a) => (
+          <Link key={a.href} href={a.href} className={a.n === 0 ? "quiet" : undefined}>
+            <span className="n">{a.n}</span>
+            <span className="l">{a.label}</span>
+            <span className="h">{a.n === 0 ? "You're all caught up" : a.hint}</span>
           </Link>
         ))}
       </div>
+
+      {groups.map((g) => (
+        <section className="dash-group" key={g.title} style={{ padding: 0 }}>
+          <h2>{g.title}</h2>
+          <div className="dash-grid">
+            {g.cards.map((c) => (
+              <Link key={c.href} href={c.href} className="dash-card">
+                <div className="top">
+                  <span className="ico">
+                    <AdminIcon name={c.icon} />
+                  </span>
+                  {c.count !== undefined && <span className="count">{c.count}</span>}
+                </div>
+                <h3>{c.label}</h3>
+                <p>{c.description}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ))}
     </>
   );
 }

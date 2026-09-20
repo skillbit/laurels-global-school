@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageHeader from "@/components/site/PageHeader";
 import { getSiteSettings, telHref } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
@@ -10,15 +10,16 @@ export const metadata: Metadata = {
 export default async function ContactPage() {
   const s = await getSiteSettings();
 
+  // Live, interactive Google map. Uses the admin's embed link when set, otherwise
+  // searches for the school by name and address (no API key needed).
+  const place = `The Laurels Global School, ${s.address}`;
+  const mapSrc = s.mapEmbedUrl ?? `https://www.google.com/maps?q=${encodeURIComponent(place)}&z=16&output=embed`;
+  const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`;
+  const directionsLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(place)}`;
+
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / Contact
-        </div>
-        <span className="eyebrow">Contact</span>
-        <h1>Visit or Get in Touch</h1>
-      </div>
+      <PageHeader crumb="Contact" eyebrow="Contact" title="Visit or Get in Touch" intro="Call, visit, or send us a message. We would love to meet you." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
         <div className="contact-grid">
@@ -62,36 +63,26 @@ export default async function ContactPage() {
               Call Now
             </a>
           </div>
-          {s.mapEmbedUrl ? (
-            <div className="map-art">
-              <iframe
-                src={s.mapEmbedUrl}
-                title="Map showing the location of The Laurels Global School"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
-              />
+          <div className="map-frame">
+            <iframe
+              src={mapSrc}
+              title="Map showing the location of The Laurels Global School"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+            <div className="map-actions">
+              <span>{s.address}</span>
+              <div className="row">
+                <a className="btn btn-ghost btn-row" href={mapsLink} target="_blank" rel="noopener noreferrer">
+                  Open in Google Maps
+                </a>
+                <a className="btn btn-primary btn-row" href={directionsLink} target="_blank" rel="noopener noreferrer">
+                  Get directions
+                </a>
+              </div>
             </div>
-          ) : (
-          <div className="map-art" aria-hidden="true">
-            <svg viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice">
-              <rect width="400" height="320" fill="var(--surface-alt)" />
-              <path d="M0 60 H400 M0 140 H400 M0 230 H400" stroke="var(--border)" strokeWidth="2" />
-              <path d="M60 0 V320 M320 0 V320" stroke="var(--border)" strokeWidth="2" />
-              <path d="M0 190 C 120 150, 260 210, 400 170" stroke="var(--gold)" strokeWidth="5" fill="none" strokeLinecap="round" />
-              <text x="70" y="184" fontFamily="IBM Plex Mono, monospace" fontSize="11" fill="var(--ink-faint)">
-                NH2 &middot; Pahleja Road
-              </text>
-              <g transform="translate(230,150)">
-                <path d="M0 -26c11 0 20 9 20 20 0 15-20 34-20 34S-20 9-20-6c0-11 9-20 20-20Z" fill="var(--laurel)" />
-                <circle cx="0" cy="-6" r="7" fill="var(--surface)" />
-              </g>
-              <text x="150" y="230" fontFamily="IBM Plex Mono, monospace" fontSize="11" fill="var(--ink-faint)">
-                Dehri-on-Sone, Rohtas
-              </text>
-            </svg>
           </div>
-          )}
         </div>
       </section>
     </>

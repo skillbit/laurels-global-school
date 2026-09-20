@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import PageHeader from "@/components/site/PageHeader";
 import { notFound } from "next/navigation";
 import { createPublicClient } from "@/lib/supabase/public";
 
@@ -52,19 +53,16 @@ export default async function AlbumPage({ params }: Props) {
 
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / <Link href="/gallery">Gallery</Link> / {album.title}
-        </div>
-        <span className="eyebrow">
-          {new Date(`${album.album_date}T00:00:00`).toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-          })}
-        </span>
-        <h1>{album.title}</h1>
-      </div>
+      <PageHeader
+        crumb={album.title}
+        trail={[{ label: "Gallery", href: "/gallery" }]}
+        eyebrow={new Date(`${album.album_date}T00:00:00`).toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        })}
+        title={album.title}
+      />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
         {photos.length > 0 ? (

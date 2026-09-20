@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import PageHeader from "@/components/site/PageHeader";
 import { createPublicClient } from "@/lib/supabase/public";
 
 export const metadata: Metadata = {
@@ -20,13 +21,7 @@ export default async function GalleryPage() {
 
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / Gallery
-        </div>
-        <span className="eyebrow">Gallery &amp; Events</span>
-        <h1>Life at Laurels</h1>
-      </div>
+      <PageHeader crumb="Gallery" eyebrow="Gallery &amp; Events" title="Life at Laurels" intro="Photo albums from school events and campus life." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
         {visible.length > 0 ? (

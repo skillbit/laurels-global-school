@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageHeader from "@/components/site/PageHeader";
 import { createPublicClient } from "@/lib/supabase/public";
 import { formatEventDate, splitEvents, type SchoolEvent } from "@/lib/events";
 
@@ -39,18 +39,12 @@ export default async function EventsPage() {
 
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / Events
-        </div>
-        <span className="eyebrow">Events &amp; Calendar</span>
-        <h1>What&apos;s Happening at Laurels</h1>
-      </div>
+      <PageHeader crumb="Events" eyebrow="Events &amp; Calendar" title="What&apos;s Happening at Laurels" intro="Holidays, exams and school activities in one calendar." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
         {upcoming.length > 0 ? (
           <>
-            <h2 style={{ fontSize: "1.2rem", marginBottom: ".6rem" }}>Upcoming</h2>
+            <h2 className="h2-sm">Upcoming</h2>
             <EventList events={upcoming} />
           </>
         ) : (
@@ -68,7 +62,7 @@ export default async function EventsPage() {
 
         {past.length > 0 && (
           <div style={{ marginTop: "2.5rem" }}>
-            <h2 style={{ fontSize: "1.2rem", marginBottom: ".6rem" }}>Past events</h2>
+            <h2 className="h2-sm">Past events</h2>
             <EventList events={past} />
           </div>
         )}

@@ -73,7 +73,7 @@ export default async function AdminSettingsPage({
           </div>
         </div>
         <div className="field">
-          <label htmlFor="map_embed_url">Google Map embed link (optional)</label>
+          <label htmlFor="map_embed_url">Google Map embed link (optional — leave empty to show the map automatically from the address)</label>
           <textarea
             id="map_embed_url"
             name="map_embed_url"

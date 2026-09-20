@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageHeader from "@/components/site/PageHeader";
 import FactsPanel from "@/components/site/FactsPanel";
 import EnquiryForm from "@/components/site/EnquiryForm";
 import { getSiteSettings, telHref } from "@/lib/site-settings";
@@ -15,13 +15,7 @@ export default async function AdmissionsPage() {
   const phones = [settings.phonePrimary, settings.phoneSecondary].map((p) => ({ label: p, href: telHref(p) }));
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / Admissions
-        </div>
-        <span className="eyebrow">Admissions</span>
-        <h1>Joining The Laurels</h1>
-      </div>
+      <PageHeader crumb="Admissions" eyebrow="Admissions" title="Joining The Laurels" intro="Four simple steps from the first call to a confirmed seat." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
         <div className="admissions">

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageHeader from "@/components/site/PageHeader";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
@@ -17,13 +17,7 @@ export default async function NoticesPage() {
 
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / Notices
-        </div>
-        <span className="eyebrow">Notices &amp; Announcements</span>
-        <h1>Latest from the School</h1>
-      </div>
+      <PageHeader crumb="Notices" eyebrow="Notices &amp; Announcements" title="Latest from the School" intro="Announcements, circulars and important dates from the school office." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
         {notices && notices.length > 0 ? (

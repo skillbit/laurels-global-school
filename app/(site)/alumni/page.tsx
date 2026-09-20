@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import PageHeader from "@/components/site/PageHeader";
 import { createPublicClient } from "@/lib/supabase/public";
 import PersonCard from "@/components/site/PersonCard";
 
@@ -19,13 +19,7 @@ export default async function AlumniPage() {
 
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / Alumni
-        </div>
-        <span className="eyebrow">Alumni</span>
-        <h1>Where Our Students Go</h1>
-      </div>
+      <PageHeader crumb="Alumni" eyebrow="Alumni" title="Where Our Students Go" intro="Former students of The Laurels and where they are today." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
         {alumni && alumni.length > 0 ? (

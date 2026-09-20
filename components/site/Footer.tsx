@@ -12,14 +12,16 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
 
   return (
     <footer>
-      <div className="wrap foot-row">
+      <div className="wrap foot-grid">
         <div className="foot-brand">
-          {settings.logoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img className="mark" src={settings.logoUrl} alt="" style={{ objectFit: "contain" }} />
-          ) : (
-            <WreathMark />
-          )}
+          <span className="foot-mark">
+            {settings.logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className="mark" src={settings.logoUrl} alt="" style={{ objectFit: "contain" }} />
+            ) : (
+              <WreathMark />
+            )}
+          </span>
           <div>
             <strong style={{ fontFamily: "var(--font-fraunces), serif", fontWeight: 650 }}>
               The Laurels Global School
@@ -27,37 +29,41 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
             <p>{settings.address}</p>
           </div>
         </div>
-        <div className="foot-links">
-          <div className="foot-col">
-            <h4>Explore</h4>
-            <Link href="/about">About</Link>
-            <Link href="/academics">Academics</Link>
-            <Link href="/admissions">Admissions</Link>
-            <Link href="/gallery">Gallery</Link>
-            <Link href="/events">Events</Link>
-            <Link href="/notices">Notices</Link>
-            <Link href="/achievements">Achievements</Link>
-            <Link href="/documents">Documents</Link>
-            <Link href="/careers">Careers</Link>
-            <Link href="/alumni">Alumni</Link>
-          </div>
-          <div className="foot-col">
-            <h4>Contact</h4>
-            <a href={telHref(settings.phonePrimary)}>{settings.phonePrimary}</a>
-            <a href={telHref(settings.phoneSecondary)}>{settings.phoneSecondary}</a>
-            {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
-            <span>CBSE &middot; Nursery&ndash;X</span>
-            {socials.map((s) => (
-              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer">
-                {s.label}
-              </a>
-            ))}
-          </div>
+
+        <div className="foot-col">
+          <h4>Explore</h4>
+          <Link href="/about">About</Link>
+          <Link href="/academics">Academics</Link>
+          <Link href="/admissions">Admissions</Link>
+          <Link href="/gallery">Gallery</Link>
+          <Link href="/contact">Contact</Link>
+        </div>
+
+        <div className="foot-col">
+          <h4>School life</h4>
+          <Link href="/events">Events</Link>
+          <Link href="/notices">Notices</Link>
+          <Link href="/achievements">Achievements</Link>
+          <Link href="/documents">Documents</Link>
+          <Link href="/careers">Careers</Link>
+          <Link href="/alumni">Alumni</Link>
+        </div>
+
+        <div className="foot-col">
+          <h4>Contact</h4>
+          <a href={telHref(settings.phonePrimary)}>{settings.phonePrimary}</a>
+          <a href={telHref(settings.phoneSecondary)}>{settings.phoneSecondary}</a>
+          {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
+          {socials.map((s) => (
+            <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer">
+              {s.label}
+            </a>
+          ))}
         </div>
       </div>
       <div className="wrap foot-note">
         <span>&copy; {new Date().getFullYear()} The Laurels Global School. All rights reserved.</span>
-        <span>Affiliation No. — TODO</span>
+        <span>CBSE curriculum, Nursery to Class 10</span>
       </div>
     </footer>
   );

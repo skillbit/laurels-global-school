@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import StageCard from "@/components/site/StageCard";
+import PageHeader from "@/components/site/PageHeader";
 import FacilityCard from "@/components/site/FacilityCard";
 
 export const metadata: Metadata = {
@@ -8,6 +7,13 @@ export const metadata: Metadata = {
   description:
     "CBSE curriculum from Nursery to Class 10 at The Laurels Global School — pre-primary, primary, middle and secondary stages.",
 };
+
+const STAGES = [
+  { grades: "Nursery – UKG", title: "Pre-Primary", text: "Play-based learning that builds early language, motor skills and curiosity." },
+  { grades: "Classes 1 – 5", title: "Primary", text: "Foundational literacy, numeracy and inquiry-based learning across core subjects." },
+  { grades: "Classes 6 – 8", title: "Middle School", text: "Wider subject exposure with a focus on conceptual clarity and project work." },
+  { grades: "Classes 9 – 10", title: "Secondary", text: "CBSE curriculum with focused preparation for board examinations." },
+];
 
 const SUBJECTS = [
   "English", "Hindi", "Mathematics", "Science", "Social Science",
@@ -23,28 +29,20 @@ const ACTIVITIES = [
 export default function AcademicsPage() {
   return (
     <>
-      <div className="wrap page-header">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link> / Academics
-        </div>
-        <span className="eyebrow">Academics</span>
-        <h1>From Nursery to Class 10</h1>
-      </div>
+      <PageHeader crumb="Academics" eyebrow="Academics" title="From Nursery to Class 10" intro="A CBSE curriculum that grows with the child, from Nursery to Class 10." />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
-        <div className="ladder">
-          <StageCard num="01" grades="Nursery – UKG" title="Pre-Primary">
-            Play-based learning that builds early language, motor skills and curiosity.
-          </StageCard>
-          <StageCard num="02" grades="Classes 1 – 5" title="Primary">
-            Foundational literacy, numeracy and inquiry-based learning across core subjects.
-          </StageCard>
-          <StageCard num="03" grades="Classes 6 – 8" title="Middle School">
-            Wider subject exposure with a focus on conceptual clarity and project work.
-          </StageCard>
-          <StageCard num="04" grades="Classes 9 – 10" title="Secondary">
-            CBSE curriculum with focused preparation for board examinations.
-          </StageCard>
+        <div className="h-steps">
+          {STAGES.map((st, i) => (
+            <div className="h-step" key={st.title}>
+              <span className="idx" aria-hidden="true">
+                0{i + 1}
+              </span>
+              <span className="grades">{st.grades}</span>
+              <h3>{st.title}</h3>
+              <p>{st.text}</p>
+            </div>
+          ))}
         </div>
         <div className="board-note">
           <span className="pill">CBSE</span>

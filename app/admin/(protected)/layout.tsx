@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import WreathDefs from "@/components/site/WreathDefs";
 
 export default async function AdminProtectedLayout({
   children,
@@ -32,6 +33,7 @@ export default async function AdminProtectedLayout({
       <a className="skip-link" href="#admin-main">
         Skip to content
       </a>
+      <WreathDefs />
       <AdminSidebar email={user.email ?? ""} />
       <main id="admin-main" className="admin-main">
         {children}
