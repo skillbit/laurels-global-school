@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import FactsPanel from "@/components/site/FactsPanel";
 import EnquiryForm from "@/components/site/EnquiryForm";
+import { getSiteSettings, telHref } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
   title: "Admissions",
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
     "Admissions process, quick facts and enquiry form for The Laurels Global School, Dehri-on-Sone. Nursery to Class 10, CBSE.",
 };
 
-export default function AdmissionsPage() {
+export default async function AdmissionsPage() {
+  const settings = await getSiteSettings();
+  const phones = [settings.phonePrimary, settings.phoneSecondary].map((p) => ({ label: p, href: telHref(p) }));
   return (
     <>
       <div className="wrap page-header">
@@ -63,7 +66,7 @@ export default function AdmissionsPage() {
               <span className="eyebrow">Enquiry Form</span>
               <h2>Request a Callback</h2>
             </div>
-            <EnquiryForm />
+            <EnquiryForm phones={phones} />
           </div>
         </div>
       </section>

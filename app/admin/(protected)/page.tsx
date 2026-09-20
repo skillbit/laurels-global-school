@@ -84,6 +84,11 @@ export default async function AdminDashboardPage() {
       description: "Banner, contact details, map, social links and homepage text.",
     },
     {
+      href: "/admin/branding",
+      label: "Branding",
+      description: "School logo and browser-tab icon.",
+    },
+    {
       href: "/admin/users",
       label: "Admin Accounts",
       count: adminCount ?? 0,

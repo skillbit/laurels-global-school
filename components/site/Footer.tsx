@@ -14,7 +14,12 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
     <footer>
       <div className="wrap foot-row">
         <div className="foot-brand">
-          <WreathMark />
+          {settings.logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="mark" src={settings.logoUrl} alt="" style={{ objectFit: "contain" }} />
+          ) : (
+            <WreathMark />
+          )}
           <div>
             <strong style={{ fontFamily: "var(--font-fraunces), serif", fontWeight: 650 }}>
               The Laurels Global School

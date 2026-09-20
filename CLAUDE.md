@@ -50,6 +50,10 @@ mobile responsiveness → enquiry form → Site settings → Staff → rest of P
 ## 3h. Alumni admin — DONE (2026-09-20)
 - `/admin/alumni` CRUD (name, batch year, note, optional photo to `public/alumni/`, display order, publish toggle). Public `/alumni` page reuses `PersonCard`; linked from the footer only.
 
+## 3i. Branding — DONE (2026-09-20)
+- `/admin/branding` uploads logo (header + footer) and favicon (root `generateMetadata` in `app/layout.tsx`) to `public/branding/`; falls back to the wreath mark and `public/favicon.ico` (moved from `app/favicon.ico`, because file-based icons override config icons). Also fixed leftover hardcoded phone numbers in the Header and Admissions form note (now from site settings).
+- All planned functional admin sections are now built. Remaining: mobile, SEO, domain, placeholder content (Academics TODOs, Affiliation No.), README, UI polish pass.
+
 ## 5. Enquiry form — DONE (2026-09-20)
 - Wired to `enquiries` via `app/(site)/admissions/actions.ts`; admin inbox at `/admin/enquiries` (+ sidebar and dashboard card). Not yet tested end-to-end against live Supabase.
 

@@ -2,7 +2,7 @@ import WreathDefs from "@/components/site/WreathDefs";
 import Header from "@/components/site/Header";
 import Footer from "@/components/site/Footer";
 import AnnouncementBanner from "@/components/site/AnnouncementBanner";
-import { getSiteSettings } from "@/lib/site-settings";
+import { getSiteSettings, telHref } from "@/lib/site-settings";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSiteSettings();
@@ -18,7 +18,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         link={settings.bannerLink}
         active={settings.bannerActive}
       />
-      <Header />
+      <Header logoUrl={settings.logoUrl} phoneHref={telHref(settings.phonePrimary)} />
       <main id="main">{children}</main>
       <Footer settings={settings} />
     </>

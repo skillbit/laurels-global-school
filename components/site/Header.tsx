@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { WreathMark } from "./WreathDefs";
 import { NAV_LINKS } from "./nav-links";
 
-export default function Header() {
+export default function Header({ logoUrl, phoneHref }: { logoUrl: string | null; phoneHref: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -14,7 +14,12 @@ export default function Header() {
     <header className="site">
       <div className="wrap nav-row">
         <Link href="/" className="brand">
-          <WreathMark />
+          {logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="mark" src={logoUrl} alt="" style={{ objectFit: "contain" }} />
+          ) : (
+            <WreathMark />
+          )}
           <span className="brand-text">
             <strong>The Laurels Global School</strong>
             <span>Dehri-on-Sone &middot; CBSE</span>
@@ -32,7 +37,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="navcta">
-          <a className="btn btn-primary" href="tel:+919771020700">
+          <a className="btn btn-primary" href={phoneHref}>
             Call the Office
           </a>
           <button

@@ -19,6 +19,8 @@ export type SiteSettings = {
   heroQuote: string;
   missionStatement: string;
   quickFacts: QuickFact[];
+  logoUrl: string | null;
+  faviconUrl: string | null;
 };
 
 // Fallbacks so the public site looks the same until the admin fills a field in.
@@ -42,7 +44,10 @@ export const DEFAULTS = {
 };
 
 export async function getSiteSettings(): Promise<SiteSettings> {
-  const { data } = await createPublicClient().from("site_settings").select("*").eq("id", 1).maybeSingle();
+  const client = createPublicClient();
+  const { data } = await client.from("site_settings").select("*").eq("id", 1).maybeSingle();
+  const publicUrl = (path: string | null | undefined) =>
+    path ? client.storage.from("public").getPublicUrl(path).data.publicUrl : null;
 
   const facts = Array.isArray(data?.quick_facts)
     ? (data.quick_facts as QuickFact[]).filter((f) => f?.label && f?.value)
@@ -67,6 +72,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     heroQuote: data?.hero_quote || DEFAULTS.heroQuote,
     missionStatement: data?.mission_statement || DEFAULTS.missionStatement,
     quickFacts: facts.length > 0 ? facts : DEFAULTS.quickFacts,
+    logoUrl: publicUrl(data?.logo_path),
+    faviconUrl: publicUrl(data?.favicon_path),
   };
 }
 

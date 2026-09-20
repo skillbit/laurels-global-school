@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Public_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { getSiteSettings } from "@/lib/site-settings";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -21,14 +22,19 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "The Laurels Global School — CBSE, Dehri-on-Sone",
-    template: "%s — The Laurels Global School",
-  },
-  description:
-    "The Laurels Global School is a CBSE-affiliated school in Dehri-on-Sone, Rohtas, Bihar, offering Nursery to Class 10.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { faviconUrl } = await getSiteSettings();
+  return {
+    title: {
+      default: "The Laurels Global School — CBSE, Dehri-on-Sone",
+      template: "%s — The Laurels Global School",
+    },
+    description:
+      "The Laurels Global School is a CBSE-affiliated school in Dehri-on-Sone, Rohtas, Bihar, offering Nursery to Class 10.",
+    // Uploaded from /admin/branding; falls back to the default icon in public/.
+    icons: { icon: faviconUrl ?? "/favicon.ico" },
+  };
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

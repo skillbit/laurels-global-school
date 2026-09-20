@@ -5,7 +5,7 @@ import { submitEnquiry, type EnquiryState } from "@/app/(site)/admissions/action
 
 const initialState: EnquiryState = { status: "idle" };
 
-export default function EnquiryForm() {
+export default function EnquiryForm({ phones }: { phones: { label: string; href: string }[] }) {
   const [state, formAction, pending] = useActionState(submitEnquiry, initialState);
   const v = state.values ?? {};
 
@@ -61,13 +61,14 @@ export default function EnquiryForm() {
       )}
       <p className="form-note">
         Prefer to talk directly? Call{" "}
-        <a href="tel:+919771020700" style={{ color: "var(--laurel)" }}>
-          97710 20700
-        </a>{" "}
-        or{" "}
-        <a href="tel:+917764069741" style={{ color: "var(--laurel)" }}>
-          77640 69741
-        </a>
+        {phones.map((p, i) => (
+          <span key={p.href}>
+            {i > 0 && " or "}
+            <a href={p.href} style={{ color: "var(--laurel)" }}>
+              {p.label}
+            </a>
+          </span>
+        ))}
         .
       </p>
     </form>

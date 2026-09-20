@@ -19,6 +19,7 @@ const SECTIONS = [
   { href: "/admin/staff", label: "Staff" },
   { href: "/admin/enquiries", label: "Enquiries" },
   { href: "/admin/settings", label: "Site Settings" },
+  { href: "/admin/branding", label: "Branding" },
   { href: "/admin/users", label: "Admin Accounts" },
 ];
 
