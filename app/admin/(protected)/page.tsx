@@ -3,9 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
-  const [{ count: noticeCount }, { count: imageCount }, { count: adminCount }] = await Promise.all([
+  const [{ count: noticeCount }, { count: imageCount }, { count: enquiryCount }, { count: adminCount }] = await Promise.all([
     supabase.from("notices").select("id", { count: "exact", head: true }),
     supabase.from("gallery_images").select("id", { count: "exact", head: true }),
+    supabase.from("enquiries").select("id", { count: "exact", head: true }).eq("status", "new"),
     supabase.from("admin_users").select("id", { count: "exact", head: true }),
   ]);
 
@@ -21,6 +22,12 @@ export default async function AdminDashboardPage() {
       label: "Gallery",
       count: imageCount ?? 0,
       description: "Upload or remove campus and event photos.",
+    },
+    {
+      href: "/admin/enquiries",
+      label: "Enquiries",
+      count: enquiryCount ?? 0,
+      description: "New admission enquiries from the Admissions page.",
     },
     {
       href: "/admin/users",
