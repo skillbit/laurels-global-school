@@ -41,6 +41,9 @@ mobile responsiveness → enquiry form → Site settings → Staff → rest of P
 ## 3e. Documents admin — DONE (2026-09-20)
 - `/admin/documents` CRUD (title, category, date, file upload to `public/documents/`, publish toggle; PDF/Word/Excel/image ≤10 MB). Public `/documents` page groups by category with download links; linked from the footer only (not in main nav).
 
+## 3f. Achievements admin — DONE (2026-09-20)
+- `/admin/achievements` CRUD (title, date, category, description, optional photo to `public/achievements/`, publish toggle). Public `/achievements` card grid; linked from the footer only.
+
 ## 5. Enquiry form — DONE (2026-09-20)
 - Wired to `enquiries` via `app/(site)/admissions/actions.ts`; admin inbox at `/admin/enquiries` (+ sidebar and dashboard card). Not yet tested end-to-end against live Supabase.
 

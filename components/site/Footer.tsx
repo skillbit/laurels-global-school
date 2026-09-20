@@ -31,6 +31,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
             <Link href="/gallery">Gallery</Link>
             <Link href="/events">Events</Link>
             <Link href="/notices">Notices</Link>
+            <Link href="/achievements">Achievements</Link>
             <Link href="/documents">Documents</Link>
           </div>
           <div className="foot-col">
