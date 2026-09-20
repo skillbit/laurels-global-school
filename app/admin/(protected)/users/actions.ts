@@ -13,9 +13,9 @@ export async function createAdminUser(formData: FormData) {
   const fullName = String(formData.get("fullName") || "").trim();
   const password = String(formData.get("password") || "");
 
-  if (!email || password.length < 8) {
+  if (!email || password.length < 12) {
     redirect(
-      `/admin/users?error=${encodeURIComponent("Email and an 8+ character password are required.")}`
+      `/admin/users?error=${encodeURIComponent("Email and a password of at least 12 characters are required.")}`
     );
   }
 
@@ -47,12 +47,27 @@ export async function createAdminUser(formData: FormData) {
 }
 
 export async function toggleAdminActive(formData: FormData) {
-  await requireAdmin();
+  const me = await requireAdmin();
 
   const id = String(formData.get("id"));
   const nextActive = formData.get("nextActive") === "true";
 
   const supabase = await createClient();
+
+  if (!nextActive) {
+    // Never let the panel lock everyone out: no self-disable, and always keep one active admin.
+    if (id === me.id) {
+      redirect(`/admin/users?error=${encodeURIComponent("You can't disable your own account. Ask another admin to do it.")}`);
+    }
+    const { count } = await supabase
+      .from("admin_users")
+      .select("id", { count: "exact", head: true })
+      .eq("is_active", true);
+    if ((count ?? 0) <= 1) {
+      redirect(`/admin/users?error=${encodeURIComponent("At least one admin account must stay active.")}`);
+    }
+  }
+
   await supabase.from("admin_users").update({ is_active: nextActive }).eq("id", id);
 
   revalidatePath("/admin/users");

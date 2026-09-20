@@ -88,7 +88,7 @@ export default async function AdminUsersPage({
         </div>
         <div className="field">
           <label htmlFor="password">Temporary Password</label>
-          <input id="password" name="password" type="text" required minLength={8} />
+          <input id="password" name="password" type="text" required minLength={12} />
         </div>
         <button className="btn btn-primary" type="submit">
           Create Admin Account
