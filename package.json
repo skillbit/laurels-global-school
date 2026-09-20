@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "security:probe": "node --env-file=.env.local scripts/security-probe.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

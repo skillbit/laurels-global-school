@@ -1,72 +1,206 @@
-# The Laurels Global School — website
+<div align="center">
 
-Public website and admin panel for The Laurels Global School (CBSE, Nursery to Class 10, Dehri-on-Sone, Rohtas, Bihar).
+# The Laurels Global School
 
-- **Stack:** Next.js (App Router, TypeScript) · Supabase (Postgres, Auth, Storage) · deployed on Vercel
-- **Live:** https://laurels-global-school.vercel.app (custom domain `thelaurelsglobalschool.com` is being linked)
+**A modern website and easy admin panel for a CBSE school in Dehri-on-Sone, Bihar.**
+Parents find everything they need. The school office updates it all without touching code.
 
-## What's in it
+![Next.js](https://img.shields.io/badge/Next.js-16-111111?logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%C2%B7%20Auth%20%C2%B7%20Storage-3ECF8E?logo=supabase&logoColor=white)
+![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?logo=vercel&logoColor=white)
+![Security](https://img.shields.io/badge/Security-reviewed-7C1017)
 
-**Public site:** Home, About, Academics, Admissions (enquiry form), Contact (live Google map), Gallery (photo albums), Notices, Events, Documents, Achievements, Careers (application form with resume upload), Alumni, plus branded 404 and error pages.
+<br />
 
-**Admin panel (`/admin`):** everything on the public site is editable without touching code.
+<img src="docs/screenshots/home.jpg" alt="The Laurels Global School homepage" width="760" />
 
-| Area | What the admin can do |
+<sub>Screenshots in this README use sample data.</sub>
+
+</div>
+
+---
+
+## Contents
+
+[Highlights](#highlights) · [Screenshots](#screenshots) · [Tech stack](#tech-stack) · [Quick start](#quick-start) · [Database setup](#database-setup) · [Admin guide](#admin-guide) · [How it works](#how-it-works) · [Project structure](#project-structure) · [Scripts](#scripts) · [Security](#security) · [Deployment](#deployment) · [Status and roadmap](#status-and-roadmap)
+
+---
+
+## Highlights
+
+| For parents and visitors | For the school office |
 | --- | --- |
-| Content | Notices, gallery albums (title, date, many photos), events, documents (PDF/Word/Excel/image), achievements, alumni, staff, school history timeline |
-| Inbox | Admission enquiries, job postings and job applications (resumes stored privately) |
-| Site | Announcement banner, contact details, map link, social links, homepage and mission text, quick facts, logo and favicon |
-| Accounts | Add or disable other admin logins |
+| **Admissions enquiry form** that reaches the office in seconds | **One admin panel** for every page: no code, no developer needed |
+| **Live Google map** with directions on the Contact page | **Photo albums**: type a title, pick many photos, done (the date fills itself) |
+| Notices, events calendar, downloadable fee structure and forms | **Inbox** for admission enquiries and job applications, with private resume links |
+| Careers page with **online application and resume upload** | **Publish or unpublish** anything with one click; drafts stay hidden |
+| Staff, achievements, alumni and school history timeline | Edit the banner, phone numbers, map, social links, logo and homepage text |
+| **Works on phones**: tap-to-call, fast, easy to read | Sign in securely; add or disable other admins |
 
-## Getting started
+## Screenshots
 
-Requires Node.js 20+ and a Supabase project.
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/about-team.jpg" alt="Meet the team" /><br /><sub><b>About:</b> leadership and faculty with photos</sub></td>
+    <td width="50%"><img src="docs/screenshots/gallery-album.jpg" alt="Photo album" /><br /><sub><b>Gallery:</b> albums with a title and date</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/contact-map.jpg" alt="Contact page with live map" /><br /><sub><b>Contact:</b> live, interactive Google map</sub></td>
+    <td width="50%"><img src="docs/screenshots/gallery.jpg" alt="Gallery of albums" /><br /><sub><b>Albums</b> grid</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/admin-dashboard.jpg" alt="Admin dashboard" /><br /><sub><b>Admin dashboard:</b> what needs a reply, and every section</sub></td>
+    <td width="50%"><img src="docs/screenshots/admin-staff.jpg" alt="Admin staff list" /><br /><sub><b>Admin lists:</b> edit, publish or unpublish, delete</sub></td>
+  </tr>
+</table>
+
+<div align="center">
+  <img src="docs/screenshots/mobile.jpg" alt="Phone layouts: homepage, gallery and admin" width="640" /><br />
+  <sub><b>Built for phones:</b> homepage, gallery and admin panel at 390 px wide</sub>
+</div>
+
+## Tech stack
+
+| Layer | Choice |
+| --- | --- |
+| Framework | [Next.js](https://nextjs.org) 16 (App Router, Server Components and Server Actions), React 19, TypeScript |
+| Database, login and files | [Supabase](https://supabase.com): Postgres with row-level security, Auth, Storage (`public` and `private` buckets) |
+| Hosting | [Vercel](https://vercel.com) (pages are pre-built and refresh within a minute of any change) |
+| Styling | Hand-written CSS design system in `app/globals.css` (Fraunces, Public Sans and IBM Plex Mono) |
+
+## Quick start
+
+You need **Node.js 20+** and a free [Supabase](https://supabase.com) project.
 
 ```bash
+git clone https://github.com/skillbit/laurels-global-school.git
+cd laurels-global-school
 npm install
-npm run dev        # http://localhost:3000
+cp .env.example .env.local   # or create it by hand, see below
+npm run dev                  # http://localhost:3000
 ```
 
-Create `.env.local` with:
+### Environment variables
 
-```
-NEXT_PUBLIC_SUPABASE_URL=...
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-SUPABASE_SERVICE_ROLE_KEY=...   # server only; used for admin account management and resume uploads
-```
+Create `.env.local` (never commit it):
 
-Other scripts: `npm run build`, `npm run start`, `npm run lint`.
+| Variable | Where to find it | Used for |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API | Everywhere |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API | Public reads, sign-in |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Project Settings → API | **Server only**: creating admin accounts and saving résumés. Never expose it. |
+
+> Tip: use a separate Supabase project for development so testing never touches live data. See [SECURITY.md](SECURITY.md).
 
 ## Database setup
 
-Run these once, in order, in the Supabase SQL editor (all are safe to re-run):
+Open Supabase → **SQL editor** and run these once, in order (all are safe to re-run):
 
-1. `supabase/migrations/0001_init.sql` — tables, row-level security, storage buckets (`public` and `private`)
-2. `supabase/migrations/0002_gallery_albums.sql` — gallery albums (moves any older loose photos into a "Campus Photos" album)
-3. `supabase/migrations/0003_milestones.sql` — history and milestones timeline on the About page
+| # | File | What it adds |
+| --- | --- | --- |
+| 1 | [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) | Tables, row-level security, storage buckets |
+| 2 | [`supabase/migrations/0002_gallery_albums.sql`](supabase/migrations/0002_gallery_albums.sql) | Gallery albums (moves older loose photos into a "Campus Photos" album) |
+| 3 | [`supabase/migrations/0003_milestones.sql`](supabase/migrations/0003_milestones.sql) | School history timeline |
 
-**First admin login:** create a user in Supabase → Authentication → Users, then add a row to `public.admin_users` with the same `id` and `is_active = true`. After that, more admins can be added from `/admin/users`.
+**First admin:** Supabase → Authentication → Users → *Add user*, then add a row to the `admin_users` table with the same `id` and `is_active = true`. After that, sign in at `/admin/login` and add more admins from **Admin Accounts**.
 
-## How the code is organised
+## Admin guide
+
+Sign in at **`/admin`**. The dashboard shows anything waiting for a reply, then every section.
+
+| Section | What it controls on the public site |
+| --- | --- |
+| **Notices** | The Notices page |
+| **Gallery** | Photo albums: title, date (defaults to today), many photos at once |
+| **Events** | Events page, and the "Coming up" strip on the homepage |
+| **Documents** | Fee structure, admission forms, syllabus, circulars (PDF, Word, Excel, images) |
+| **Achievements** | Results and awards, with optional photos |
+| **Alumni** | The Alumni page |
+| **History** | The timeline on the About page (hidden until you add the first milestone) |
+| **Staff** | Leadership and faculty on the About page, with photos |
+| **Enquiries** | Admission enquiries: mark as contacted, delete |
+| **Careers** and **Job Applications** | Open positions, and applications with private resume links |
+| **Site Settings** | Announcement banner, address, phone numbers (several allowed, separate with commas), email, map link, social links, homepage quote, mission statement, quick facts |
+| **Branding** | School logo and browser-tab icon |
+| **Admin Accounts** | Who can sign in |
+
+Changes appear on the live site within about a minute.
+
+## How it works
+
+```mermaid
+flowchart LR
+  V[Parents and visitors] -->|browse, send enquiries| S
+  A[School office] -->|/admin, signed in| S
+  subgraph S[Vercel: Next.js app]
+    P[Public pages<br/>pre-built, refreshed every minute]
+    M[Admin panel<br/>Server Actions + requireAdmin]
+  end
+  S -->|reads published content| D[(Supabase Postgres<br/>row-level security)]
+  M -->|writes| D
+  M -->|photos and documents| F[(Storage: public bucket)]
+  S -->|resumes via service role| R[(Storage: private bucket)]
+```
+
+- **Public pages** read only published rows through a cookie-less client, so they can be served as static pages and stay fast.
+- **Admin actions** check the signed-in admin on the server (`requireAdmin()`), and the database repeats that check with row-level security, so a mistake in one layer can't expose data.
+- **Uploads** (photos, documents, logos) go from the browser straight to Supabase Storage. **Resumes** are the exception: they go through a Server Action into the private bucket and are only ever opened through 1-hour signed links.
+
+## Project structure
 
 ```
-app/(site)/            public pages (share the header, footer and announcement banner)
-app/admin/(protected)/ admin pages (require a signed-in, active admin)
-app/admin/login/       admin sign-in
-components/site/       public UI (Header, Footer, PageHeader, forms, cards)
-components/admin/      admin UI (sidebar, icons, forms)
-lib/supabase/          server, browser, public (cookie-less) and service-role clients
-lib/site-settings.ts   loads the editable site settings, with safe fallbacks
-supabase/migrations/   SQL schema
+app/
+  (site)/                  public pages: home, about, academics, admissions, contact,
+                           gallery, notices, events, documents, achievements, careers, alumni
+  admin/(protected)/       admin pages, one folder per section
+  admin/login/             sign-in
+  not-found.tsx, error.tsx branded 404 and error pages
+components/
+  site/                    Header, Footer, PageHeader, forms, cards
+  admin/                   sidebar, icons, forms
+lib/
+  supabase/                server, browser, public (cookie-less) and service-role clients
+  site-settings.ts         loads the editable settings with safe fallbacks
+scripts/security-probe.mjs re-runnable database/storage security check
+supabase/migrations/       SQL schema
+docs/screenshots/          images used in this README
 ```
 
-Conventions worth knowing:
+## Scripts
 
-- Public pages read through the cookie-less client (`lib/supabase/public.ts`) so they stay static; admin actions call `revalidatePath` after saving so changes appear straight away.
-- Every admin Server Action starts with `requireAdmin()`, and row-level security enforces the same rule in the database.
-- Large uploads (photos, documents, logos) go from the browser straight to Supabase Storage; only the resulting path is saved through a Server Action. Career-application resumes are the exception: they upload through a Server Action (limit raised to 4 MB in `next.config.ts`) into the private bucket.
-- The brand is fixed: wreath logo, crimson and gold palette, Fraunces and Public Sans fonts (see `app/globals.css`).
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the dev server at http://localhost:3000 |
+| `npm run build` | Production build |
+| `npm run start` | Run the production build |
+| `npm run lint` | ESLint |
+| `npm run security:probe` | Check what the public key can and can't do in the database and storage |
 
-## Project notes
+## Security
 
-Current status and the to-do list are kept in `CLAUDE.md`. `AGENTS.md` is generated by Next.js.
+The app was reviewed end to end: access control, database rules, uploads, headers, dependencies and secrets. Highlights: every admin action is guarded, the database refuses public reads and writes on private data (verified with only the public key), no secrets are in the repo, and `npm audit` is clean.
+
+**Open items, fixes and checklists are in [SECURITY.md](SECURITY.md).** The most important one to finish before the site is promoted widely is protecting the public forms against spam.
+
+## Deployment
+
+1. Push to `main`; Vercel builds and deploys automatically.
+2. Set the three environment variables above in Vercel (Production only).
+3. Run the SQL migrations in Supabase.
+4. Custom domain (`thelaurelsglobalschool.com`): in GoDaddy add `A @ → 216.198.79.1` and `CNAME www → cname.vercel-dns.com` (remove the default `@` and `www` records first).
+
+## Status and roadmap
+
+**Done:** all public pages, the full admin panel, live map, photo albums, history timeline, mobile layouts, branded 404/error pages, security review.
+
+**Next:** link the custom domain · SEO (sitemap, share images, school schema, Search Console) · protect public forms from spam · two-factor sign-in for admins · school-supplied content (real staff, map pin, affiliation number, subjects and facilities).
+
+The working to-do list lives in [`CLAUDE.md`](CLAUDE.md).
+
+---
+
+<div align="center">
+  <sub>© The Laurels Global School, Dehri-on-Sone, Rohtas, Bihar. All rights reserved.</sub>
+</div>
