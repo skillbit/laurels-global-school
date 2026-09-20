@@ -32,6 +32,9 @@ mobile responsiveness → enquiry form → Site settings → Staff → rest of P
 ## 3b. Site settings — DONE (2026-09-20)
 - `/admin/settings` (sidebar + dashboard card) edits banner, contact info, map embed, socials, hero quote, mission statement, quick facts. Public pages read via `lib/site-settings.ts` (falls back to previous hardcoded text; pages stay static, `revalidatePath("/", "layout")` on save). Branding (logo/favicon) still not built. Map/address/email values still need real data entered by the admin.
 
+## 3c. Staff admin — DONE (2026-09-20)
+- `/admin/staff` CRUD (list/new/edit, photo upload from browser to `public/staff/`, publish toggle, leadership/faculty groups, display order). About page "Meet the Team" reads published staff; falls back to "coming soon" when empty. Real principal/staff details still need to be entered by the admin.
+
 ## 5. Enquiry form — DONE (2026-09-20)
 - Wired to `enquiries` via `app/(site)/admissions/actions.ts`; admin inbox at `/admin/enquiries` (+ sidebar and dashboard card). Not yet tested end-to-end against live Supabase.
 

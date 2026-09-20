@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ValueCard from "@/components/site/ValueCard";
+import PersonCard from "@/components/site/PersonCard";
 import { getSiteSettings } from "@/lib/site-settings";
+import { createPublicClient } from "@/lib/supabase/public";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -11,6 +13,20 @@ export const metadata: Metadata = {
 
 export default async function AboutPage() {
   const settings = await getSiteSettings();
+
+  const publicClient = createPublicClient();
+  const { data: staff } = await publicClient
+    .from("staff")
+    .select("id, name, role, bio, photo_path, group_label")
+    .eq("is_published", true)
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: true });
+  const photoUrl = (path: string | null) =>
+    path ? publicClient.storage.from("public").getPublicUrl(path).data.publicUrl : null;
+  const groups = [
+    { label: "Leadership", people: staff?.filter((p) => p.group_label === "leadership") ?? [] },
+    { label: "Faculty", people: staff?.filter((p) => p.group_label !== "leadership") ?? [] },
+  ].filter((g) => g.people.length > 0);
 
   return (
     <>
@@ -146,7 +162,20 @@ export default async function AboutPage() {
           <span className="eyebrow">Leadership</span>
           <h2>Meet the Team</h2>
         </div>
-        {/* Real staff entries will be added from /admin/staff (see project plan, Phase 4) */}
+        {groups.length > 0 ? (
+          groups.map((g) => (
+            <div key={g.label} style={{ marginBottom: "2rem" }}>
+              {groups.length > 1 && <h3 style={{ marginBottom: "1rem" }}>{g.label}</h3>}
+              <div className="people-grid">
+                {g.people.map((p) => (
+                  <PersonCard key={p.id} name={p.name} role={p.role} photoUrl={photoUrl(p.photo_path)}>
+                    {p.bio}
+                  </PersonCard>
+                ))}
+              </div>
+            </div>
+          ))
+        ) : (
         <div className="coming-soon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
             <circle cx="12" cy="8" r="4" />
@@ -157,6 +186,7 @@ export default async function AboutPage() {
             <p>Photos, names and roles for the principal and academic team will be added from the admin panel.</p>
           </div>
         </div>
+        )}
       </section>
     </>
   );
