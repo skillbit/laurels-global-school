@@ -412,6 +412,7 @@ footer{border-top:1px solid var(--border); padding-block:2.4rem; margin-top:1rem
 .admin-sidebar-signout .btn{width:100%; justify-content:center; background:transparent; color:#fff; border-color:rgba(255,255,255,.4);}
 .admin-sidebar-signout .btn:hover{background:rgba(255,255,255,.1); border-color:#fff;}
 .admin-main{padding:clamp(1.4rem,3vw,2.6rem); width:100%; max-width:1180px; min-width:0; overflow-x:auto;}
+.admin-main .section-head{max-width:none;}
 .admin-main .section-head h1{font-size:var(--step-3); letter-spacing:-.02em;}
 .admin-table{width:100%; border-collapse:separate; border-spacing:0; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm);}
 .admin-table th, .admin-table td{text-align:left; padding:.85rem 1.05rem; border-bottom:1px solid var(--border); font-size:.92rem; vertical-align:middle;}
@@ -509,6 +510,7 @@ footer{border-top:1px solid var(--border); padding-block:2.4rem; margin-top:1rem
 
 .section-head h2{font-size:var(--step-3); letter-spacing:-.025em;}
 .h2-sm{font-size:1.25rem; margin-bottom:.8rem;}
+.nf-links{display:flex; gap:.7rem; flex-wrap:wrap; margin-top:1.6rem;}
 
 /* lists: notices, events, documents, careers */
 .notice-list{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm);}
@@ -638,6 +640,9 @@ footer{background:var(--laurel-deep); color:rgba(255,255,255,.82); border-top:0;
   .admin-sidebar-signout .btn{white-space:nowrap;}
 }
 @media (max-width:520px){
+  .brand-text span{display:none;}
+  .sm-hide{display:none;}
+  .brand-text strong{font-size:.98rem; line-height:1.12;}
   .foot-grid, .card-grid{grid-template-columns:1fr;}
   .step{padding-left:3.6rem;}
   .notice{padding:1rem 1.1rem;}

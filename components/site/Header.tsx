@@ -38,7 +38,7 @@ export default function Header({ logoUrl, phoneHref }: { logoUrl: string | null;
         </nav>
         <div className="navcta">
           <a className="btn btn-primary" href={phoneHref}>
-            Call the Office
+            Call<span className="sm-hide"> the Office</span>
           </a>
           <button
             className="menu-btn"
