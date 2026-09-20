@@ -19,6 +19,7 @@ const GROUPS: { title: string; items: Item[] }[] = [
       { href: "/admin/documents", label: "Documents", icon: "documents" },
       { href: "/admin/achievements", label: "Achievements", icon: "achievements" },
       { href: "/admin/alumni", label: "Alumni", icon: "alumni" },
+      { href: "/admin/milestones", label: "History", icon: "history" },
       { href: "/admin/staff", label: "Staff", icon: "staff" },
     ],
   },

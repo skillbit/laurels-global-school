@@ -19,7 +19,7 @@ export default async function AdminDashboardPage() {
     return n ?? 0;
   };
 
-  const [notices, albums, events, documents, achievements, alumni, staff, openJobs, admins, newEnquiries, newApplications] =
+  const [notices, albums, events, documents, achievements, alumni, staff, openJobs, admins, newEnquiries, newApplications, milestones] =
     await Promise.all([
       count("notices"),
       count("gallery_albums"),
@@ -32,6 +32,7 @@ export default async function AdminDashboardPage() {
       count("admin_users"),
       count("enquiries", ["status", "new"]),
       count("career_applications", ["status", "new"]),
+      count("milestones"),
     ]);
 
   const attention = [
@@ -59,6 +60,7 @@ export default async function AdminDashboardPage() {
         { href: "/admin/documents", label: "Documents", icon: "documents", count: documents, description: "Fee structure, forms, syllabus and circulars." },
         { href: "/admin/achievements", label: "Achievements", icon: "achievements", count: achievements, description: "Board results, awards and student wins." },
         { href: "/admin/alumni", label: "Alumni", icon: "alumni", count: alumni, description: "Former students featured on the Alumni page." },
+        { href: "/admin/milestones", label: "History", icon: "history", count: milestones, description: "Founding year and key moments on the About page timeline." },
         { href: "/admin/staff", label: "Staff", icon: "staff", count: staff, description: "Principal, leadership and faculty on the About page." },
       ],
     },

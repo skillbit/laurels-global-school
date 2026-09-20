@@ -270,11 +270,11 @@ a.value-card:hover{border-color:var(--gold); box-shadow:var(--shadow-sm); transf
 .value-card p{color:var(--ink-soft); font-size:.9rem;}
 
 /* history / timeline (about page) */
-.timeline{display:flex; flex-direction:column; gap:0; margin-top:1rem;}
-.timeline .item{display:grid; grid-template-columns:5rem 1fr; gap:1.2rem; padding-block:1.1rem; position:relative;}
+.timeline{display:flex; flex-direction:column; gap:0; margin:1rem 0 0; padding:0; list-style:none;}
+.timeline .item{display:grid; grid-template-columns:6rem 1fr; gap:1.2rem; padding-block:1.2rem; position:relative;}
 .timeline .item:not(:last-child){border-bottom:1px solid var(--border);}
-.timeline .yr{font-family:var(--font-ibm-plex-mono),monospace; color:var(--laurel); font-weight:600;}
-.timeline h3{font-size:1.02rem; font-weight:600; font-family:var(--font-public-sans),sans-serif; margin-bottom:.25rem;}
+.timeline .yr{font-family:var(--font-fraunces),serif; font-style:italic; font-weight:600; font-size:1.7rem; line-height:1.1; color:var(--laurel);}
+.timeline h3{font-size:1.15rem; font-family:var(--font-fraunces),serif; font-weight:650; margin-bottom:.25rem;}
 .timeline p{color:var(--ink-soft); font-size:.92rem;}
 
 /* staff / leadership cards */

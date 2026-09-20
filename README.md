@@ -13,7 +13,7 @@ Public website and admin panel for The Laurels Global School (CBSE, Nursery to C
 
 | Area | What the admin can do |
 | --- | --- |
-| Content | Notices, gallery albums (title, date, many photos), events, documents (PDF/Word/Excel/image), achievements, alumni, staff |
+| Content | Notices, gallery albums (title, date, many photos), events, documents (PDF/Word/Excel/image), achievements, alumni, staff, school history timeline |
 | Inbox | Admission enquiries, job postings and job applications (resumes stored privately) |
 | Site | Announcement banner, contact details, map link, social links, homepage and mission text, quick facts, logo and favicon |
 | Accounts | Add or disable other admin logins |
@@ -39,10 +39,11 @@ Other scripts: `npm run build`, `npm run start`, `npm run lint`.
 
 ## Database setup
 
-Run these once, in order, in the Supabase SQL editor (both are safe to re-run):
+Run these once, in order, in the Supabase SQL editor (all are safe to re-run):
 
 1. `supabase/migrations/0001_init.sql` — tables, row-level security, storage buckets (`public` and `private`)
 2. `supabase/migrations/0002_gallery_albums.sql` — gallery albums (moves any older loose photos into a "Campus Photos" album)
+3. `supabase/migrations/0003_milestones.sql` — history and milestones timeline on the About page
 
 **First admin login:** create a user in Supabase → Authentication → Users, then add a row to `public.admin_users` with the same `id` and `is_active = true`. After that, more admins can be added from `/admin/users`.
 

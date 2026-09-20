@@ -21,6 +21,13 @@ export default async function AboutPage() {
     .eq("is_published", true)
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true });
+  const { data: milestoneRows } = await publicClient
+    .from("milestones")
+    .select("id, year, title, description")
+    .eq("is_published", true)
+    .order("year", { ascending: true })
+    .order("created_at", { ascending: true });
+  const milestones = milestoneRows ?? [];
   const photoUrl = (path: string | null) =>
     path ? publicClient.storage.from("public").getPublicUrl(path).data.publicUrl : null;
   const groups = [
@@ -136,27 +143,29 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <section>
-        <div className="wrap">
-          <div className="section-tint">
-            <div className="section-head">
-              <span className="eyebrow">Our Story</span>
-              <h2>History &amp; Milestones</h2>
-            </div>
-            {/* Real milestones will be added from /admin once the timeline is wired to Supabase (see project plan, Phase 4) */}
-            <div className="coming-soon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-                <path d="M12 8v5l3 3" />
-                <circle cx="12" cy="12" r="9" />
-              </svg>
-              <div>
-                <h3>The school&apos;s story, in progress</h3>
-                <p>Founding year, CBSE affiliation date, and campus milestones will appear here once added from the admin panel.</p>
+      {milestones.length > 0 && (
+        <section>
+          <div className="wrap">
+            <div className="section-tint">
+              <div className="section-head">
+                <span className="eyebrow">Our Story</span>
+                <h2>History &amp; Milestones</h2>
               </div>
+              <ol className="timeline">
+                {milestones.map((m) => (
+                  <li className="item" key={m.id}>
+                    <span className="yr">{m.year}</span>
+                    <div>
+                      <h3>{m.title}</h3>
+                      {m.description && <p>{m.description}</p>}
+                    </div>
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="wrap">
         <div className="section-head">
