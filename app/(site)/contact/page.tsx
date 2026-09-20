@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getSiteSettings, telHref } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
   title: "Contact",
   description: "Visit or contact The Laurels Global School, Dehri-on-Sone, Rohtas, Bihar.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const s = await getSiteSettings();
+
   return (
     <>
       <div className="wrap page-header">
@@ -27,7 +30,7 @@ export default function ContactPage() {
               </svg>
               <div>
                 <strong>Address</strong>
-                The Laurels Global School, near Jln College, NH2, Pahleja Road, Dehri-on-Sone, Rohtas, Bihar
+                {s.address}
               </div>
             </div>
             <div className="contact-line">
@@ -36,7 +39,7 @@ export default function ContactPage() {
               </svg>
               <div>
                 <strong>Phone</strong>
-                <a href="tel:+919771020700">+91 97710 20700</a> &middot; <a href="tel:+917764069741">+91 77640 69741</a>
+                <a href={telHref(s.phonePrimary)}>{s.phonePrimary}</a> &middot; <a href={telHref(s.phoneSecondary)}>{s.phoneSecondary}</a>
               </div>
             </div>
             <div className="contact-line">
@@ -45,14 +48,31 @@ export default function ContactPage() {
                 <path d="M3 7l9 6 9-6" />
               </svg>
               <div>
-                <strong>Office Hours</strong>
-                For enquiries and admissions, call the school office directly.
+                <strong>{s.email ? "Email & Office Hours" : "Office Hours"}</strong>
+                {s.email && (
+                  <>
+                    <a href={`mailto:${s.email}`}>{s.email}</a>
+                    <br />
+                  </>
+                )}
+                {s.officeHours}
               </div>
             </div>
-            <a className="btn btn-primary" href="tel:+919771020700" style={{ alignSelf: "flex-start" }}>
+            <a className="btn btn-primary" href={telHref(s.phonePrimary)} style={{ alignSelf: "flex-start" }}>
               Call Now
             </a>
           </div>
+          {s.mapEmbedUrl ? (
+            <div className="map-art">
+              <iframe
+                src={s.mapEmbedUrl}
+                title="Map showing the location of The Laurels Global School"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+          ) : (
           <div className="map-art" aria-hidden="true">
             <svg viewBox="0 0 400 320" preserveAspectRatio="xMidYMid slice">
               <rect width="400" height="320" fill="var(--surface-alt)" />
@@ -71,6 +91,7 @@ export default function ContactPage() {
               </text>
             </svg>
           </div>
+          )}
         </div>
       </section>
     </>

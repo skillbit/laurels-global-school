@@ -1,7 +1,15 @@
 import Link from "next/link";
 import { WreathMark } from "./WreathDefs";
+import { telHref, type SiteSettings } from "@/lib/site-settings";
 
-export default function Footer() {
+export default function Footer({ settings }: { settings: SiteSettings }) {
+  const socials = [
+    { label: "Facebook", href: settings.facebookUrl },
+    { label: "Instagram", href: settings.instagramUrl },
+    { label: "YouTube", href: settings.youtubeUrl },
+    { label: "X", href: settings.xUrl },
+  ].filter((s): s is { label: string; href: string } => Boolean(s.href));
+
   return (
     <footer>
       <div className="wrap foot-row">
@@ -11,7 +19,7 @@ export default function Footer() {
             <strong style={{ fontFamily: "var(--font-fraunces), serif", fontWeight: 650 }}>
               The Laurels Global School
             </strong>
-            <p>Near Jln College, NH2, Pahleja Road, Dehri-on-Sone, Rohtas, Bihar</p>
+            <p>{settings.address}</p>
           </div>
         </div>
         <div className="foot-links">
@@ -25,9 +33,15 @@ export default function Footer() {
           </div>
           <div className="foot-col">
             <h4>Contact</h4>
-            <a href="tel:+919771020700">97710 20700</a>
-            <a href="tel:+917764069741">77640 69741</a>
+            <a href={telHref(settings.phonePrimary)}>{settings.phonePrimary}</a>
+            <a href={telHref(settings.phoneSecondary)}>{settings.phoneSecondary}</a>
+            {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
             <span>CBSE &middot; Nursery&ndash;X</span>
+            {socials.map((s) => (
+              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer">
+                {s.label}
+              </a>
+            ))}
           </div>
         </div>
       </div>

@@ -3,8 +3,11 @@ import { WreathMark } from "@/components/site/WreathDefs";
 import ValueCard from "@/components/site/ValueCard";
 import StageCard from "@/components/site/StageCard";
 import FactsPanel from "@/components/site/FactsPanel";
+import { getSiteSettings } from "@/lib/site-settings";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const settings = await getSiteSettings();
+
   return (
     <>
       <section className="hero wrap">
@@ -20,11 +23,10 @@ export default function HomePage() {
               <path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z" />
               <circle cx="12" cy="9" r="2.4" />
             </svg>
-            Near Jln College, NH2, Pahleja Road, Dehri-on-Sone, Rohtas, Bihar
+            {settings.address}
           </p>
           <p className="hero-quote">
-            &ldquo;Nurturing confident, curious, and responsible individuals through quality
-            education, strong values, and meaningful learning experiences.&rdquo;
+            &ldquo;{settings.heroQuote}&rdquo;
           </p>
           <div className="hero-cta">
             <Link className="btn btn-primary" href="/admissions">

@@ -30,6 +30,11 @@ export default async function AdminDashboardPage() {
       description: "New admission enquiries from the Admissions page.",
     },
     {
+      href: "/admin/settings",
+      label: "Site Settings",
+      description: "Banner, contact details, map, social links and homepage text.",
+    },
+    {
       href: "/admin/users",
       label: "Admin Accounts",
       count: adminCount ?? 0,
@@ -55,9 +60,11 @@ export default async function AdminDashboardPage() {
             className="value-card"
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            <span className="mono" style={{ color: "var(--gold)", fontSize: "1.6rem" }}>
-              {c.count}
-            </span>
+            {c.count !== undefined && (
+              <span className="mono" style={{ color: "var(--gold)", fontSize: "1.6rem" }}>
+                {c.count}
+              </span>
+            )}
             <h3>{c.label}</h3>
             <p>{c.description}</p>
           </Link>

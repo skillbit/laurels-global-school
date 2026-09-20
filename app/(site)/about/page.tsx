@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ValueCard from "@/components/site/ValueCard";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -8,7 +9,9 @@ export const metadata: Metadata = {
     "The Laurels Global School's mission, values and approach to education in Dehri-on-Sone, Bihar.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const settings = await getSiteSettings();
+
   return (
     <>
       <div className="wrap page-header">
@@ -25,13 +28,7 @@ export default function AboutPage() {
             <svg className="leaf" viewBox="0 0 24 24" fill="none" style={{ color: "var(--gold)" }} aria-hidden="true">
               <use href="#leaf-icon" />
             </svg>
-            <p>
-              &ldquo;Our mission is to nurture confident, curious, and responsible individuals
-              through quality education, strong values, and meaningful learning experiences. We
-              aim to develop not only academic excellence but also communication, creativity,
-              critical thinking, leadership, technology, and life skills&mdash;preparing every
-              student to succeed in a changing world and contribute positively to society.&rdquo;
-            </p>
+            <p>&ldquo;{settings.missionStatement}&rdquo;</p>
           </div>
           <div className="values-grid">
             <ValueCard

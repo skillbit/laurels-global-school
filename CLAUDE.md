@@ -29,6 +29,9 @@ mobile responsiveness → enquiry form → Site settings → Staff → rest of P
 - `app/(site)/academics/page.tsx`: 2 TODOs (confirm subject list per stage; confirm activities/clubs).
 - `components/site/Footer.tsx`: "Affiliation No. — TODO".
 
+## 3b. Site settings — DONE (2026-09-20)
+- `/admin/settings` (sidebar + dashboard card) edits banner, contact info, map embed, socials, hero quote, mission statement, quick facts. Public pages read via `lib/site-settings.ts` (falls back to previous hardcoded text; pages stay static, `revalidatePath("/", "layout")` on save). Branding (logo/favicon) still not built. Map/address/email values still need real data entered by the admin.
+
 ## 5. Enquiry form — DONE (2026-09-20)
 - Wired to `enquiries` via `app/(site)/admissions/actions.ts`; admin inbox at `/admin/enquiries` (+ sidebar and dashboard card). Not yet tested end-to-end against live Supabase.
 
