@@ -14,7 +14,9 @@ export type AlbumInput = {
 function refresh() {
   revalidatePath("/admin/gallery");
   revalidatePath("/admin");
-  revalidatePath("/gallery", "layout");
+  // Page-type refresh: the "layout" type does not match pages inside the (site) route group.
+  // Individual album pages are rendered on demand, so only the list page needs this.
+  revalidatePath("/gallery");
 }
 
 function validate(input: AlbumInput) {
