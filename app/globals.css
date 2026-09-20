@@ -123,7 +123,7 @@ nav.links{display:flex; gap:1.6rem; align-items:center;}
 .btn-ghost{background:transparent; color:var(--ink); border-color:var(--border);}
 .btn-gold{background:var(--gold); color:#241a06;}
 .navcta{display:flex; align-items:center; gap:.7rem;}
-.navcta .btn{white-space:nowrap;}
+.navcta .btn{white-space:nowrap; gap:0;}
 .menu-btn{display:none; background:none; border:1px solid var(--border); border-radius:10px; padding:.5rem; cursor:pointer; min-width:44px; min-height:44px; align-items:center; justify-content:center;}
 .menu-btn svg{display:block;}
 
@@ -613,6 +613,8 @@ footer{background:var(--laurel-deep); color:rgba(255,255,255,.82); border-top:0;
   .contact-grid{grid-template-columns:1fr;}
   .facts-panel{position:static;}
   nav.links{display:none;}
+  .navlink{display:flex; align-items:center; min-height:44px;}
+  .navlink::after{bottom:4px;}
   .menu-btn{display:inline-flex;}
   .h-hero-grid{grid-template-columns:1fr;}
   .h-arch{max-width:320px;}
@@ -629,8 +631,10 @@ footer{background:var(--laurel-deep); color:rgba(255,255,255,.82); border-top:0;
   .album-grid, .photo-grid{grid-template-columns:1fr 1fr;}
   .form-grid{grid-template-columns:1fr;}
   .notice{grid-template-columns:1fr; gap:.4rem;}
-  .admin-shell{grid-template-columns:1fr;}
+  .admin-shell{grid-template-columns:1fr; grid-template-rows:auto 1fr;}
   .admin-sidebar{flex-direction:row; align-items:center; gap:.3rem; height:auto; position:static; overflow-x:auto; padding:.6rem .7rem;}
+  .admin-sidebar{scrollbar-width:none;}
+  .admin-sidebar::-webkit-scrollbar{display:none;}
   .admin-brand{padding:0 .5rem 0 0;}
   .admin-brand div{display:none;}
   .admin-nav-group{flex-direction:row; margin:0; gap:.3rem;}
@@ -643,7 +647,9 @@ footer{background:var(--laurel-deep); color:rgba(255,255,255,.82); border-top:0;
   .brand-text span{display:none;}
   .sm-hide{display:none;}
   .brand-text strong{font-size:.98rem; line-height:1.12;}
-  .foot-grid, .card-grid{grid-template-columns:1fr;}
+  .card-grid{grid-template-columns:1fr;}
+  .foot-grid{grid-template-columns:1fr 1fr; gap:1.6rem 1rem;}
+  .foot-brand, .foot-grid .foot-col:last-child{grid-column:1 / -1;}
   .step{padding-left:3.6rem;}
   .notice{padding:1rem 1.1rem;}
   .navcta .btn{padding:.55rem .9rem; font-size:.85rem;}
@@ -654,6 +660,19 @@ footer{background:var(--laurel-deep); color:rgba(255,255,255,.82); border-top:0;
   .h-ev{grid-template-columns:4rem 1fr; gap:1rem;}
   .h-ev .tag{display:none;}
   .foot-row{flex-direction:column;}
+}
+
+/* admin tables become stacked cards on phones so the action buttons stay reachable */
+@media (max-width:640px){
+  .admin-table, .admin-table tbody, .admin-table tr, .admin-table td{display:block; width:100%;}
+  .admin-table{border:0; background:transparent; box-shadow:none; border-radius:0; overflow:visible;}
+  .admin-table thead{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);}
+  .admin-table tbody tr{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); margin-bottom:.8rem; padding:.55rem 0; box-shadow:var(--shadow-sm);}
+  .admin-table tbody tr:hover{background:var(--surface);}
+  .admin-table td{border:0; padding:.3rem 1rem; text-align:left;}
+  .admin-table td:last-child{display:block !important; text-align:left; white-space:normal; padding-top:.7rem;}
+  .admin-table td:last-child > *{margin:0 .5rem .4rem 0;}
+  .admin-table .btn-row{min-height:44px; padding:.5rem 1rem;}
 }
 
 @media (prefers-reduced-motion: no-preference){

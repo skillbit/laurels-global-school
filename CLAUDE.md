@@ -1,68 +1,23 @@
 @AGENTS.md
 
-# Pending items (as of 2026-09-20)
+# Project status (as of 2026-09-20)
 
-**UI redesign (branch `redesign-homepage`, not pushed/merged yet):** homepage, all public pages, footer and the whole admin panel restyled (PageHeader, divided panels, rising academic steps, deep-crimson footer/sidebar, real Google map on Contact). Brand (logo, crimson/gold palette, Fraunces/Public Sans) unchanged. Merge to `main` when approved.
+Stack: Next.js (App Router) + Supabase (Postgres/Auth/Storage) on Vercel. Repo `skillbit/laurels-global-school`, live at `laurels-global-school.vercel.app`.
 
-Suggested order (functional first): Site settings → Staff → Events → Documents → Achievements → Careers → Alumni → Branding → dashboard cards; then mobile, domain, SEO. Older list:
+## Built
+- All public pages (home, about, academics, admissions, contact, gallery albums, notices, events, documents, achievements, careers, alumni), redesigned in one style (`PageHeader`, divided panels, deep-crimson footer). Brand (wreath logo, crimson/gold palette, Fraunces/Public Sans) is fixed: do not change it.
+- Full admin panel: notices, gallery albums, events, documents, achievements, alumni, staff, enquiries inbox, careers + applications inbox (private resumes), site settings, branding (logo/favicon), admin accounts. Grouped sidebar + dashboard.
+- Live Google map on Contact (uses `site_settings.map_embed_url` or searches school name + address).
+- Branded 404 and error pages (public and admin).
+- Gallery albums need `supabase/migrations/0002_gallery_albums.sql` run once in the Supabase SQL editor.
 
-mobile responsiveness → enquiry form → Site settings → Staff → rest of Phase 4 → domain → SEO.
-
-## 1. Mobile responsiveness
-- `app/globals.css` has only 6 media queries; audit at ~360, 390 and 768px.
-- Check header/nav (hamburger), grids, forms, gallery, admin panel + sidebar, tap-target sizes.
-
-## 2. SEO (rank in Google for local searches)
-- Add `app/sitemap.ts` and `app/robots.ts`.
-- Add `metadataBase`, canonical URLs, per-page descriptions.
-- Add Open Graph / Twitter images.
-- Add JSON-LD `School` schema (address, phone, hours).
-- Alt text on images; run Lighthouse / Core Web Vitals.
-- After domain is linked: submit to Google Search Console; create and verify a Google Business Profile.
-
-## 3. Phase 4 — extended admin (not started)
-- Admin CRUD missing for: Staff, Events, Documents, Achievements, Careers, Alumni, Site settings (banner, homepage text, contact/map), Branding. Tables already exist in `supabase/migrations/0001_init.sql`.
-- Every admin-editable field needs an entry point on the `/admin` dashboard (currently 3 cards; intro text still says "more sections will appear").
-
-## 4. Hardcoded / placeholder content on the public site
-- `components/site/AnnouncementBanner.tsx`: static text; drive from `site_settings`.
-- Contact page now shows a live Google map (uses `site_settings.map_embed_url` if set, otherwise searches the school name + address). Confirm the pin is on the exact school location; paste the exact embed link in Site Settings if not.
-- About page: "Leadership profiles coming soon"; needs real principal/staff details (Staff CRUD).
-- `app/(site)/academics/page.tsx`: 2 TODOs (confirm subject list per stage; confirm activities/clubs).
-- Footer no longer shows an "Affiliation No." line (removed during the redesign, since it displayed "TODO"). Add it back in `components/site/Footer.tsx` once the number is known.
-
-## 3b. Site settings — DONE (2026-09-20)
-- `/admin/settings` (sidebar + dashboard card) edits banner, contact info, map embed, socials, hero quote, mission statement, quick facts. Public pages read via `lib/site-settings.ts` (falls back to previous hardcoded text; pages stay static, `revalidatePath("/", "layout")` on save). Branding (logo/favicon) still not built. Map/address/email values still need real data entered by the admin.
-
-## 3c. Staff admin — DONE (2026-09-20)
-- `/admin/staff` CRUD (list/new/edit, photo upload from browser to `public/staff/`, publish toggle, leadership/faculty groups, display order). About page "Meet the Team" reads published staff; falls back to "coming soon" when empty. Real principal/staff details still need to be entered by the admin.
-
-## 3d. Events admin — DONE (2026-09-20)
-- `/admin/events` CRUD (title, start/end date, category, description, publish toggle). Public `/events` page (upcoming + past, hourly ISR) and a "Coming Up" strip on the homepage (only shown when upcoming events exist); Events added to nav and footer.
-
-## 3e. Documents admin — DONE (2026-09-20)
-- `/admin/documents` CRUD (title, category, date, file upload to `public/documents/`, publish toggle; PDF/Word/Excel/image ≤10 MB). Public `/documents` page groups by category with download links; linked from the footer only (not in main nav).
-
-## 3f. Achievements admin — DONE (2026-09-20)
-- `/admin/achievements` CRUD (title, date, category, description, optional photo to `public/achievements/`, publish toggle). Public `/achievements` card grid; linked from the footer only.
-
-## 3g. Careers — DONE (2026-09-20)
-- `/admin/careers` job posting CRUD (open/close toggle) + `/admin/careers/applications` inbox (status toggle, delete, resumes via 1-hour signed URLs from the `private` bucket). Public `/careers` lists open roles + application form (`app/(site)/careers/actions.ts`; resume PDF/DOC/DOCX ≤3 MB uploaded server-side with the service-role client). `next.config.ts` sets `serverActions.bodySizeLimit: "4mb"`. Linked from footer only. Not tested end-to-end against live Supabase.
-
-## 3h. Alumni admin — DONE (2026-09-20)
-- `/admin/alumni` CRUD (name, batch year, note, optional photo to `public/alumni/`, display order, publish toggle). Public `/alumni` page reuses `PersonCard`; linked from the footer only.
-
-## 3i. Branding — DONE (2026-09-20)
-- `/admin/branding` uploads logo (header + footer) and favicon (root `generateMetadata` in `app/layout.tsx`) to `public/branding/`; falls back to the wreath mark and `public/favicon.ico` (moved from `app/favicon.ico`, because file-based icons override config icons). Also fixed leftover hardcoded phone numbers in the Header and Admissions form note (now from site settings).
-- All planned functional admin sections are now built. Remaining: mobile, SEO, domain, placeholder content (Academics TODOs, Affiliation No.), README, UI polish pass.
-
-## 3j. Gallery albums — DONE in code (2026-09-20), needs DB migration
-- Gallery is now albums: title + date (defaults to today, editable) + many photos uploaded at once (`/admin/gallery`, `/admin/gallery/new`, `/admin/gallery/[id]`). Public `/gallery` shows album cards; `/gallery/[id]` shows the album's photos.
-- **Requires running `supabase/migrations/0002_gallery_albums.sql` in the Supabase SQL editor** (creates `gallery_albums`, adds `gallery_images.album_id`, moves existing loose photos into a "Campus Photos" album). Do this before/at deploy or the gallery shows empty.
-
-## 5. Enquiry form — DONE (2026-09-20)
-- Wired to `enquiries` via `app/(site)/admissions/actions.ts`; admin inbox at `/admin/enquiries` (+ sidebar and dashboard card). Not yet tested end-to-end against live Supabase.
-
-## 6. Deploy / domain
-- `thelaurelsglobalschool.com` not linked. At GoDaddy: A `@` → `216.198.79.1`, CNAME `www` → `cname.vercel-dns.com` (remove default `@`/`www` records first).
-- `README.md` is still create-next-app boilerplate.
+## Still to do
+1. **Push** local commits, then confirm the Vercel deploy works.
+2. **Domain:** link `thelaurelsglobalschool.com`. At GoDaddy: A `@` -> `216.198.79.1`, CNAME `www` -> `cname.vercel-dns.com` (remove default `@`/`www` records first).
+3. **SEO:** `app/sitemap.ts`, `app/robots.ts`, `metadataBase` + canonical URLs, Open Graph/Twitter images, JSON-LD `School` schema, Lighthouse pass; after the domain is live: Google Search Console + Google Business Profile.
+4. ~~Mobile audit~~ DONE (2026-09-20): all pages checked at 360/390/768px (no horizontal overflow; admin tables become stacked cards on phones; footer, header, admin top bar and menu tap targets fixed).
+5. **End-to-end test against live Supabase:** enquiry form, career application with resume, staff/gallery/document/branding uploads.
+6. **About page "History & Milestones"** is a placeholder with no admin section behind it (needs a small admin CRUD or removal).
+7. **Content only the school can supply:** real principal/staff (via Staff admin), exact map pin/embed link, email + office hours, social links, logo/favicon, affiliation number (re-add to `components/site/Footer.tsx`), and confirmed subjects/activities/facilities (`app/(site)/academics/page.tsx` still has draft lists marked TODO).
+8. **Housekeeping:** delete the dummy admin account, replace the boilerplate `README.md`, delete the merged `redesign-homepage` branch.
+9. **Nice to have:** email/WhatsApp alert when an enquiry or application arrives (today the admin must check the dashboard); rate limiting on public forms beyond the honeypot.
