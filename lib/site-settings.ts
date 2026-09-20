@@ -9,6 +9,10 @@ export type SiteSettings = {
   address: string;
   phonePrimary: string;
   phoneSecondary: string;
+  /** Every number from both phone fields, split on commas etc. */
+  phones: string[];
+  /** The single number to use for "Call" buttons. */
+  callPhone: string;
   email: string | null;
   officeHours: string;
   mapEmbedUrl: string | null;
@@ -53,7 +57,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     ? (data.quick_facts as QuickFact[]).filter((f) => f?.label && f?.value)
     : [];
 
-  return {
+  const settings: SiteSettings = {
     // banner_message stays null until the admin first saves settings; keep the
     // original banner visible until then, afterwards honour the on/off toggle.
     bannerMessage: data?.banner_message || DEFAULTS.bannerMessage,
@@ -62,6 +66,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     address: data?.address || DEFAULTS.address,
     phonePrimary: data?.phone_primary || DEFAULTS.phonePrimary,
     phoneSecondary: data?.phone_secondary || DEFAULTS.phoneSecondary,
+    phones: [],
+    callPhone: "",
     email: data?.email || null,
     officeHours: data?.office_hours || DEFAULTS.officeHours,
     mapEmbedUrl: safeMapUrl(data?.map_embed_url),
@@ -75,10 +81,22 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     logoUrl: publicUrl(data?.logo_path),
     faviconUrl: publicUrl(data?.favicon_path),
   };
+  settings.phones = Array.from(new Set([...splitPhones(settings.phonePrimary), ...splitPhones(settings.phoneSecondary)]));
+  settings.callPhone = settings.phones[0] ?? settings.phonePrimary;
+  return settings;
+}
+
+// A phone field may hold several numbers ("97710 20700, 99557 05999"): split them.
+export function splitPhones(value: string | null | undefined): string[] {
+  return (value ?? "")
+    .split(/[,;\n/]|\bor\b/i)
+    .map((p) => p.trim())
+    .filter((p) => p.replace(/\D/g, "").length >= 7);
 }
 
 export function telHref(phone: string) {
-  return `tel:${phone.replace(/[^\d+]/g, "")}`;
+  const first = splitPhones(phone)[0] ?? phone;
+  return `tel:${first.replace(/[^\d+]/g, "")}`;
 }
 
 // Only allow embeds from Google Maps / OpenStreetMap — this value ends up in an <iframe src>.

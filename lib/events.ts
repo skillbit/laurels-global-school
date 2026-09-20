@@ -22,9 +22,22 @@ export function splitEvents(events: SchoolEvent[]) {
   };
 }
 
-const short = (d: string) =>
-  new Date(`${d}T00:00:00`).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+const parts = (d: string) => {
+  const dt = new Date(`${d}T00:00:00`);
+  return {
+    day: dt.toLocaleDateString("en-IN", { day: "2-digit" }),
+    month: dt.toLocaleDateString("en-IN", { month: "short" }),
+    year: dt.getFullYear(),
+  };
+};
 
+// Single day: "20 Oct 2026". Ranges are shortened where they can be:
+// "20 – 28 Oct 2026", "28 Oct – 3 Nov 2026", "28 Dec 2026 – 3 Jan 2027".
 export function formatEventDate(start: string, end: string | null) {
-  return end && end !== start ? `${short(start)} – ${short(end)}` : short(start);
+  const a = parts(start);
+  if (!end || end === start) return `${a.day} ${a.month} ${a.year}`;
+  const b = parts(end);
+  if (a.year === b.year && a.month === b.month) return `${a.day} – ${b.day} ${b.month} ${b.year}`;
+  if (a.year === b.year) return `${a.day} ${a.month} – ${b.day} ${b.month} ${b.year}`;
+  return `${a.day} ${a.month} ${a.year} – ${b.day} ${b.month} ${b.year}`;
 }

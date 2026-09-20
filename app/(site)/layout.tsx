@@ -23,7 +23,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         link={settings.bannerLink}
         active={settings.bannerActive}
       />
-      <Header logoUrl={settings.logoUrl} phoneHref={telHref(settings.phonePrimary)} />
+      <Header logoUrl={settings.logoUrl} phoneHref={telHref(settings.callPhone)} />
       <main id="main">{children}</main>
       <Footer settings={settings} />
     </>

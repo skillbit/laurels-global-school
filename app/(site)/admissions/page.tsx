@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function AdmissionsPage() {
   const settings = await getSiteSettings();
-  const phones = [settings.phonePrimary, settings.phoneSecondary].map((p) => ({ label: p, href: telHref(p) }));
+  const phones = settings.phones.map((p) => ({ label: p, href: telHref(p) }));
   return (
     <>
       <PageHeader crumb="Admissions" eyebrow="Admissions" title="Joining The Laurels" intro="Four simple steps from the first call to a confirmed seat." />

@@ -56,11 +56,11 @@ export default async function AdminSettingsPage({
         </div>
         <div className="form-grid">
           <div className="field">
-            <label htmlFor="phone_primary">Primary phone</label>
+            <label htmlFor="phone_primary">Primary phone (used for Call buttons)</label>
             <input id="phone_primary" name="phone_primary" type="tel" defaultValue={s.phonePrimary} />
           </div>
           <div className="field">
-            <label htmlFor="phone_secondary">Secondary phone</label>
+            <label htmlFor="phone_secondary">Other phone numbers (separate several with commas)</label>
             <input id="phone_secondary" name="phone_secondary" type="tel" defaultValue={s.phoneSecondary} />
           </div>
           <div className="field">

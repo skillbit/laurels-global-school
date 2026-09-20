@@ -40,7 +40,12 @@ export default async function ContactPage() {
               </svg>
               <div>
                 <strong>Phone</strong>
-                <a href={telHref(s.phonePrimary)}>{s.phonePrimary}</a> &middot; <a href={telHref(s.phoneSecondary)}>{s.phoneSecondary}</a>
+                {s.phones.map((p, i) => (
+                  <span key={p}>
+                    {i > 0 && " \u00b7 "}
+                    <a href={telHref(p)}>{p}</a>
+                  </span>
+                ))}
               </div>
             </div>
             <div className="contact-line">
@@ -59,7 +64,7 @@ export default async function ContactPage() {
                 {s.officeHours}
               </div>
             </div>
-            <a className="btn btn-primary" href={telHref(s.phonePrimary)} style={{ alignSelf: "flex-start" }}>
+            <a className="btn btn-primary" href={telHref(s.callPhone)} style={{ alignSelf: "flex-start" }}>
               Call Now
             </a>
           </div>

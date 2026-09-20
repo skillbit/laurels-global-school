@@ -80,11 +80,11 @@ export default async function HomePage() {
               <Link className="btn btn-ghost" href="/contact">
                 Visit the Campus
               </Link>
-              <a className="h-call" href={telHref(settings.phonePrimary)}>
+              <a className="h-call" href={telHref(settings.callPhone)}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                   <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 3a2 2 0 0 1-.4 2.1L8 10.3a16 16 0 0 0 6 6l1.5-1.4a2 2 0 0 1 2.1-.4c1 .4 2 .6 3 .7a2 2 0 0 1 1.7 2Z" />
                 </svg>
-                Call {settings.phonePrimary}
+                Call {settings.callPhone}
               </a>
             </div>
           </div>
@@ -243,12 +243,11 @@ export default async function HomePage() {
           <div className="h-contact">
             <div>
               <small>Call the office</small>
-              <a className="phone" href={telHref(settings.phonePrimary)}>
-                {settings.phonePrimary}
-              </a>
-              <a className="phone" href={telHref(settings.phoneSecondary)}>
-                {settings.phoneSecondary}
-              </a>
+              {settings.phones.map((p) => (
+                <a className="phone" key={p} href={telHref(p)}>
+                  {p}
+                </a>
+              ))}
             </div>
             <div>
               <small>Visit us</small>

@@ -51,8 +51,11 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
 
         <div className="foot-col">
           <h4>Contact</h4>
-          <a href={telHref(settings.phonePrimary)}>{settings.phonePrimary}</a>
-          <a href={telHref(settings.phoneSecondary)}>{settings.phoneSecondary}</a>
+          {settings.phones.map((p) => (
+            <a key={p} href={telHref(p)}>
+              {p}
+            </a>
+          ))}
           {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
           {socials.map((s) => (
             <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer">
