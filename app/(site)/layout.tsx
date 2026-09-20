@@ -4,6 +4,11 @@ import Footer from "@/components/site/Footer";
 import AnnouncementBanner from "@/components/site/AnnouncementBanner";
 import { getSiteSettings, telHref } from "@/lib/site-settings";
 
+// Public pages are pre-built and reused. Admin saves refresh them instantly on the
+// deployment where the admin ran, but edits made elsewhere (a local dev admin, the
+// Supabase dashboard) share the same database, so also re-check it every minute.
+export const revalidate = 60;
+
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSiteSettings();
 
