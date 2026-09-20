@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Laurels Global School — website
 
-## Getting Started
+Public website and admin panel for The Laurels Global School (CBSE, Nursery to Class 10, Dehri-on-Sone, Rohtas, Bihar).
 
-First, run the development server:
+- **Stack:** Next.js (App Router, TypeScript) · Supabase (Postgres, Auth, Storage) · deployed on Vercel
+- **Live:** https://laurels-global-school.vercel.app (custom domain `thelaurelsglobalschool.com` is being linked)
+
+## What's in it
+
+**Public site:** Home, About, Academics, Admissions (enquiry form), Contact (live Google map), Gallery (photo albums), Notices, Events, Documents, Achievements, Careers (application form with resume upload), Alumni, plus branded 404 and error pages.
+
+**Admin panel (`/admin`):** everything on the public site is editable without touching code.
+
+| Area | What the admin can do |
+| --- | --- |
+| Content | Notices, gallery albums (title, date, many photos), events, documents (PDF/Word/Excel/image), achievements, alumni, staff |
+| Inbox | Admission enquiries, job postings and job applications (resumes stored privately) |
+| Site | Announcement banner, contact details, map link, social links, homepage and mission text, quick facts, logo and favicon |
+| Accounts | Add or disable other admin logins |
+
+## Getting started
+
+Requires Node.js 20+ and a Supabase project.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create `.env.local` with:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...   # server only; used for admin account management and resume uploads
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Other scripts: `npm run build`, `npm run start`, `npm run lint`.
 
-## Learn More
+## Database setup
 
-To learn more about Next.js, take a look at the following resources:
+Run these once, in order, in the Supabase SQL editor (both are safe to re-run):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. `supabase/migrations/0001_init.sql` — tables, row-level security, storage buckets (`public` and `private`)
+2. `supabase/migrations/0002_gallery_albums.sql` — gallery albums (moves any older loose photos into a "Campus Photos" album)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**First admin login:** create a user in Supabase → Authentication → Users, then add a row to `public.admin_users` with the same `id` and `is_active = true`. After that, more admins can be added from `/admin/users`.
 
-## Deploy on Vercel
+## How the code is organised
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+app/(site)/            public pages (share the header, footer and announcement banner)
+app/admin/(protected)/ admin pages (require a signed-in, active admin)
+app/admin/login/       admin sign-in
+components/site/       public UI (Header, Footer, PageHeader, forms, cards)
+components/admin/      admin UI (sidebar, icons, forms)
+lib/supabase/          server, browser, public (cookie-less) and service-role clients
+lib/site-settings.ts   loads the editable site settings, with safe fallbacks
+supabase/migrations/   SQL schema
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Conventions worth knowing:
+
+- Public pages read through the cookie-less client (`lib/supabase/public.ts`) so they stay static; admin actions call `revalidatePath` after saving so changes appear straight away.
+- Every admin Server Action starts with `requireAdmin()`, and row-level security enforces the same rule in the database.
+- Large uploads (photos, documents, logos) go from the browser straight to Supabase Storage; only the resulting path is saved through a Server Action. Career-application resumes are the exception: they upload through a Server Action (limit raised to 4 MB in `next.config.ts`) into the private bucket.
+- The brand is fixed: wreath logo, crimson and gold palette, Fraunces and Public Sans fonts (see `app/globals.css`).
+
+## Project notes
+
+Current status and the to-do list are kept in `CLAUDE.md`. `AGENTS.md` is generated by Next.js.
