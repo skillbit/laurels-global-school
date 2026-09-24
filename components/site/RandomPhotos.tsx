@@ -87,27 +87,46 @@ export function PhotoSlots({
   );
 }
 
-/** Up to five linked photos for the homepage strip, after the two used in the hero (never the same photos). */
-export function PhotoStrip({ photos }: { photos: Photo[] }) {
+const REEL_SIZE = 14;
+
+/**
+ * The homepage gallery reel: up to 14 photos (never the two in the hero) scrolling
+ * sideways in a loop. The set is drawn twice back to back so the loop is seamless;
+ * the second copy is hidden from screen readers and keyboard users.
+ */
+export function PhotoReel({ photos }: { photos: Photo[] }) {
   const order = useRandomOrder(photos);
-  const count = Math.max(0, Math.min(5, photos.length - 2));
+  const count = Math.max(0, Math.min(REEL_SIZE, photos.length - 2));
   if (!order) {
     return (
-      <div className="b-strip" aria-hidden="true">
-        {Array.from({ length: count }, (_, i) => (
-          <span key={i} className="b-tile" />
-        ))}
+      <div className="b-reel" aria-hidden="true">
+        <div className="b-reel-track b-reel-still">
+          {Array.from({ length: Math.min(count, 6) }, (_, i) => (
+            <span key={i} className="b-reel-item b-tile" />
+          ))}
+        </div>
       </div>
     );
   }
-  const strip = order.slice(2, 7);
+  const reel = order.slice(2, 2 + REEL_SIZE);
+  const item = (p: Photo, copy: boolean) => (
+    <Link
+      key={`${copy ? "b" : "a"}-${p.id}`}
+      className="b-reel-item"
+      href={p.albumId ? `/gallery/${p.albumId}` : "/gallery"}
+      tabIndex={copy ? -1 : undefined}
+      aria-hidden={copy || undefined}
+    >
+      <Image src={p.url} alt={copy ? "" : p.alt} fill sizes="(max-width: 520px) 45vw, 240px" />
+    </Link>
+  );
   return (
-    <div className="b-strip">
-      {strip.map((p) => (
-        <Link key={p.id} href={p.albumId ? `/gallery/${p.albumId}` : "/gallery"}>
-          <Image src={p.url} alt={p.alt} fill sizes="(max-width: 520px) 50vw, (max-width: 860px) 33vw, 230px" />
-        </Link>
-      ))}
+    <div className="b-reel">
+      {/* About 4 seconds per photo, so the speed is the same however many there are. */}
+      <div className="b-reel-track" style={{ animationDuration: `${reel.length * 4}s` }}>
+        {reel.map((p) => item(p, false))}
+        {reel.map((p) => item(p, true))}
+      </div>
     </div>
   );
 }

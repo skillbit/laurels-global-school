@@ -1,6 +1,6 @@
 import Link from "next/link";
 import SchoolLogo from "@/components/site/SchoolLogo";
-import { PhotoSlots, PhotoStrip } from "@/components/site/RandomPhotos";
+import { PhotoSlots, PhotoReel } from "@/components/site/RandomPhotos";
 import { getSiteSettings, telHref } from "@/lib/site-settings";
 import { createPublicClient } from "@/lib/supabase/public";
 import { formatEventDate, splitEvents } from "@/lib/events";
@@ -195,7 +195,7 @@ export default async function HomePage() {
               See all albums &rarr;
             </Link>
           </div>
-          <PhotoStrip photos={photos} />
+          <PhotoReel photos={photos} />
         </section>
       )}
 
