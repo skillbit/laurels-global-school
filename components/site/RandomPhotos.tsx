@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Photo } from "@/lib/gallery";
@@ -88,26 +88,152 @@ export function PhotoSlots({
 }
 
 const REEL_SIZE = 14;
+const REEL_SPEED = 40; // pixels per second
+const RESUME_AFTER = 2500; // ms of no interaction before it scrolls on its own again
 
 /**
- * The homepage gallery reel: up to 14 photos (never the two in the hero) scrolling
- * sideways in a loop. The set is drawn twice back to back so the loop is seamless;
- * the second copy is hidden from screen readers and keyboard users.
+ * The homepage gallery reel: up to 14 photos (never the two in the hero) in a strip
+ * that scrolls on its own and can also be scrolled by hand (swipe, trackpad, mouse
+ * wheel, dragging with the mouse, the arrow buttons or the keyboard). The set is drawn
+ * twice back to back so it loops seamlessly; the second copy is hidden from screen
+ * readers and keyboard users.
  */
 export function PhotoReel({ photos }: { photos: Photo[] }) {
   const order = useRandomOrder(photos);
+  const scroller = useRef<HTMLDivElement>(null);
   const count = Math.max(0, Math.min(REEL_SIZE, photos.length - 2));
+
+  useEffect(() => {
+    const el = scroller.current;
+    if (!el || !order) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let pos = el.scrollLeft;
+    let last = performance.now();
+    let pausedUntil = 0;
+    let hovering = false;
+    let frame = 0;
+
+    const half = () => el.scrollWidth / 2;
+    // Keep the position inside the first copy so scrolling never reaches an end.
+    const wrap = () => {
+      const h = half();
+      if (h <= 0) return;
+      if (el.scrollLeft >= h) el.scrollLeft -= h;
+      else if (el.scrollLeft <= 0) el.scrollLeft += h;
+    };
+    const pause = () => {
+      pausedUntil = performance.now() + RESUME_AFTER;
+    };
+
+    const tick = (now: number) => {
+      const dt = Math.min(now - last, 100);
+      last = now;
+      // The visitor scrolled it themselves: carry on from where they left it.
+      if (Math.abs(el.scrollLeft - pos) > 2) pos = el.scrollLeft;
+      if (!reduceMotion && !hovering && now > pausedUntil) {
+        pos += (REEL_SPEED * dt) / 1000;
+        const h = half();
+        if (h > 0 && pos >= h) pos -= h;
+        el.scrollLeft = pos;
+      }
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+
+    // Dragging with the mouse (touch screens scroll natively).
+    let dragStartX = 0;
+    let dragStartScroll = 0;
+    let dragging = false;
+    let moved = false;
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      dragging = true;
+      moved = false;
+      dragStartX = e.clientX;
+      dragStartScroll = el.scrollLeft;
+      pause();
+    };
+    const onPointerMove = (e: PointerEvent) => {
+      if (!dragging) return;
+      const dx = e.clientX - dragStartX;
+      if (Math.abs(dx) > 5) {
+        moved = true;
+        el.classList.add("is-dragging");
+      }
+      el.scrollLeft = dragStartScroll - dx;
+      wrap();
+      pause();
+    };
+    const onPointerUp = () => {
+      dragging = false;
+      el.classList.remove("is-dragging");
+    };
+    // A drag shouldn't count as a click on the photo underneath.
+    const onClick = (e: MouseEvent) => {
+      if (moved) {
+        e.preventDefault();
+        e.stopPropagation();
+        moved = false;
+      }
+    };
+    const onScroll = () => wrap();
+    const onEnter = () => (hovering = true);
+    const onLeave = () => {
+      hovering = false;
+      pause();
+    };
+
+    el.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+    el.addEventListener("click", onClick, true);
+    el.addEventListener("scroll", onScroll, { passive: true });
+    el.addEventListener("wheel", pause, { passive: true });
+    el.addEventListener("touchstart", pause, { passive: true });
+    el.addEventListener("focusin", pause);
+    el.addEventListener("keydown", pause);
+    el.addEventListener("mouseenter", onEnter);
+    el.addEventListener("mouseleave", onLeave);
+    return () => {
+      cancelAnimationFrame(frame);
+      el.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      el.removeEventListener("click", onClick, true);
+      el.removeEventListener("scroll", onScroll);
+      el.removeEventListener("wheel", pause);
+      el.removeEventListener("touchstart", pause);
+      el.removeEventListener("focusin", pause);
+      el.removeEventListener("keydown", pause);
+      el.removeEventListener("mouseenter", onEnter);
+      el.removeEventListener("mouseleave", onLeave);
+    };
+  }, [order]);
+
+  // Arrow buttons move by about two photos.
+  const nudge = (direction: 1 | -1) => {
+    const el = scroller.current;
+    if (!el) return;
+    const item = el.querySelector<HTMLElement>(".b-reel-item");
+    const step = item ? item.offsetWidth * 2 + 28 : 480;
+    el.dispatchEvent(new Event("keydown"));
+    el.scrollBy({ left: direction * step, behavior: "smooth" });
+  };
+
   if (!order) {
     return (
-      <div className="b-reel" aria-hidden="true">
-        <div className="b-reel-track b-reel-still">
-          {Array.from({ length: Math.min(count, 6) }, (_, i) => (
-            <span key={i} className="b-reel-item b-tile" />
-          ))}
+      <div className="b-reel-wrap">
+        <div className="b-reel" aria-hidden="true">
+          <div className="b-reel-track">
+            {Array.from({ length: Math.min(count, 6) }, (_, i) => (
+              <span key={i} className="b-reel-item b-tile" />
+            ))}
+          </div>
         </div>
       </div>
     );
   }
+
   const reel = order.slice(2, 2 + REEL_SIZE);
   const item = (p: Photo, copy: boolean) => (
     <Link
@@ -116,17 +242,30 @@ export function PhotoReel({ photos }: { photos: Photo[] }) {
       href={p.albumId ? `/gallery/${p.albumId}` : "/gallery"}
       tabIndex={copy ? -1 : undefined}
       aria-hidden={copy || undefined}
+      draggable={false}
     >
-      <Image src={p.url} alt={copy ? "" : p.alt} fill sizes="(max-width: 520px) 45vw, 240px" />
+      <Image src={p.url} alt={copy ? "" : p.alt} fill sizes="(max-width: 520px) 45vw, 240px" draggable={false} />
     </Link>
   );
+
   return (
-    <div className="b-reel">
-      {/* About 4 seconds per photo, so the speed is the same however many there are. */}
-      <div className="b-reel-track" style={{ animationDuration: `${reel.length * 4}s` }}>
-        {reel.map((p) => item(p, false))}
-        {reel.map((p) => item(p, true))}
+    <div className="b-reel-wrap">
+      <div ref={scroller} className="b-reel" tabIndex={0} role="region" aria-label="Photos from school life. Scroll sideways to see more.">
+        <div className="b-reel-track">
+          {reel.map((p) => item(p, false))}
+          {reel.map((p) => item(p, true))}
+        </div>
       </div>
+      <button type="button" className="b-reel-btn prev" aria-label="Previous photos" onClick={() => nudge(-1)}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="m15 6-6 6 6 6" />
+        </svg>
+      </button>
+      <button type="button" className="b-reel-btn next" aria-label="Next photos" onClick={() => nudge(1)}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="m9 6 6 6-6 6" />
+        </svg>
+      </button>
     </div>
   );
 }
