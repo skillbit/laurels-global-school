@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/site/PageHeader";
-import { PhotoSlots } from "@/components/site/RandomPhotos";
-import { getRandomPhotos } from "@/lib/gallery";
+import PagePhoto from "@/components/site/PagePhoto";
+import { getPageImages } from "@/lib/page-images";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "Academics",
@@ -69,7 +71,8 @@ const FACILITIES = [
 ];
 
 export default async function AcademicsPage() {
-  const photos = await getRandomPhotos(20);
+  // Set in Admin -> Page Images; empty spots show a placeholder.
+  const images = await getPageImages("academics");
 
   return (
     <>
@@ -95,9 +98,9 @@ export default async function AcademicsPage() {
         <ol className="ac-journey">
           {STAGES.map((s, i) => (
             <li className="ac-stage" key={s.title}>
-              <PhotoSlots
-                photos={photos}
-                offset={i}
+              <PagePhoto
+                url={images[`stage-${i + 1}`]}
+                alt={`${s.title} students at The Laurels Global School`}
                 className="ac-stage-photo"
                 sizes="(max-width: 860px) 100vw, 520px"
                 priority={i === 0}
@@ -140,17 +143,25 @@ export default async function AcademicsPage() {
             <p>Sport, the arts and events through the year help every child find something they love.</p>
             <div className="chip-grid">
               {ACTIVITIES.map((a) => (
-                <span className="chip" key={a}>
+                <Badge variant="tag" key={a}>
                   {a}
-                </span>
+                </Badge>
               ))}
             </div>
-            <Link className="btn btn-ghost" href="/gallery">
+            <Link className={buttonVariants({ variant: "outline" })} href="/gallery">
               See the gallery &rarr;
             </Link>
           </div>
           <div className="ac-mosaic">
-            <PhotoSlots photos={photos} offset={4} count={3} className="ac-mosaic-photo" sizes="(max-width: 860px) 50vw, 300px" />
+            {[1, 2, 3].map((n) => (
+              <PagePhoto
+                key={n}
+                url={images[`activities-${n}`]}
+                alt="Students taking part in school activities"
+                className="ac-mosaic-photo"
+                sizes="(max-width: 860px) 50vw, 300px"
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -184,10 +195,10 @@ export default async function AcademicsPage() {
             <p>Nursery to Class 10. See how admissions work, or send an enquiry and the office will call you back.</p>
           </div>
           <div className="btns">
-            <Link className="btn btn-light" href="/admissions#enquiry">
+            <Link className={buttonVariants({ variant: "light" })} href="/admissions#enquiry">
               Send an enquiry
             </Link>
-            <Link className="btn btn-outline-light" href="/admissions">
+            <Link className={buttonVariants({ variant: "outline-light" })} href="/admissions">
               How admissions work
             </Link>
           </div>

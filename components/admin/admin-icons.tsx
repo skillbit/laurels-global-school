@@ -90,6 +90,13 @@ const PATHS: Record<string, React.ReactNode> = {
       <circle cx="15" cy="7.5" r="1" />
     </>
   ),
+  pageImages: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <circle cx="9" cy="9.5" r="1.8" />
+      <path d="m21 16-5-5-9 9" />
+    </>
+  ),
   alerts: (
     <>
       <path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.7-5.1A8.5 8.5 0 1 1 21 11.5Z" />
