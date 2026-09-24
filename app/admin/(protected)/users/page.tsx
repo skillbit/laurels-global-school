@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
-import { createAdminUser, toggleAdminActive } from "./actions";
+import ConfirmDeleteButton from "@/components/admin/ConfirmDeleteButton";
+import { isProtectedAdmin } from "@/lib/protected-admins";
+import { createAdminUser, deleteAdminUser, toggleAdminActive } from "./actions";
 
 export default async function AdminUsersPage({
   searchParams,
@@ -27,7 +29,7 @@ export default async function AdminUsersPage({
       )}
       {params.success && (
         <p className="form-status ok" role="status">
-          Admin account created.
+          {params.success === "deleted" ? "Admin account deleted." : "Admin account created."}
         </p>
       )}
 
@@ -56,13 +58,25 @@ export default async function AdminUsersPage({
                 </td>
                 <td className="mono">{new Date(a.created_at).toLocaleDateString()}</td>
                 <td>
-                  <form action={toggleAdminActive}>
-                    <input type="hidden" name="id" value={a.id} />
-                    <input type="hidden" name="nextActive" value={(!a.is_active).toString()} />
-                    <button className="btn btn-ghost btn-row" type="submit">
-                      {a.is_active ? "Disable" : "Enable"}
-                    </button>
-                  </form>
+                  {isProtectedAdmin(a.email) ? (
+                    <span className="badge badge-draft">Owner</span>
+                  ) : (
+                    <>
+                      <form action={toggleAdminActive}>
+                        <input type="hidden" name="id" value={a.id} />
+                        <input type="hidden" name="nextActive" value={(!a.is_active).toString()} />
+                        <button className="btn btn-ghost btn-row" type="submit">
+                          {a.is_active ? "Disable" : "Enable"}
+                        </button>
+                      </form>
+                      <form action={deleteAdminUser}>
+                        <input type="hidden" name="id" value={a.id} />
+                        <ConfirmDeleteButton
+                          confirmText={`Delete the admin account ${a.email}? They will no longer be able to sign in. This can't be undone.`}
+                        />
+                      </form>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}
