@@ -2,6 +2,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import ConfirmDeleteButton from "@/components/admin/ConfirmDeleteButton";
 import { deleteStaff, toggleStaffPublished } from "./actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export default async function AdminStaffPage({
   searchParams,
@@ -26,7 +28,7 @@ export default async function AdminStaffPage({
           <span className="eyebrow">Admin</span>
           <h1>Staff</h1>
         </div>
-        <Link className="btn btn-primary" href="/admin/staff/new">
+        <Link className={buttonVariants()} href="/admin/staff/new">
           Add Person
         </Link>
       </div>
@@ -77,18 +79,18 @@ export default async function AdminStaffPage({
                 <td style={{ textTransform: "capitalize" }}>{p.group_label}</td>
                 <td className="mono">{p.sort_order}</td>
                 <td>
-                  <span className={`badge ${p.is_published ? "badge-published" : "badge-draft"}`}>
+                  <Badge variant={p.is_published ? "published" : "draft"}>
                     {p.is_published ? "Published" : "Draft"}
-                  </span>
+                  </Badge>
                 </td>
                 <td style={{ display: "flex", gap: ".5rem" }}>
-                  <Link className="btn btn-ghost btn-row" href={`/admin/staff/${p.id}`}>
+                  <Link className={buttonVariants({ variant: "soft", size: "sm" })} href={`/admin/staff/${p.id}`}>
                     Edit
                   </Link>
                   <form action={toggleStaffPublished}>
                     <input type="hidden" name="id" value={p.id} />
                     <input type="hidden" name="next" value={(!p.is_published).toString()} />
-                    <button className="btn btn-ghost btn-row" type="submit">
+                    <button className={buttonVariants({ variant: "outline", size: "sm" })} type="submit">
                       {p.is_published ? "Unpublish" : "Publish"}
                     </button>
                   </form>

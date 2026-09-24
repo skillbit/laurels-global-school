@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { detectProvider, parseRecipients, recipients as envRecipients } from "@/lib/whatsapp";
 import { saveAlertSettings, sendTestAlert } from "./actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export const metadata: Metadata = { title: "WhatsApp Alerts" };
 
@@ -59,8 +62,8 @@ export default async function AdminAlertsPage({
       <div className="alerts-grid">
         <form action={saveAlertSettings} className="form-card">
           <div className="field">
-            <label htmlFor="whatsapp_recipients">WhatsApp numbers that receive alerts</label>
-            <textarea
+            <Label htmlFor="whatsapp_recipients">WhatsApp numbers that receive alerts</Label>
+            <Textarea
               id="whatsapp_recipients"
               name="whatsapp_recipients"
               rows={4}
@@ -81,15 +84,15 @@ export default async function AdminAlertsPage({
               style={{ width: "auto" }}
               defaultChecked={data ? data.alerts_enabled : true}
             />
-            <label htmlFor="alerts_enabled" style={{ marginBottom: 0 }}>
+            <Label htmlFor="alerts_enabled" style={{ marginBottom: 0 }}>
               Send WhatsApp alerts
-            </label>
+            </Label>
           </div>
           <div style={{ display: "flex", gap: ".7rem", flexWrap: "wrap" }}>
-            <button className="btn btn-primary" type="submit" disabled={tableMissing}>
+            <button className={buttonVariants()} type="submit" disabled={tableMissing}>
               Save
             </button>
-            <button className="btn btn-ghost" type="submit" formAction={sendTestAlert}>
+            <button className={buttonVariants({ variant: "outline" })} type="submit" formAction={sendTestAlert}>
               Send a test message
             </button>
           </div>

@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import ConfirmDeleteButton from "@/components/admin/ConfirmDeleteButton";
 import { formatEventDate } from "@/lib/events";
 import { deleteEvent, toggleEventPublished } from "./actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const MESSAGES: Record<string, string> = {
   created: "Event created.",
@@ -29,7 +31,7 @@ export default async function AdminEventsPage({
           <span className="eyebrow">Admin</span>
           <h1>Events</h1>
         </div>
-        <Link className="btn btn-primary" href="/admin/events/new">
+        <Link className={buttonVariants()} href="/admin/events/new">
           New Event
         </Link>
       </div>
@@ -62,18 +64,18 @@ export default async function AdminEventsPage({
                 </td>
                 <td>{ev.category ?? "—"}</td>
                 <td>
-                  <span className={`badge ${ev.is_published ? "badge-published" : "badge-draft"}`}>
+                  <Badge variant={ev.is_published ? "published" : "draft"}>
                     {ev.is_published ? "Published" : "Draft"}
-                  </span>
+                  </Badge>
                 </td>
                 <td style={{ display: "flex", gap: ".5rem" }}>
-                  <Link className="btn btn-ghost btn-row" href={`/admin/events/${ev.id}`}>
+                  <Link className={buttonVariants({ variant: "soft", size: "sm" })} href={`/admin/events/${ev.id}`}>
                     Edit
                   </Link>
                   <form action={toggleEventPublished}>
                     <input type="hidden" name="id" value={ev.id} />
                     <input type="hidden" name="next" value={(!ev.is_published).toString()} />
-                    <button className="btn btn-ghost btn-row" type="submit">
+                    <button className={buttonVariants({ variant: "outline", size: "sm" })} type="submit">
                       {ev.is_published ? "Unpublish" : "Publish"}
                     </button>
                   </form>

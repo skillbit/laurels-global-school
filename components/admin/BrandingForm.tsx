@@ -4,6 +4,9 @@ import { useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { saveBranding } from "@/app/admin/(protected)/branding/actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 type Asset = "logo" | "favicon";
 
@@ -95,7 +98,7 @@ export default function BrandingForm({
   return (
     <form onSubmit={handleSubmit} className="form-card" style={{ maxWidth: "620px" }}>
       <div className="field">
-        <label htmlFor="logo">Logo — {RULES.logo.label}</label>
+        <Label htmlFor="logo">Logo — {RULES.logo.label}</Label>
         <p style={{ color: "var(--ink-soft)", fontSize: ".85rem" }}>
           Shown in the site header and footer. A square logo with a transparent background works best.
         </p>
@@ -103,16 +106,16 @@ export default function BrandingForm({
           <div style={{ display: "flex", alignItems: "center", gap: ".8rem", marginBottom: ".3rem" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={logoUrl} alt="Current logo" style={{ width: 64, height: 64, objectFit: "contain" }} />
-            <label style={{ display: "flex", alignItems: "center", gap: ".4rem", fontWeight: 400 }}>
+            <Label style={{ display: "flex", alignItems: "center", gap: ".4rem", fontWeight: 400 }}>
               <input type="checkbox" name="remove_logo" style={{ width: "auto" }} /> Remove current logo
-            </label>
+            </Label>
           </div>
         )}
-        <input id="logo" ref={logoRef} type="file" accept=".png,.jpg,.jpeg,.webp,.svg" />
+        <Input id="logo" ref={logoRef} type="file" accept=".png,.jpg,.jpeg,.webp,.svg" />
       </div>
 
       <div className="field">
-        <label htmlFor="favicon">Favicon — {RULES.favicon.label}</label>
+        <Label htmlFor="favicon">Favicon — {RULES.favicon.label}</Label>
         <p style={{ color: "var(--ink-soft)", fontSize: ".85rem" }}>
           The small icon in the browser tab. Browsers may take a while to show a new one.
         </p>
@@ -120,15 +123,15 @@ export default function BrandingForm({
           <div style={{ display: "flex", alignItems: "center", gap: ".8rem", marginBottom: ".3rem" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={faviconUrl} alt="Current favicon" style={{ width: 32, height: 32, objectFit: "contain" }} />
-            <label style={{ display: "flex", alignItems: "center", gap: ".4rem", fontWeight: 400 }}>
+            <Label style={{ display: "flex", alignItems: "center", gap: ".4rem", fontWeight: 400 }}>
               <input type="checkbox" name="remove_favicon" style={{ width: "auto" }} /> Remove current favicon
-            </label>
+            </Label>
           </div>
         )}
-        <input id="favicon" ref={faviconRef} type="file" accept=".png,.ico,.svg" />
+        <Input id="favicon" ref={faviconRef} type="file" accept=".png,.ico,.svg" />
       </div>
 
-      <button className="btn btn-primary" type="submit" disabled={saving}>
+      <button className={buttonVariants()} type="submit" disabled={saving}>
         {saving ? "Saving…" : "Save branding"}
       </button>
       {saved && (

@@ -2,6 +2,10 @@
 
 import { useActionState } from "react";
 import { submitEnquiry, type EnquiryState } from "@/app/(site)/admissions/actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const initialState: EnquiryState = { status: "idle" };
 
@@ -13,19 +17,19 @@ export default function EnquiryForm({ phones }: { phones: { label: string; href:
     <form className="form-card" action={formAction}>
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="parentName">Parent / Guardian Name</label>
-          <input id="parentName" name="parentName" type="text" required autoComplete="name" defaultValue={v.parentName} />
+          <Label htmlFor="parentName">Parent / Guardian Name</Label>
+          <Input id="parentName" name="parentName" type="text" required autoComplete="name" defaultValue={v.parentName} />
         </div>
         <div className="field">
-          <label htmlFor="phone">Phone Number</label>
-          <input id="phone" name="phone" type="tel" required autoComplete="tel" defaultValue={v.phone} />
+          <Label htmlFor="phone">Phone Number</Label>
+          <Input id="phone" name="phone" type="tel" required autoComplete="tel" defaultValue={v.phone} />
         </div>
         <div className="field">
-          <label htmlFor="childAge">Child&apos;s Age</label>
-          <input id="childAge" name="childAge" type="text" required defaultValue={v.childAge} />
+          <Label htmlFor="childAge">Child&apos;s Age</Label>
+          <Input id="childAge" name="childAge" type="text" required defaultValue={v.childAge} />
         </div>
         <div className="field">
-          <label htmlFor="grade">Applying for Grade</label>
+          <Label htmlFor="grade">Applying for Grade</Label>
           <select id="grade" name="grade" required defaultValue={v.grade ?? ""}>
             <option value="" disabled>
               Select grade
@@ -38,15 +42,15 @@ export default function EnquiryForm({ phones }: { phones: { label: string; href:
           </select>
         </div>
         <div className="field full">
-          <label htmlFor="message">Message (optional)</label>
-          <textarea id="message" name="message" placeholder="Anything else you'd like us to know" defaultValue={v.message} />
+          <Label htmlFor="message">Message (optional)</Label>
+          <Textarea id="message" name="message" placeholder="Anything else you'd like us to know" defaultValue={v.message} />
         </div>
       </div>
       <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", height: 0, overflow: "hidden" }}>
-        <label htmlFor="website">Leave this field empty</label>
-        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+        <Label htmlFor="website">Leave this field empty</Label>
+        <Input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
-      <button className="btn btn-primary" type="submit" disabled={pending}>
+      <button className={buttonVariants()} type="submit" disabled={pending}>
         {pending ? "Sending…" : "Send Enquiry"}
       </button>
       {state.status === "ok" && (

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/site/PageHeader";
+import { buttonVariants } from "@/components/ui/button";
 import { createPublicClient } from "@/lib/supabase/public";
 import { DOCUMENT_CATEGORIES, fileExtension } from "@/lib/documents";
 
@@ -44,11 +45,14 @@ export default async function DocumentsPage() {
                       <h3>{d.title}</h3>
                     </div>
                     <a
-                      className="tag"
+                      className={buttonVariants({ size: "sm" })}
                       href={client.storage.from("public").getPublicUrl(d.file_path).data.publicUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M12 4v11M7 10l5 5 5-5M5 20h14" />
+                      </svg>
                       Download {fileExtension(d.file_path)}
                     </a>
                   </div>

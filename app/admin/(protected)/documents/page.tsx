@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import ConfirmDeleteButton from "@/components/admin/ConfirmDeleteButton";
 import { categoryLabel, fileExtension } from "@/lib/documents";
 import { deleteDocument, toggleDocumentPublished } from "./actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const MESSAGES: Record<string, string> = {
   saved: "Document saved.",
@@ -30,7 +32,7 @@ export default async function AdminDocumentsPage({
           <span className="eyebrow">Admin</span>
           <h1>Documents</h1>
         </div>
-        <Link className="btn btn-primary" href="/admin/documents/new">
+        <Link className={buttonVariants()} href="/admin/documents/new">
           Upload Document
         </Link>
       </div>
@@ -75,18 +77,18 @@ export default async function AdminDocumentsPage({
                   {d.published_date}
                 </td>
                 <td>
-                  <span className={`badge ${d.is_published ? "badge-published" : "badge-draft"}`}>
+                  <Badge variant={d.is_published ? "published" : "draft"}>
                     {d.is_published ? "Published" : "Draft"}
-                  </span>
+                  </Badge>
                 </td>
                 <td style={{ display: "flex", gap: ".5rem" }}>
-                  <Link className="btn btn-ghost btn-row" href={`/admin/documents/${d.id}`}>
+                  <Link className={buttonVariants({ variant: "soft", size: "sm" })} href={`/admin/documents/${d.id}`}>
                     Edit
                   </Link>
                   <form action={toggleDocumentPublished}>
                     <input type="hidden" name="id" value={d.id} />
                     <input type="hidden" name="next" value={(!d.is_published).toString()} />
-                    <button className="btn btn-ghost btn-row" type="submit">
+                    <button className={buttonVariants({ variant: "outline", size: "sm" })} type="submit">
                       {d.is_published ? "Unpublish" : "Publish"}
                     </button>
                   </form>

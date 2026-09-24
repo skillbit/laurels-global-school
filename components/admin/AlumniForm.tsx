@@ -4,6 +4,10 @@ import { useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { saveAlumnus } from "@/app/admin/(protected)/alumni/actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 type Alumnus = {
   id: string;
@@ -87,12 +91,12 @@ export default function AlumniForm({
     <form onSubmit={handleSubmit} className="form-card" style={{ maxWidth: "620px" }}>
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="name">Name</label>
-          <input id="name" name="name" type="text" required maxLength={100} defaultValue={alumnus?.name} />
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" name="name" type="text" required maxLength={100} defaultValue={alumnus?.name} />
         </div>
         <div className="field">
-          <label htmlFor="batch_year">Batch year (optional)</label>
-          <input
+          <Label htmlFor="batch_year">Batch year (optional)</Label>
+          <Input
             id="batch_year"
             name="batch_year"
             type="number"
@@ -104,27 +108,27 @@ export default function AlumniForm({
         </div>
       </div>
       <div className="field">
-        <label htmlFor="note">Note (optional) — what they do now, or a message to students</label>
-        <textarea id="note" name="note" maxLength={1000} defaultValue={alumnus?.note ?? ""} style={{ minHeight: "110px" }} />
+        <Label htmlFor="note">Note (optional) — what they do now, or a message to students</Label>
+        <Textarea id="note" name="note" maxLength={1000} defaultValue={alumnus?.note ?? ""} style={{ minHeight: "110px" }} />
       </div>
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="sort_order">Display order (smaller shows first)</label>
-          <input id="sort_order" name="sort_order" type="number" defaultValue={alumnus?.sort_order ?? 0} />
+          <Label htmlFor="sort_order">Display order (smaller shows first)</Label>
+          <Input id="sort_order" name="sort_order" type="number" defaultValue={alumnus?.sort_order ?? 0} />
         </div>
       </div>
       <div className="field">
-        <label htmlFor="photo">Photo (optional, max 5 MB)</label>
+        <Label htmlFor="photo">Photo (optional, max 5 MB)</Label>
         {photoUrl && (
           <div style={{ display: "flex", alignItems: "center", gap: ".8rem", marginBottom: ".3rem" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={photoUrl} alt="" style={{ width: 64, height: 64, borderRadius: "50%", objectFit: "cover" }} />
-            <label style={{ display: "flex", alignItems: "center", gap: ".4rem", fontWeight: 400 }}>
+            <Label style={{ display: "flex", alignItems: "center", gap: ".4rem", fontWeight: 400 }}>
               <input type="checkbox" name="remove_photo" style={{ width: "auto" }} /> Remove current photo
-            </label>
+            </Label>
           </div>
         )}
-        <input id="photo" ref={fileRef} type="file" accept="image/*" />
+        <Input id="photo" ref={fileRef} type="file" accept="image/*" />
       </div>
       <div className="field" style={{ flexDirection: "row", alignItems: "center", gap: ".6rem" }}>
         <input
@@ -134,11 +138,11 @@ export default function AlumniForm({
           style={{ width: "auto" }}
           defaultChecked={alumnus ? alumnus.is_published : true}
         />
-        <label htmlFor="is_published" style={{ marginBottom: 0 }}>
+        <Label htmlFor="is_published" style={{ marginBottom: 0 }}>
           Published (visible on the public Alumni page)
-        </label>
+        </Label>
       </div>
-      <button className="btn btn-primary" type="submit" disabled={saving}>
+      <button className={buttonVariants()} type="submit" disabled={saving}>
         {saving ? "Saving…" : submitLabel}
       </button>
       {error && (

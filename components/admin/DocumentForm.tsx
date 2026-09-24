@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { saveDocument } from "@/app/admin/(protected)/documents/actions";
 import { DOCUMENT_ACCEPT, DOCUMENT_CATEGORIES, DOCUMENT_MAX_BYTES } from "@/lib/documents";
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 type DocumentRow = {
   id: string;
@@ -81,8 +84,8 @@ export default function DocumentForm({
   return (
     <form onSubmit={handleSubmit} className="form-card" style={{ maxWidth: "620px" }}>
       <div className="field">
-        <label htmlFor="title">Title</label>
-        <input
+        <Label htmlFor="title">Title</Label>
+        <Input
           id="title"
           name="title"
           type="text"
@@ -94,7 +97,7 @@ export default function DocumentForm({
       </div>
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="category">Category</label>
+          <Label htmlFor="category">Category</Label>
           <select id="category" name="category" required defaultValue={doc?.category ?? ""}>
             <option value="" disabled>
               Select category
@@ -107,18 +110,18 @@ export default function DocumentForm({
           </select>
         </div>
         <div className="field">
-          <label htmlFor="published_date">Date</label>
-          <input id="published_date" name="published_date" type="date" required defaultValue={doc?.published_date ?? today} />
+          <Label htmlFor="published_date">Date</Label>
+          <Input id="published_date" name="published_date" type="date" required defaultValue={doc?.published_date ?? today} />
         </div>
       </div>
       <div className="field">
-        <label htmlFor="file">{doc ? "Replace file (optional)" : "File"} — PDF, Word, Excel or image, max 10 MB</label>
+        <Label htmlFor="file">{doc ? "Replace file (optional)" : "File"} — PDF, Word, Excel or image, max 10 MB</Label>
         {fileUrl && (
           <a href={fileUrl} target="_blank" rel="noopener noreferrer" style={{ color: "var(--laurel)", fontSize: ".85rem", fontWeight: 600 }}>
             View current file &rarr;
           </a>
         )}
-        <input id="file" ref={fileRef} type="file" accept={DOCUMENT_ACCEPT} required={!doc} />
+        <Input id="file" ref={fileRef} type="file" accept={DOCUMENT_ACCEPT} required={!doc} />
       </div>
       <div className="field" style={{ flexDirection: "row", alignItems: "center", gap: ".6rem" }}>
         <input
@@ -128,11 +131,11 @@ export default function DocumentForm({
           style={{ width: "auto" }}
           defaultChecked={doc ? doc.is_published : true}
         />
-        <label htmlFor="is_published" style={{ marginBottom: 0 }}>
+        <Label htmlFor="is_published" style={{ marginBottom: 0 }}>
           Published (visible on the public Documents page)
-        </label>
+        </Label>
       </div>
-      <button className="btn btn-primary" type="submit" disabled={saving}>
+      <button className={buttonVariants()} type="submit" disabled={saving}>
         {saving ? "Saving…" : submitLabel}
       </button>
       {error && (

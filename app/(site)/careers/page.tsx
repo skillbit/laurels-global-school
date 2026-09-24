@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import PageHeader from "@/components/site/PageHeader";
 import { createPublicClient } from "@/lib/supabase/public";
 import CareerApplicationForm from "@/components/site/CareerApplicationForm";
+import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -36,7 +37,7 @@ export default async function CareersPage() {
                   <h3>{j.title}</h3>
                   {j.description && <p style={{ whiteSpace: "pre-line" }}>{j.description}</p>}
                 </div>
-                {j.department ? <span className="tag">{j.department}</span> : <span />}
+                {j.department ? <Badge variant="tag" className="ev-tag">{j.department}</Badge> : <span />}
               </div>
             ))}
           </div>

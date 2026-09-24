@@ -2,6 +2,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { deleteNotice } from "./actions";
 import ConfirmDeleteButton from "@/components/admin/ConfirmDeleteButton";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export default async function AdminNoticesPage({
   searchParams,
@@ -22,7 +24,7 @@ export default async function AdminNoticesPage({
           <span className="eyebrow">Admin</span>
           <h1>Notices</h1>
         </div>
-        <Link className="btn btn-primary" href="/admin/notices/new">
+        <Link className={buttonVariants()} href="/admin/notices/new">
           New Notice
         </Link>
       </div>
@@ -56,12 +58,12 @@ export default async function AdminNoticesPage({
                 <td>{n.title}</td>
                 <td className="mono">{n.notice_date}</td>
                 <td>
-                  <span className={`badge ${n.is_published ? "badge-published" : "badge-draft"}`}>
+                  <Badge variant={n.is_published ? "published" : "draft"}>
                     {n.is_published ? "Published" : "Draft"}
-                  </span>
+                  </Badge>
                 </td>
                 <td style={{ display: "flex", gap: ".5rem" }}>
-                  <Link className="btn btn-ghost btn-row" href={`/admin/notices/${n.id}`}>
+                  <Link className={buttonVariants({ variant: "soft", size: "sm" })} href={`/admin/notices/${n.id}`}>
                     Edit
                   </Link>
                   <form action={deleteNotice}>

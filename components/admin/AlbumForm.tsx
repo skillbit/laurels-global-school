@@ -4,6 +4,9 @@ import { useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { addAlbumPhotos, createAlbum, updateAlbum } from "@/app/admin/(protected)/gallery/actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 type Album = {
   id: string;
@@ -100,17 +103,17 @@ export default function AlbumForm({ album, submitLabel }: { album?: Album; submi
     <form onSubmit={handleSubmit} className="form-card" style={{ maxWidth: "620px" }}>
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="title">Album title</label>
-          <input id="title" name="title" type="text" required maxLength={120} defaultValue={album?.title} placeholder="e.g. Sports Day 2026" />
+          <Label htmlFor="title">Album title</Label>
+          <Input id="title" name="title" type="text" required maxLength={120} defaultValue={album?.title} placeholder="e.g. Sports Day 2026" />
         </div>
         <div className="field">
-          <label htmlFor="album_date">Date (today by default)</label>
-          <input id="album_date" name="album_date" type="date" required defaultValue={album?.album_date ?? today} />
+          <Label htmlFor="album_date">Date (today by default)</Label>
+          <Input id="album_date" name="album_date" type="date" required defaultValue={album?.album_date ?? today} />
         </div>
       </div>
       <div className="field">
-        <label htmlFor="photos">{album ? "Add more photos" : "Photos"} — select several at once, max 10 MB each</label>
-        <input id="photos" ref={fileRef} type="file" accept="image/*" multiple />
+        <Label htmlFor="photos">{album ? "Add more photos" : "Photos"} — select several at once, max 10 MB each</Label>
+        <Input id="photos" ref={fileRef} type="file" accept="image/*" multiple />
       </div>
       <div className="field" style={{ flexDirection: "row", alignItems: "center", gap: ".6rem" }}>
         <input
@@ -120,11 +123,11 @@ export default function AlbumForm({ album, submitLabel }: { album?: Album; submi
           style={{ width: "auto" }}
           defaultChecked={album ? album.is_published : true}
         />
-        <label htmlFor="is_published" style={{ marginBottom: 0 }}>
+        <Label htmlFor="is_published" style={{ marginBottom: 0 }}>
           Published (visible on the public Gallery page)
-        </label>
+        </Label>
       </div>
-      <button className="btn btn-primary" type="submit" disabled={busy !== null}>
+      <button className={buttonVariants()} type="submit" disabled={busy !== null}>
         {busy ?? submitLabel}
       </button>
       {saved && (

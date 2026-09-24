@@ -4,6 +4,9 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import SchoolLogo from "@/components/site/SchoolLogo";
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -49,8 +52,8 @@ export default function AdminLoginPage() {
         <p className="sub">Use the email and password you were given.</p>
 
         <div className="field">
-          <label htmlFor="email">Email</label>
-          <input
+          <Label htmlFor="email">Email</Label>
+          <Input
             id="email"
             type="email"
             required
@@ -60,9 +63,9 @@ export default function AdminLoginPage() {
           />
         </div>
         <div className="field">
-          <label htmlFor="password">Password</label>
+          <Label htmlFor="password">Password</Label>
           <div className="field-toggle-wrap">
-            <input
+            <Input
               id="password"
               type={showPassword ? "text" : "password"}
               required
@@ -91,7 +94,7 @@ export default function AdminLoginPage() {
           </div>
         </div>
 
-        <button className="btn btn-primary" type="submit" disabled={loading} style={{ width: "100%", justifyContent: "center" }}>
+        <button className={buttonVariants()} type="submit" disabled={loading} style={{ width: "100%", justifyContent: "center" }}>
           {loading ? "Signing in…" : "Sign In"}
         </button>
 

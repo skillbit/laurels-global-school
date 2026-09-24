@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = { title: "Page not found" };
 
@@ -11,13 +12,13 @@ export default function NotFound() {
         <h1>We couldn&apos;t find that page</h1>
         <p className="ph-intro">The link may be old or mistyped. Try one of these instead.</p>
         <div className="nf-links">
-          <Link className="btn btn-primary" href="/">
+          <Link className={buttonVariants()} href="/">
             Go to the homepage
           </Link>
-          <Link className="btn btn-ghost" href="/admissions">
+          <Link className={buttonVariants({ variant: "outline" })} href="/admissions">
             Admissions
           </Link>
-          <Link className="btn btn-ghost" href="/contact">
+          <Link className={buttonVariants({ variant: "outline" })} href="/contact">
             Contact us
           </Link>
         </div>

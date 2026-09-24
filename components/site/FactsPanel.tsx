@@ -1,4 +1,5 @@
 import { getSiteSettings, telHref } from "@/lib/site-settings";
+import { buttonVariants } from "@/components/ui/button";
 
 export default async function FactsPanel() {
   const { quickFacts, callPhone } = await getSiteSettings();
@@ -12,7 +13,7 @@ export default async function FactsPanel() {
           <span className="mono">{f.value}</span>
         </div>
       ))}
-      <a className="btn btn-gold" href={telHref(callPhone)}>
+      <a className={buttonVariants({ variant: "light" })} href={telHref(callPhone)}>
         Call for Admissions
       </a>
     </div>

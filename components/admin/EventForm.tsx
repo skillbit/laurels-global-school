@@ -1,3 +1,7 @@
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 type EventRow = {
   id: string;
   title: string;
@@ -20,22 +24,22 @@ export default function EventForm({
   return (
     <form action={action} className="form-card" style={{ maxWidth: "620px" }}>
       <div className="field">
-        <label htmlFor="title">Title</label>
-        <input id="title" name="title" type="text" required maxLength={150} defaultValue={event?.title} />
+        <Label htmlFor="title">Title</Label>
+        <Input id="title" name="title" type="text" required maxLength={150} defaultValue={event?.title} />
       </div>
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="event_date">Start date</label>
-          <input id="event_date" name="event_date" type="date" required defaultValue={event?.event_date} />
+          <Label htmlFor="event_date">Start date</Label>
+          <Input id="event_date" name="event_date" type="date" required defaultValue={event?.event_date} />
         </div>
         <div className="field">
-          <label htmlFor="end_date">End date (optional, for multi-day events)</label>
-          <input id="end_date" name="end_date" type="date" defaultValue={event?.end_date ?? ""} />
+          <Label htmlFor="end_date">End date (optional, for multi-day events)</Label>
+          <Input id="end_date" name="end_date" type="date" defaultValue={event?.end_date ?? ""} />
         </div>
       </div>
       <div className="field">
-        <label htmlFor="category">Category (optional)</label>
-        <input
+        <Label htmlFor="category">Category (optional)</Label>
+        <Input
           id="category"
           name="category"
           type="text"
@@ -51,8 +55,8 @@ export default function EventForm({
         </datalist>
       </div>
       <div className="field">
-        <label htmlFor="description">Description (optional)</label>
-        <textarea
+        <Label htmlFor="description">Description (optional)</Label>
+        <Textarea
           id="description"
           name="description"
           maxLength={2000}
@@ -68,11 +72,11 @@ export default function EventForm({
           style={{ width: "auto" }}
           defaultChecked={event ? event.is_published : true}
         />
-        <label htmlFor="is_published" style={{ marginBottom: 0 }}>
+        <Label htmlFor="is_published" style={{ marginBottom: 0 }}>
           Published (visible on the public Events page)
-        </label>
+        </Label>
       </div>
-      <button className="btn btn-primary" type="submit">
+      <button className={buttonVariants()} type="submit">
         {submitLabel}
       </button>
     </form>

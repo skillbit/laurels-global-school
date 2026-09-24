@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function AdminNotFound() {
   return (
@@ -7,7 +8,7 @@ export default function AdminNotFound() {
       <h1>That item doesn&apos;t exist</h1>
       <p className="ph-intro">It may have been deleted, or the link is out of date.</p>
       <div className="nf-links">
-        <Link className="btn btn-primary" href="/admin">
+        <Link className={buttonVariants()} href="/admin">
           Back to the dashboard
         </Link>
       </div>

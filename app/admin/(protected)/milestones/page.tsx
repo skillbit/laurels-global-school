@@ -2,6 +2,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import ConfirmDeleteButton from "@/components/admin/ConfirmDeleteButton";
 import { deleteMilestone, toggleMilestonePublished } from "./actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const MESSAGES: Record<string, string> = {
   created: "Milestone added.",
@@ -28,7 +30,7 @@ export default async function AdminMilestonesPage({
           <span className="eyebrow">Admin</span>
           <h1>History</h1>
         </div>
-        <Link className="btn btn-primary" href="/admin/milestones/new">
+        <Link className={buttonVariants()} href="/admin/milestones/new">
           Add Milestone
         </Link>
       </div>
@@ -74,18 +76,18 @@ export default async function AdminMilestonesPage({
                   )}
                 </td>
                 <td>
-                  <span className={`badge ${m.is_published ? "badge-published" : "badge-draft"}`}>
+                  <Badge variant={m.is_published ? "published" : "draft"}>
                     {m.is_published ? "Published" : "Draft"}
-                  </span>
+                  </Badge>
                 </td>
                 <td style={{ display: "flex", gap: ".5rem" }}>
-                  <Link className="btn btn-ghost btn-row" href={`/admin/milestones/${m.id}`}>
+                  <Link className={buttonVariants({ variant: "soft", size: "sm" })} href={`/admin/milestones/${m.id}`}>
                     Edit
                   </Link>
                   <form action={toggleMilestonePublished}>
                     <input type="hidden" name="id" value={m.id} />
                     <input type="hidden" name="next" value={(!m.is_published).toString()} />
-                    <button className="btn btn-ghost btn-row" type="submit">
+                    <button className={buttonVariants({ variant: "outline", size: "sm" })} type="submit">
                       {m.is_published ? "Unpublish" : "Publish"}
                     </button>
                   </form>

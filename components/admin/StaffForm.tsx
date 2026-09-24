@@ -4,6 +4,10 @@ import { useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { saveStaff } from "@/app/admin/(protected)/staff/actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 type Staff = {
   id: string;
@@ -88,41 +92,41 @@ export default function StaffForm({
     <form onSubmit={handleSubmit} className="form-card" style={{ maxWidth: "620px" }}>
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="name">Name</label>
-          <input id="name" name="name" type="text" required maxLength={100} defaultValue={staff?.name} />
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" name="name" type="text" required maxLength={100} defaultValue={staff?.name} />
         </div>
         <div className="field">
-          <label htmlFor="role">Role / Designation</label>
-          <input id="role" name="role" type="text" required maxLength={100} defaultValue={staff?.role} placeholder="e.g. Principal" />
+          <Label htmlFor="role">Role / Designation</Label>
+          <Input id="role" name="role" type="text" required maxLength={100} defaultValue={staff?.role} placeholder="e.g. Principal" />
         </div>
         <div className="field">
-          <label htmlFor="group_label">Group</label>
+          <Label htmlFor="group_label">Group</Label>
           <select id="group_label" name="group_label" defaultValue={staff?.group_label ?? "leadership"}>
             <option value="leadership">Leadership</option>
             <option value="faculty">Faculty</option>
           </select>
         </div>
         <div className="field">
-          <label htmlFor="sort_order">Display order (smaller shows first)</label>
-          <input id="sort_order" name="sort_order" type="number" defaultValue={staff?.sort_order ?? 0} />
+          <Label htmlFor="sort_order">Display order (smaller shows first)</Label>
+          <Input id="sort_order" name="sort_order" type="number" defaultValue={staff?.sort_order ?? 0} />
         </div>
       </div>
       <div className="field">
-        <label htmlFor="bio">Short bio (optional)</label>
-        <textarea id="bio" name="bio" maxLength={1000} defaultValue={staff?.bio ?? ""} style={{ minHeight: "110px" }} />
+        <Label htmlFor="bio">Short bio (optional)</Label>
+        <Textarea id="bio" name="bio" maxLength={1000} defaultValue={staff?.bio ?? ""} style={{ minHeight: "110px" }} />
       </div>
       <div className="field">
-        <label htmlFor="photo">Photo (optional, max 5 MB)</label>
+        <Label htmlFor="photo">Photo (optional, max 5 MB)</Label>
         {photoUrl && (
           <div style={{ display: "flex", alignItems: "center", gap: ".8rem", marginBottom: ".3rem" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={photoUrl} alt="" style={{ width: 64, height: 64, borderRadius: "50%", objectFit: "cover" }} />
-            <label style={{ display: "flex", alignItems: "center", gap: ".4rem", fontWeight: 400 }}>
+            <Label style={{ display: "flex", alignItems: "center", gap: ".4rem", fontWeight: 400 }}>
               <input type="checkbox" name="remove_photo" style={{ width: "auto" }} /> Remove current photo
-            </label>
+            </Label>
           </div>
         )}
-        <input id="photo" ref={fileRef} type="file" accept="image/*" />
+        <Input id="photo" ref={fileRef} type="file" accept="image/*" />
       </div>
       <div className="field" style={{ flexDirection: "row", alignItems: "center", gap: ".6rem" }}>
         <input
@@ -132,11 +136,11 @@ export default function StaffForm({
           style={{ width: "auto" }}
           defaultChecked={staff ? staff.is_published : true}
         />
-        <label htmlFor="is_published" style={{ marginBottom: 0 }}>
+        <Label htmlFor="is_published" style={{ marginBottom: 0 }}>
           Published (visible on the public About page)
-        </label>
+        </Label>
       </div>
-      <button className="btn btn-primary" type="submit" disabled={saving}>
+      <button className={buttonVariants()} type="submit" disabled={saving}>
         {saving ? "Saving…" : submitLabel}
       </button>
       {error && (

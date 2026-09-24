@@ -4,6 +4,7 @@ import JsonLd from "@/components/site/JsonLd";
 import { SITE_URL } from "@/lib/site-url";
 import { createPublicClient } from "@/lib/supabase/public";
 import { formatEventDate, splitEvents, type SchoolEvent } from "@/lib/events";
+import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "Events",
@@ -28,7 +29,7 @@ function EventList({ events }: { events: SchoolEvent[] }) {
             <p className="mono notice-when">{formatEventDate(e.event_date, e.end_date)}</p>
             {e.description && <p>{e.description}</p>}
           </div>
-          {e.category ? <span className="tag">{e.category}</span> : <span />}
+          {e.category ? <Badge variant="tag" className="ev-tag">{e.category}</Badge> : <span />}
         </div>
       ))}
     </div>

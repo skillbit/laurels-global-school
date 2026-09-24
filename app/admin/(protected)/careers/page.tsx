@@ -2,6 +2,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import ConfirmDeleteButton from "@/components/admin/ConfirmDeleteButton";
 import { deleteJobPosting, toggleJobPostingActive } from "./actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const MESSAGES: Record<string, string> = {
   created: "Job posting created.",
@@ -29,10 +31,10 @@ export default async function AdminCareersPage({
           <h1>Careers</h1>
         </div>
         <div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap" }}>
-          <Link className="btn btn-ghost" href="/admin/careers/applications">
+          <Link className={buttonVariants({ variant: "outline" })} href="/admin/careers/applications">
             View Applications
           </Link>
-          <Link className="btn btn-primary" href="/admin/careers/new">
+          <Link className={buttonVariants()} href="/admin/careers/new">
             New Job Posting
           </Link>
         </div>
@@ -67,18 +69,18 @@ export default async function AdminCareersPage({
                   {p.posted_date}
                 </td>
                 <td>
-                  <span className={`badge ${p.is_active ? "badge-published" : "badge-draft"}`}>
+                  <Badge variant={p.is_active ? "published" : "draft"}>
                     {p.is_active ? "Open" : "Closed"}
-                  </span>
+                  </Badge>
                 </td>
                 <td style={{ display: "flex", gap: ".5rem" }}>
-                  <Link className="btn btn-ghost btn-row" href={`/admin/careers/${p.id}`}>
+                  <Link className={buttonVariants({ variant: "soft", size: "sm" })} href={`/admin/careers/${p.id}`}>
                     Edit
                   </Link>
                   <form action={toggleJobPostingActive}>
                     <input type="hidden" name="id" value={p.id} />
                     <input type="hidden" name="next" value={(!p.is_active).toString()} />
-                    <button className="btn btn-ghost btn-row" type="submit">
+                    <button className={buttonVariants({ variant: "outline", size: "sm" })} type="submit">
                       {p.is_active ? "Close" : "Reopen"}
                     </button>
                   </form>

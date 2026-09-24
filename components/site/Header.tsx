@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SchoolLogo from "./SchoolLogo";
 import { NAV, isActive, isGroup } from "./nav-links";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function Header({ logoUrl, phoneHref }: { logoUrl: string | null; phoneHref: string }) {
   const pathname = usePathname();
@@ -91,10 +93,10 @@ export default function Header({ logoUrl, phoneHref }: { logoUrl: string | null;
           )}
         </nav>
         <div className="navcta">
-          <a className="btn btn-ghost sm-hide" href={phoneHref}>
+          <a className={cn(buttonVariants({ variant: "outline" }), "sm-hide")} href={phoneHref}>
             Call
           </a>
-          <Link className="btn btn-primary" href="/admissions#enquiry">
+          <Link className={cn(buttonVariants(), "gap-0")} href="/admissions#enquiry">
             Apply<span className="sm-hide">&nbsp;now</span>
           </Link>
           <button
@@ -139,7 +141,7 @@ export default function Header({ logoUrl, phoneHref }: { logoUrl: string | null;
                 </Link>
               )
             )}
-            <a className="btn btn-ghost" href={phoneHref}>
+            <a className={buttonVariants({ variant: "outline" })} href={phoneHref}>
               Call the office
             </a>
           </div>

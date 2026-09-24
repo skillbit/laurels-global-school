@@ -1,3 +1,7 @@
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 type Milestone = {
   id: string;
   year: number;
@@ -21,8 +25,8 @@ export default function MilestoneForm({
     <form action={action} className="form-card" style={{ maxWidth: "620px" }}>
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="year">Year</label>
-          <input
+          <Label htmlFor="year">Year</Label>
+          <Input
             id="year"
             name="year"
             type="number"
@@ -34,8 +38,8 @@ export default function MilestoneForm({
           />
         </div>
         <div className="field">
-          <label htmlFor="title">Title</label>
-          <input
+          <Label htmlFor="title">Title</Label>
+          <Input
             id="title"
             name="title"
             type="text"
@@ -47,8 +51,8 @@ export default function MilestoneForm({
         </div>
       </div>
       <div className="field">
-        <label htmlFor="description">Short description (optional)</label>
-        <textarea
+        <Label htmlFor="description">Short description (optional)</Label>
+        <Textarea
           id="description"
           name="description"
           maxLength={600}
@@ -64,11 +68,11 @@ export default function MilestoneForm({
           style={{ width: "auto" }}
           defaultChecked={milestone ? milestone.is_published : true}
         />
-        <label htmlFor="is_published" style={{ marginBottom: 0 }}>
+        <Label htmlFor="is_published" style={{ marginBottom: 0 }}>
           Published (visible on the public About page)
-        </label>
+        </Label>
       </div>
-      <button className="btn btn-primary" type="submit">
+      <button className={buttonVariants()} type="submit">
         {submitLabel}
       </button>
     </form>

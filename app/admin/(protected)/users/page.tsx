@@ -2,6 +2,10 @@ import { createClient } from "@/lib/supabase/server";
 import ConfirmDeleteButton from "@/components/admin/ConfirmDeleteButton";
 import { isProtectedAdmin } from "@/lib/protected-admins";
 import { createAdminUser, deleteAdminUser, toggleAdminActive } from "./actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 export default async function AdminUsersPage({
   searchParams,
@@ -52,20 +56,20 @@ export default async function AdminUsersPage({
                 <td>{a.email}</td>
                 <td>{a.full_name ?? "—"}</td>
                 <td>
-                  <span className={`badge ${a.is_active ? "badge-published" : "badge-draft"}`}>
+                  <Badge variant={a.is_active ? "published" : "draft"}>
                     {a.is_active ? "Active" : "Disabled"}
-                  </span>
+                  </Badge>
                 </td>
                 <td className="mono">{new Date(a.created_at).toLocaleDateString()}</td>
                 <td>
                   {isProtectedAdmin(a.email) ? (
-                    <span className="badge badge-draft">Owner</span>
+                    <Badge variant="draft">Owner</Badge>
                   ) : (
                     <>
                       <form action={toggleAdminActive}>
                         <input type="hidden" name="id" value={a.id} />
                         <input type="hidden" name="nextActive" value={(!a.is_active).toString()} />
-                        <button className="btn btn-ghost btn-row" type="submit">
+                        <button className={buttonVariants({ variant: "outline", size: "sm" })} type="submit">
                           {a.is_active ? "Disable" : "Enable"}
                         </button>
                       </form>
@@ -93,18 +97,18 @@ export default async function AdminUsersPage({
       </div>
       <form action={createAdminUser} className="form-card" style={{ maxWidth: "480px" }}>
         <div className="field">
-          <label htmlFor="fullName">Full Name</label>
-          <input id="fullName" name="fullName" type="text" />
+          <Label htmlFor="fullName">Full Name</Label>
+          <Input id="fullName" name="fullName" type="text" />
         </div>
         <div className="field">
-          <label htmlFor="email">Email</label>
-          <input id="email" name="email" type="email" required />
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" name="email" type="email" required />
         </div>
         <div className="field">
-          <label htmlFor="password">Temporary Password</label>
-          <input id="password" name="password" type="text" required minLength={12} />
+          <Label htmlFor="password">Temporary Password</Label>
+          <Input id="password" name="password" type="text" required minLength={12} />
         </div>
-        <button className="btn btn-primary" type="submit">
+        <button className={buttonVariants()} type="submit">
           Create Admin Account
         </button>
         <p className="form-note">Share this password with them directly so they can log in.</p>

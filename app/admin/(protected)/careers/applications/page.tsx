@@ -2,6 +2,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import ConfirmDeleteButton from "@/components/admin/ConfirmDeleteButton";
 import { deleteApplication, toggleApplicationStatus } from "./actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export default async function AdminApplicationsPage() {
   const supabase = await createClient();
@@ -91,13 +93,13 @@ export default async function AdminApplicationsPage() {
                     )}
                   </td>
                   <td>
-                    <span className={`badge ${isNew ? "badge-new" : "badge-draft"}`}>{isNew ? "New" : "Reviewed"}</span>
+                    <Badge variant={isNew ? "new" : "draft"}>{isNew ? "New" : "Reviewed"}</Badge>
                   </td>
                   <td style={{ display: "flex", gap: ".5rem" }}>
                     <form action={toggleApplicationStatus}>
                       <input type="hidden" name="id" value={a.id} />
                       <input type="hidden" name="next" value={isNew ? "reviewed" : "new"} />
-                      <button type="submit" className="btn btn-ghost btn-row">
+                      <button type="submit" className={buttonVariants({ variant: "outline", size: "sm" })}>
                         {isNew ? "Mark reviewed" : "Mark new"}
                       </button>
                     </form>

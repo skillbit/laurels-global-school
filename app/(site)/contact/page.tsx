@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/site/PageHeader";
 import { getSiteSettings, telHref } from "@/lib/site-settings";
+import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -64,7 +65,7 @@ export default async function ContactPage() {
                 {s.officeHours}
               </div>
             </div>
-            <a className="btn btn-primary" href={telHref(s.callPhone)} style={{ alignSelf: "flex-start" }}>
+            <a className={buttonVariants()} href={telHref(s.callPhone)} style={{ alignSelf: "flex-start" }}>
               Call Now
             </a>
           </div>
@@ -79,10 +80,10 @@ export default async function ContactPage() {
             <div className="map-actions">
               <span>{s.address}</span>
               <div className="row">
-                <a className="btn btn-ghost btn-row" href={mapsLink} target="_blank" rel="noopener noreferrer">
+                <a className={buttonVariants({ variant: "outline", size: "sm" })} href={mapsLink} target="_blank" rel="noopener noreferrer">
                   Open in Google Maps
                 </a>
-                <a className="btn btn-primary btn-row" href={directionsLink} target="_blank" rel="noopener noreferrer">
+                <a className={buttonVariants({ size: "sm" })} href={directionsLink} target="_blank" rel="noopener noreferrer">
                   Get directions
                 </a>
               </div>

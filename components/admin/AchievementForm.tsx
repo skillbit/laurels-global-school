@@ -4,6 +4,10 @@ import { useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { saveAchievement } from "@/app/admin/(protected)/achievements/actions";
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 type Achievement = {
   id: string;
@@ -86,8 +90,8 @@ export default function AchievementForm({
   return (
     <form onSubmit={handleSubmit} className="form-card" style={{ maxWidth: "620px" }}>
       <div className="field">
-        <label htmlFor="title">Title</label>
-        <input
+        <Label htmlFor="title">Title</Label>
+        <Input
           id="title"
           name="title"
           type="text"
@@ -99,8 +103,8 @@ export default function AchievementForm({
       </div>
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="achievement_date">Date</label>
-          <input
+          <Label htmlFor="achievement_date">Date</Label>
+          <Input
             id="achievement_date"
             name="achievement_date"
             type="date"
@@ -109,8 +113,8 @@ export default function AchievementForm({
           />
         </div>
         <div className="field">
-          <label htmlFor="category">Category (optional)</label>
-          <input
+          <Label htmlFor="category">Category (optional)</Label>
+          <Input
             id="category"
             name="category"
             type="text"
@@ -127,8 +131,8 @@ export default function AchievementForm({
         </div>
       </div>
       <div className="field">
-        <label htmlFor="description">Description (optional)</label>
-        <textarea
+        <Label htmlFor="description">Description (optional)</Label>
+        <Textarea
           id="description"
           name="description"
           maxLength={1000}
@@ -137,17 +141,17 @@ export default function AchievementForm({
         />
       </div>
       <div className="field">
-        <label htmlFor="photo">Photo (optional, max 5 MB)</label>
+        <Label htmlFor="photo">Photo (optional, max 5 MB)</Label>
         {photoUrl && (
           <div style={{ display: "flex", alignItems: "center", gap: ".8rem", marginBottom: ".3rem" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={photoUrl} alt="" style={{ width: 96, height: 64, borderRadius: 8, objectFit: "cover" }} />
-            <label style={{ display: "flex", alignItems: "center", gap: ".4rem", fontWeight: 400 }}>
+            <Label style={{ display: "flex", alignItems: "center", gap: ".4rem", fontWeight: 400 }}>
               <input type="checkbox" name="remove_photo" style={{ width: "auto" }} /> Remove current photo
-            </label>
+            </Label>
           </div>
         )}
-        <input id="photo" ref={fileRef} type="file" accept="image/*" />
+        <Input id="photo" ref={fileRef} type="file" accept="image/*" />
       </div>
       <div className="field" style={{ flexDirection: "row", alignItems: "center", gap: ".6rem" }}>
         <input
@@ -157,11 +161,11 @@ export default function AchievementForm({
           style={{ width: "auto" }}
           defaultChecked={achievement ? achievement.is_published : true}
         />
-        <label htmlFor="is_published" style={{ marginBottom: 0 }}>
+        <Label htmlFor="is_published" style={{ marginBottom: 0 }}>
           Published (visible on the public Achievements page)
-        </label>
+        </Label>
       </div>
-      <button className="btn btn-primary" type="submit" disabled={saving}>
+      <button className={buttonVariants()} type="submit" disabled={saving}>
         {saving ? "Saving…" : submitLabel}
       </button>
       {error && (

@@ -5,6 +5,8 @@ import { getSiteSettings, telHref } from "@/lib/site-settings";
 import { createPublicClient } from "@/lib/supabase/public";
 import { formatEventDate, splitEvents } from "@/lib/events";
 import { getRandomPhotos } from "@/lib/gallery";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 // Refreshed hourly so the upcoming-events list drops events once they have passed.
 export const revalidate = 3600;
@@ -94,8 +96,8 @@ export default async function HomePage() {
       .eq("is_published", true)
       .order("notice_date", { ascending: false })
       .limit(4),
-    // A random pick from every album; shuffled again in the browser on each visit.
-    getRandomPhotos(30),
+    // Every album's photos; shuffled in the browser on each visit.
+    getRandomPhotos(),
   ]);
   const upcomingEvents = splitEvents(eventRows ?? []).upcoming.slice(0, 3);
   const latestNotices = notices ?? [];
@@ -139,10 +141,10 @@ export default async function HomePage() {
           </h1>
           <p className="b-lead">{settings.heroQuote}</p>
           <div className="h-cta-row">
-            <Link className="btn btn-primary btn-lg" href="/admissions#enquiry">
+            <Link className={buttonVariants({ size: "lg" })} href="/admissions#enquiry">
               Admissions Open
             </Link>
-            <Link className="btn btn-ghost btn-lg" href="/contact">
+            <Link className={buttonVariants({ variant: "outline", size: "lg" })} href="/contact">
               Visit the Campus
             </Link>
           </div>
@@ -182,14 +184,14 @@ export default async function HomePage() {
       </div>
 
       {/* ---------- Gallery strip ---------- */}
-      {photos.length >= 3 && (
+      {photos.length >= 5 && (
         <section className="wrap">
           <div className="b-section-head">
             <div className="section-head" style={{ marginBottom: 0 }}>
               <span className="eyebrow">Gallery</span>
               <h2>Life at Laurels</h2>
             </div>
-            <Link className="btn btn-ghost" href="/gallery">
+            <Link className={buttonVariants({ variant: "outline" })} href="/gallery">
               See all albums &rarr;
             </Link>
           </div>
@@ -211,7 +213,7 @@ export default async function HomePage() {
               <span className="pill">CBSE</span>
               <span>Central Board of Secondary Education framework</span>
             </div>
-            <Link className="btn btn-ghost" href="/academics">
+            <Link className={buttonVariants({ variant: "outline" })} href="/academics">
               Curriculum &amp; facilities &rarr;
             </Link>
           </div>
@@ -239,7 +241,7 @@ export default async function HomePage() {
             <span className="eyebrow">Why Laurels</span>
             <h2>A School Built Around the Child</h2>
             <p>Four things we teach alongside every subject.</p>
-            <Link className="btn btn-light" href="/about">
+            <Link className={buttonVariants({ variant: "light" })} href="/about">
               About the school &rarr;
             </Link>
           </div>
@@ -266,7 +268,7 @@ export default async function HomePage() {
                 <span className="eyebrow">Events</span>
                 <h2>Coming Up</h2>
               </div>
-              <Link className="btn btn-ghost" href="/events">
+              <Link className={buttonVariants({ variant: "outline" })} href="/events">
                 All events &rarr;
               </Link>
             </div>
@@ -290,7 +292,7 @@ export default async function HomePage() {
                           </p>
                         )}
                       </div>
-                      {e.category ? <span className="tag">{e.category}</span> : <span />}
+                      {e.category ? <Badge variant="tag" className="ev-tag">{e.category}</Badge> : <span />}
                     </div>
                   );
                 })}
@@ -342,10 +344,10 @@ export default async function HomePage() {
               we&apos;ll get back to you.
             </p>
             <div className="btns">
-              <Link className="btn btn-light" href="/admissions#enquiry">
+              <Link className={buttonVariants({ variant: "light" })} href="/admissions#enquiry">
                 Send an enquiry
               </Link>
-              <Link className="btn btn-outline-light" href="/admissions">
+              <Link className={buttonVariants({ variant: "outline-light" })} href="/admissions">
                 How admissions work
               </Link>
             </div>

@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { deleteEnquiry, toggleEnquiryStatus } from "./actions";
 import ConfirmDeleteButton from "@/components/admin/ConfirmDeleteButton";
+import { buttonVariants } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export default async function AdminEnquiriesPage() {
   const supabase = await createClient();
@@ -64,15 +66,15 @@ export default async function AdminEnquiriesPage() {
                     {e.child_age && <div style={{ color: "var(--ink-soft)", fontSize: ".85rem" }}>Age {e.child_age}</div>}
                   </td>
                   <td>
-                    <span className={`badge ${isNew ? "badge-new" : "badge-draft"}`}>
+                    <Badge variant={isNew ? "new" : "draft"}>
                       {isNew ? "New" : "Contacted"}
-                    </span>
+                    </Badge>
                   </td>
                   <td style={{ display: "flex", gap: ".5rem" }}>
                     <form action={toggleEnquiryStatus}>
                       <input type="hidden" name="id" value={e.id} />
                       <input type="hidden" name="next" value={isNew ? "contacted" : "new"} />
-                      <button type="submit" className="btn btn-ghost btn-row">
+                      <button type="submit" className={buttonVariants({ variant: "outline", size: "sm" })}>
                         {isNew ? "Mark contacted" : "Mark new"}
                       </button>
                     </form>

@@ -1,3 +1,7 @@
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 type JobPosting = {
   id: string;
   title: string;
@@ -21,8 +25,8 @@ export default function JobPostingForm({
   return (
     <form action={action} className="form-card" style={{ maxWidth: "620px" }}>
       <div className="field">
-        <label htmlFor="title">Job title</label>
-        <input
+        <Label htmlFor="title">Job title</Label>
+        <Input
           id="title"
           name="title"
           type="text"
@@ -34,17 +38,17 @@ export default function JobPostingForm({
       </div>
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="department">Department (optional)</label>
-          <input id="department" name="department" type="text" maxLength={80} defaultValue={posting?.department ?? ""} />
+          <Label htmlFor="department">Department (optional)</Label>
+          <Input id="department" name="department" type="text" maxLength={80} defaultValue={posting?.department ?? ""} />
         </div>
         <div className="field">
-          <label htmlFor="posted_date">Posted on</label>
-          <input id="posted_date" name="posted_date" type="date" defaultValue={posting?.posted_date ?? today} />
+          <Label htmlFor="posted_date">Posted on</Label>
+          <Input id="posted_date" name="posted_date" type="date" defaultValue={posting?.posted_date ?? today} />
         </div>
       </div>
       <div className="field">
-        <label htmlFor="description">Description, qualifications and how to apply (optional)</label>
-        <textarea
+        <Label htmlFor="description">Description, qualifications and how to apply (optional)</Label>
+        <Textarea
           id="description"
           name="description"
           maxLength={4000}
@@ -60,11 +64,11 @@ export default function JobPostingForm({
           style={{ width: "auto" }}
           defaultChecked={posting ? posting.is_active : true}
         />
-        <label htmlFor="is_active" style={{ marginBottom: 0 }}>
+        <Label htmlFor="is_active" style={{ marginBottom: 0 }}>
           Open (listed on the public Careers page)
-        </label>
+        </Label>
       </div>
-      <button className="btn btn-primary" type="submit">
+      <button className={buttonVariants()} type="submit">
         {submitLabel}
       </button>
     </form>

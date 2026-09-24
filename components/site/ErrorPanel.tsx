@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 // Shared "something went wrong" panel used by the public and admin error boundaries.
 export default function ErrorPanel({
@@ -26,10 +27,10 @@ export default function ErrorPanel({
         <h1>This page didn&apos;t load properly</h1>
         <p className="ph-intro">It&apos;s on our side. Please try again, or call the school office if it keeps happening.</p>
         <div className="nf-links">
-          <button className="btn btn-primary" onClick={() => retry()}>
+          <button className={buttonVariants()} onClick={() => retry()}>
             Try again
           </button>
-          <Link className="btn btn-ghost" href={homeHref}>
+          <Link className={buttonVariants({ variant: "outline" })} href={homeHref}>
             {homeLabel}
           </Link>
         </div>
