@@ -1,7 +1,7 @@
 import "server-only";
 import { after } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { cleanLine, sendWhatsApp } from "@/lib/whatsapp";
+import { cleanLine, parseRecipients, recipients, sendWhatsApp, type Recipient, type WhatsAppResult } from "@/lib/whatsapp";
 import { SITE_URL } from "@/lib/site-url";
 
 // If a burst of submissions arrives (a spam flood), stop alerting so the office
@@ -22,6 +22,37 @@ async function isFlood(table: "enquiries" | "career_applications"): Promise<bool
   }
 }
 
+export type AlertSettings = { enabled: boolean; recipientsText: string; recipients: Recipient[]; fromAdmin: boolean };
+
+/**
+ * Who gets alerts: the list saved in Admin -> WhatsApp Alerts, otherwise the
+ * WHATSAPP_TO environment variable (also used if migration 0004 hasn't been run).
+ */
+export async function loadAlertSettings(): Promise<AlertSettings> {
+  try {
+    const { data, error } = await createAdminClient()
+      .from("alert_settings")
+      .select("whatsapp_recipients, alerts_enabled")
+      .eq("id", 1)
+      .maybeSingle();
+    if (!error && data) {
+      const list = parseRecipients(data.whatsapp_recipients);
+      if (list.length > 0 || !data.alerts_enabled) {
+        return { enabled: data.alerts_enabled, recipientsText: data.whatsapp_recipients ?? "", recipients: list, fromAdmin: true };
+      }
+    }
+  } catch {
+    // fall through to the environment
+  }
+  return { enabled: true, recipientsText: "", recipients: recipients(process.env), fromAdmin: false };
+}
+
+export async function sendAlertNow(text: string): Promise<WhatsAppResult> {
+  const settings = await loadAlertSettings();
+  if (!settings.enabled) return { ok: false, skipped: "Alerts are switched off" };
+  return sendWhatsApp(text, process.env, fetch, settings.recipients);
+}
+
 // Runs after the response has been sent, and can never make the form fail.
 function alertLater(table: "enquiries" | "career_applications", text: string) {
   after(async () => {
@@ -30,8 +61,8 @@ function alertLater(table: "enquiries" | "career_applications", text: string) {
         console.warn(`[alert] skipped WhatsApp for ${table}: more than ${FLOOD_MAX} in ${FLOOD_WINDOW_MINUTES} minutes`);
         return;
       }
-      const result = await sendWhatsApp(text);
-      if (!result.ok && !result.skipped) console.error("[alert] WhatsApp failed:", result.error);
+      const result = await sendAlertNow(text);
+      if (!result.ok) console[result.skipped ? "info" : "error"]("[alert] WhatsApp not sent:", result.skipped ?? result.error);
     } catch (err) {
       console.error("[alert] WhatsApp error:", err instanceof Error ? err.message : err);
     }

@@ -90,6 +90,12 @@ const PATHS: Record<string, React.ReactNode> = {
       <circle cx="15" cy="7.5" r="1" />
     </>
   ),
+  alerts: (
+    <>
+      <path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.7-5.1A8.5 8.5 0 1 1 21 11.5Z" />
+      <path d="M12 8v4M12 15h.01" />
+    </>
+  ),
   users: (
     <>
       <circle cx="8" cy="15" r="4" />
