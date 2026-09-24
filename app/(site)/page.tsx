@@ -1,10 +1,10 @@
 import Link from "next/link";
 import SchoolLogo from "@/components/site/SchoolLogo";
-import { HeroPhotos, PhotoStrip } from "@/components/site/HomePhotos";
+import { PhotoSlots, PhotoStrip } from "@/components/site/RandomPhotos";
 import { getSiteSettings, telHref } from "@/lib/site-settings";
 import { createPublicClient } from "@/lib/supabase/public";
 import { formatEventDate, splitEvents } from "@/lib/events";
-import { getRecentPhotos } from "@/lib/gallery";
+import { getRandomPhotos } from "@/lib/gallery";
 
 // Refreshed hourly so the upcoming-events list drops events once they have passed.
 export const revalidate = 3600;
@@ -94,8 +94,8 @@ export default async function HomePage() {
       .eq("is_published", true)
       .order("notice_date", { ascending: false })
       .limit(4),
-    // A pool to pick from at random on each visit.
-    getRecentPhotos(24),
+    // A random pick from every album; shuffled again in the browser on each visit.
+    getRandomPhotos(30),
   ]);
   const upcomingEvents = splitEvents(eventRows ?? []).upcoming.slice(0, 3);
   const latestNotices = notices ?? [];
@@ -158,7 +158,7 @@ export default async function HomePage() {
           <div className="b-collage-main b-collage-logo">
             <SchoolLogo src={settings.logoUrl} className="b-logo" alt="The Laurels Global School logo" />
           </div>
-          <HeroPhotos photos={photos} />
+          <PhotoSlots photos={photos} count={2} className="b-collage-sm" sizes="(max-width: 860px) 40vw, 240px" priority />
           <div className="b-badge">
             <span className="b-badge-dot" aria-hidden="true" />
             <span>
@@ -180,6 +180,22 @@ export default async function HomePage() {
           ))}
         </dl>
       </div>
+
+      {/* ---------- Gallery strip ---------- */}
+      {photos.length >= 3 && (
+        <section className="wrap">
+          <div className="b-section-head">
+            <div className="section-head" style={{ marginBottom: 0 }}>
+              <span className="eyebrow">Gallery</span>
+              <h2>Life at Laurels</h2>
+            </div>
+            <Link className="btn btn-ghost" href="/gallery">
+              See all albums &rarr;
+            </Link>
+          </div>
+          <PhotoStrip photos={photos} />
+        </section>
+      )}
 
       {/* ---------- Stages: intro beside a 2 x 2 grid ---------- */}
       <section className="wrap">
@@ -315,22 +331,6 @@ export default async function HomePage() {
           </aside>
         </div>
       </section>
-
-      {/* ---------- Gallery strip ---------- */}
-      {photos.length >= 3 && (
-        <section className="wrap" style={{ paddingTop: 0 }}>
-          <div className="b-section-head">
-            <div className="section-head" style={{ marginBottom: 0 }}>
-              <span className="eyebrow">Gallery</span>
-              <h2>Life at Laurels</h2>
-            </div>
-            <Link className="btn btn-ghost" href="/gallery">
-              See all albums &rarr;
-            </Link>
-          </div>
-          <PhotoStrip photos={photos} />
-        </section>
-      )}
 
       {/* ---------- Admissions ---------- */}
       <section className="wrap" style={{ paddingTop: 0 }}>
