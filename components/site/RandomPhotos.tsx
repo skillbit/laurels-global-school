@@ -28,11 +28,26 @@ function shuffle<T>(items: T[]): T[] {
   return out;
 }
 
+// Burst shots (taken seconds apart) sit next to each other in an album and look the
+// same, so photos within this many places of an already-picked one in the same album
+// are moved to the end, used only if there aren't enough other photos.
+const NEAR = 3;
+
+function spreadOut(order: Photo[]): Photo[] {
+  const picked: Photo[] = [];
+  const later: Photo[] = [];
+  for (const p of order) {
+    const tooClose = picked.some((q) => q.albumId === p.albumId && Math.abs(q.pos - p.pos) <= NEAR);
+    (tooClose ? later : picked).push(p);
+  }
+  return [...picked, ...later];
+}
+
 function useRandomOrder(photos: Photo[]): Photo[] | null {
   const [order, setOrder] = useState<Photo[] | null>(null);
   useEffect(() => {
     // A timer (not requestAnimationFrame) so it also runs in tabs opened in the background.
-    const id = setTimeout(() => setOrder(shuffle(photos)), 0);
+    const id = setTimeout(() => setOrder(spreadOut(shuffle(photos))), 0);
     return () => clearTimeout(id);
   }, [photos]);
   return order;
@@ -40,7 +55,7 @@ function useRandomOrder(photos: Photo[]): Photo[] | null {
 
 /**
  * `count` photo boxes taking photos `offset`, `offset + 1`, … of the shuffled order.
- * A box without a photo shows the warm patterned tile instead.
+ * Each photo is used once per page; a box without a photo shows the patterned tile.
  */
 export function PhotoSlots({
   photos,
@@ -61,7 +76,7 @@ export function PhotoSlots({
   return (
     <>
       {Array.from({ length: count }, (_, i) => {
-        const p = order && order.length > 0 ? order[(offset + i) % order.length] : undefined;
+        const p = order?.[offset + i];
         return (
           <div key={i} className={`${className}${p ? "" : " b-tile"}`}>
             {p && <Image src={p.url} alt={p.alt} fill sizes={sizes} priority={priority && i === 0} />}
@@ -72,10 +87,10 @@ export function PhotoSlots({
   );
 }
 
-/** Up to five linked photos for the homepage strip, after the two used in the hero. */
+/** Up to five linked photos for the homepage strip, after the two used in the hero (never the same photos). */
 export function PhotoStrip({ photos }: { photos: Photo[] }) {
   const order = useRandomOrder(photos);
-  const count = Math.min(5, photos.length);
+  const count = Math.max(0, Math.min(5, photos.length - 2));
   if (!order) {
     return (
       <div className="b-strip" aria-hidden="true">
@@ -85,7 +100,7 @@ export function PhotoStrip({ photos }: { photos: Photo[] }) {
       </div>
     );
   }
-  const strip = order.length >= 7 ? order.slice(2, 7) : order.slice(0, 5);
+  const strip = order.slice(2, 7);
   return (
     <div className="b-strip">
       {strip.map((p) => (
