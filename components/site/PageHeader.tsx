@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-// Shared header panel for every inner page: breadcrumb, title and an optional intro.
+// Shared full-width header band for every inner page: breadcrumb, title and an optional intro.
 export default function PageHeader({
   crumb,
   trail = [],
@@ -15,8 +15,8 @@ export default function PageHeader({
   intro?: string;
 }) {
   return (
-    <div className="wrap">
-      <div className="ph">
+    <div className="ph">
+      <div className="wrap">
         <nav className="breadcrumb" aria-label="Breadcrumb">
           <Link href="/">Home</Link>
           {trail.map((t) => (

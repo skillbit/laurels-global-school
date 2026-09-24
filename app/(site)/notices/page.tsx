@@ -25,14 +25,18 @@ export default async function NoticesPage() {
             {notices.map((n) => (
               <div className="notice" key={n.id}>
                 <span className="date mono">
-                  {new Date(n.notice_date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                  {new Date(`${n.notice_date}T00:00:00`).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                 </span>
                 <div>
                   <h3>{n.title}</h3>
                   <p>{n.body}</p>
                   {n.attachment_url && (
-                    <a href={n.attachment_url} style={{ color: "var(--laurel)", fontSize: ".85rem", fontWeight: 600 }}>
-                      View attachment &rarr;
+                    <a className="notice-file" href={n.attachment_url} target="_blank" rel="noopener noreferrer">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                        <path d="M6 3h8l4 4v14H6V3Z" />
+                        <path d="M14 3v4h4" />
+                      </svg>
+                      Open attachment
                     </a>
                   )}
                 </div>

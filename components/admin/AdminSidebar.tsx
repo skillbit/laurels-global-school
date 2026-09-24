@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import SignOutButton from "./SignOutButton";
 import AdminIcon, { type AdminIconName } from "./admin-icons";
-import { WreathMark } from "@/components/site/WreathDefs";
+import SchoolLogo from "@/components/site/SchoolLogo";
 
 type Item = { href: string; label: string; icon: AdminIconName };
 
@@ -36,6 +36,7 @@ const GROUPS: { title: string; items: Item[] }[] = [
     items: [
       { href: "/admin/settings", label: "Site Settings", icon: "settings" },
       { href: "/admin/branding", label: "Branding", icon: "branding" },
+      { href: "/admin/alerts", label: "WhatsApp Alerts", icon: "alerts" },
       { href: "/admin/users", label: "Admin Accounts", icon: "users" },
     ],
   },
@@ -54,7 +55,7 @@ export default function AdminSidebar({ email }: { email: string }) {
     <aside className="admin-sidebar">
       <Link href="/admin" className="admin-brand">
         <span className="badge-mark">
-          <WreathMark />
+          <SchoolLogo />
         </span>
         <div>
           <strong>The Laurels</strong>

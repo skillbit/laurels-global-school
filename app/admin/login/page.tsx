@@ -3,8 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { WreathMark } from "@/components/site/WreathDefs";
-import WreathDefs from "@/components/site/WreathDefs";
+import SchoolLogo from "@/components/site/SchoolLogo";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -34,11 +33,10 @@ export default function AdminLoginPage() {
 
   return (
     <div className="login-shell">
-      <WreathDefs />
       <aside className="login-side">
         <div>
           <span className="badge-mark">
-            <WreathMark />
+            <SchoolLogo />
           </span>
           <h1>The Laurels Global School</h1>
           <p>Admin panel. Update notices, photos, events, admissions enquiries and everything else on the school website.</p>

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { WreathMark } from "./WreathDefs";
+import SchoolLogo from "./SchoolLogo";
+import { NAV, isGroup, type NavLink } from "./nav-links";
 import { telHref, type SiteSettings } from "@/lib/site-settings";
 
 export default function Footer({ settings }: { settings: SiteSettings }) {
@@ -15,12 +16,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
       <div className="wrap foot-grid">
         <div className="foot-brand">
           <span className="foot-mark">
-            {settings.logoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img className="mark" src={settings.logoUrl} alt="" style={{ objectFit: "contain" }} />
-            ) : (
-              <WreathMark />
-            )}
+            <SchoolLogo src={settings.logoUrl} />
           </span>
           <div>
             <strong style={{ fontFamily: "var(--font-fraunces), serif", fontWeight: 650 }}>
@@ -30,27 +26,24 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
           </div>
         </div>
 
-        <div className="foot-col">
-          <p className="foot-h">Explore</p>
-          <Link href="/about">About</Link>
-          <Link href="/academics">Academics</Link>
-          <Link href="/admissions">Admissions</Link>
-          <Link href="/gallery">Gallery</Link>
-          <Link href="/contact">Contact</Link>
-        </div>
+        {NAV.filter(isGroup).map((group) => (
+          <div className="foot-col" key={group.label}>
+            <p className="foot-h">{group.label}</p>
+            {group.children.map((c) => (
+              <Link key={c.href} href={c.href}>
+                {c.label}
+              </Link>
+            ))}
+          </div>
+        ))}
 
         <div className="foot-col">
-          <p className="foot-h">School life</p>
-          <Link href="/events">Events</Link>
-          <Link href="/notices">Notices</Link>
-          <Link href="/achievements">Achievements</Link>
-          <Link href="/documents">Documents</Link>
-          <Link href="/careers">Careers</Link>
-          <Link href="/alumni">Alumni</Link>
-        </div>
-
-        <div className="foot-col">
-          <p className="foot-h">Contact</p>
+          <p className="foot-h">Admissions &amp; contact</p>
+          {NAV.filter((i): i is NavLink => !isGroup(i) && i.href !== "/").map((i) => (
+            <Link key={i.href} href={i.href}>
+              {i.label}
+            </Link>
+          ))}
           {settings.phones.map((p) => (
             <a key={p} href={telHref(p)}>
               {p}

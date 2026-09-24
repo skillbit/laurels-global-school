@@ -18,10 +18,14 @@ function EventList({ events }: { events: SchoolEvent[] }) {
   return (
     <div className="notice-list">
       {events.map((e) => (
-        <div className="notice" key={e.id}>
-          <span className="date mono">{formatEventDate(e.event_date, e.end_date)}</span>
+        <div className="notice notice-ev" key={e.id}>
+          <span className="h-ev-date" aria-hidden="true">
+            <strong>{new Date(`${e.event_date}T00:00:00`).toLocaleDateString("en-IN", { day: "2-digit" })}</strong>
+            <span>{new Date(`${e.event_date}T00:00:00`).toLocaleDateString("en-IN", { month: "short" })}</span>
+          </span>
           <div>
             <h3>{e.title}</h3>
+            <p className="mono notice-when">{formatEventDate(e.event_date, e.end_date)}</p>
             {e.description && <p>{e.description}</p>}
           </div>
           {e.category ? <span className="tag">{e.category}</span> : <span />}
