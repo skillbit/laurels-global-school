@@ -107,6 +107,7 @@ Open Supabase → **SQL editor** and run these once, in order (all are safe to r
 | 1 | [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) | Tables, row-level security, storage buckets |
 | 2 | [`supabase/migrations/0002_gallery_albums.sql`](supabase/migrations/0002_gallery_albums.sql) | Gallery albums (moves older loose photos into a "Campus Photos" album) |
 | 3 | [`supabase/migrations/0003_milestones.sql`](supabase/migrations/0003_milestones.sql) | School history timeline |
+| 4 | [`supabase/migrations/0004_alert_settings.sql`](supabase/migrations/0004_alert_settings.sql) | WhatsApp alert numbers (admin-only table) |
 
 **First admin:** Supabase → Authentication → Users → *Add user*, then add a row to the `admin_users` table with the same `id` and `is_active = true`. After that, sign in at `/admin/login` and add more admins from **Admin Accounts**.
 
@@ -118,32 +119,31 @@ When a parent sends an admissions enquiry (or a candidate applies for a job), th
 
 It is **optional**, sent after the form is saved, and it can never make the form fail. If several submissions arrive within minutes (a spam flood), alerts pause automatically; the entries are still saved.
 
-Turn it on by setting environment variables (in `.env.local` for testing, and in Vercel → Settings → Environment Variables → **Production** for the live site), then redeploy. Pick **one** provider:
+**Who receives it** is set by an admin in **Admin → WhatsApp Alerts**: one number per line with the country code (for example `91 97710 20700`), up to 5, plus an on/off switch and a **Send a test message** button. (The `WHATSAPP_TO` environment variable is only used when no numbers are saved there.)
+
+**How it is sent** needs one sending service. The page shows which one is active. Pick **one**:
 
 **Option A: Meta WhatsApp Cloud API (official, recommended for the school)**
 
 1. Create a Meta developer app and add the **WhatsApp** product (business.facebook.com and developers.facebook.com). Add a business phone number and note its **Phone number ID**.
 2. Create a permanent **system-user access token** with the `whatsapp_business_messaging` permission.
 3. In WhatsApp Manager create a message template (category *Utility*, language English) named `school_alert` with this body, using **one** variable: `School website alert: {{1}}`. Wait for approval.
-4. Set:
+4. Set these environment variables (Vercel → Settings → Environment Variables → **Production**, then redeploy):
    ```
    WHATSAPP_PROVIDER=cloud
    WHATSAPP_TOKEN=<system-user token>
    WHATSAPP_PHONE_NUMBER_ID=<phone number id>
    WHATSAPP_TEMPLATE_NAME=school_alert
-   WHATSAPP_TO=919771020700          # who receives it; several numbers allowed, comma separated
    ```
+   Then add the receiving numbers in Admin → WhatsApp Alerts.
 
 **Option B: CallMeBot (free, quick, uses a personal number)**
 
-1. From the phone that should get the alerts, send `I allow callmebot to send me messages` to **+34 644 51 95 23** on WhatsApp. You will receive an API key.
-2. Set:
-   ```
-   WHATSAPP_PROVIDER=callmebot
-   CALLMEBOT_API_KEY=<the key>
-   WHATSAPP_TO=919771020700
-   ```
-   (For several receivers, list numbers and keys in the same order, comma separated.) CallMeBot is an unofficial free service; use Option A for anything important.
+1. From each phone that should get the alerts, send `I allow callmebot to send me messages` on WhatsApp to the number shown on [callmebot.com](https://www.callmebot.com/blog/free-api-whatsapp-messages/). You will receive an API key.
+2. In Admin → WhatsApp Alerts, add each number followed by its key: `91 97710 20700 | 1234567`. No environment variables are needed.
+3. Press **Send a test message**.
+
+   CallMeBot is an unofficial free service; use Option A for anything important.
 
 Alerts contain the parent's name, phone number and a short note, so they pass through the WhatsApp provider. Send them only to staff who handle admissions (see the privacy notes in [SECURITY.md](SECURITY.md)).
 
@@ -153,7 +153,7 @@ Sign in at **`/admin`**. The dashboard shows anything waiting for a reply, then 
 
 | Section | What it controls on the public site |
 | --- | --- |
-| **Notices** | The Notices page |
+| **Notices** | The Notices page, the notice strip and notice board on the homepage. Attach a PDF, Word, Excel or image file (max 10 MB) |
 | **Gallery** | Photo albums: title, date (defaults to today), many photos at once |
 | **Events** | Events page, and the "Coming up" strip on the homepage |
 | **Documents** | Fee structure, admission forms, syllabus, circulars (PDF, Word, Excel, images) |
@@ -164,8 +164,9 @@ Sign in at **`/admin`**. The dashboard shows anything waiting for a reply, then 
 | **Enquiries** | Admission enquiries: mark as contacted, delete |
 | **Careers** and **Job Applications** | Open positions, and applications with private resume links |
 | **Site Settings** | Announcement banner, address, phone numbers (several allowed, separate with commas), email, map link, social links, homepage quote, mission statement, quick facts |
-| **Branding** | School logo and browser-tab icon |
-| **Admin Accounts** | Who can sign in |
+| **Branding** | School logo and browser-tab icon (the shield in `public/logo.jpg` is used until one is uploaded) |
+| **WhatsApp Alerts** | Which numbers get a WhatsApp message for new enquiries and job applications |
+| **Admin Accounts** | Who can sign in. Accounts can be disabled or deleted, except your own and the owner's (`lib/protected-admins.ts`) |
 
 Changes appear on the live site within about a minute.
 
