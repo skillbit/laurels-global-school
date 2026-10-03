@@ -12,12 +12,14 @@ export const NAV: NavItem[] = [
       { href: "/achievements", label: "Achievements" },
       { href: "/alumni", label: "Alumni" },
       { href: "/careers", label: "Careers" },
+      { href: "/mandatory-disclosure", label: "Mandatory disclosure" },
     ],
   },
   {
     label: "Academics",
     children: [
       { href: "/academics", label: "Curriculum & facilities" },
+      { href: "/calendar", label: "Academic calendar" },
       { href: "/documents", label: "Fees & documents" },
     ],
   },
@@ -25,6 +27,7 @@ export const NAV: NavItem[] = [
   {
     label: "School life",
     children: [
+      { href: "/activities", label: "Daily activities" },
       { href: "/events", label: "Events" },
       { href: "/notices", label: "Notices" },
       { href: "/gallery", label: "Gallery" },

@@ -41,7 +41,7 @@ export const DEFAULTS = {
     "Our mission is to nurture confident, curious, and responsible individuals through quality education, strong values, and meaningful learning experiences. We aim to develop not only academic excellence but also communication, creativity, critical thinking, leadership, technology, and life skills—preparing every student to succeed in a changing world and contribute positively to society.",
   quickFacts: [
     { label: "Board", value: "CBSE" },
-    { label: "Grades offered", value: "Nursery – X" },
+    { label: "Grades offered", value: "Nursery – Class 10" },
     { label: "Academic year", value: "Apr – Mar" },
     { label: "Location", value: "Dehri-on-Sone" },
   ] as QuickFact[],

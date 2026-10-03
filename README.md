@@ -108,6 +108,7 @@ Open Supabase → **SQL editor** and run these once, in order (all are safe to r
 | 2 | [`supabase/migrations/0002_gallery_albums.sql`](supabase/migrations/0002_gallery_albums.sql) | Gallery albums (moves older loose photos into a "Campus Photos" album) |
 | 3 | [`supabase/migrations/0003_milestones.sql`](supabase/migrations/0003_milestones.sql) | School history timeline |
 | 4 | [`supabase/migrations/0004_alert_settings.sql`](supabase/migrations/0004_alert_settings.sql) | WhatsApp alert numbers (admin-only table) |
+| 5 | [`supabase/migrations/0005_page_content.sql`](supabase/migrations/0005_page_content.sql) | Editable page text, subjects, co-curricular, daily activities, mandatory disclosure, academic-calendar documents |
 
 **First admin:** Supabase → Authentication → Users → *Add user*, then add a row to the `admin_users` table with the same `id` and `is_active = true`. After that, sign in at `/admin/login` and add more admins from **Admin Accounts**.
 

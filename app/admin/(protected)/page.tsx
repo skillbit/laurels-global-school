@@ -19,7 +19,7 @@ export default async function AdminDashboardPage() {
     return n ?? 0;
   };
 
-  const [notices, albums, events, documents, achievements, alumni, staff, openJobs, admins, newEnquiries, newApplications, milestones] =
+  const [notices, albums, events, documents, achievements, alumni, staff, openJobs, admins, newEnquiries, newApplications, milestones, subjects, activities, daily, disclosures] =
     await Promise.all([
       count("notices"),
       count("gallery_albums"),
@@ -33,6 +33,10 @@ export default async function AdminDashboardPage() {
       count("enquiries", ["status", "new"]),
       count("career_applications", ["status", "new"]),
       count("milestones"),
+      count("subjects"),
+      count("co_curricular"),
+      count("daily_activities"),
+      count("disclosures"),
     ]);
 
   const attention = [
@@ -56,12 +60,23 @@ export default async function AdminDashboardPage() {
       cards: [
         { href: "/admin/notices", label: "Notices", icon: "notices", count: notices, description: "Post announcements to the Notices page." },
         { href: "/admin/gallery", label: "Gallery", icon: "gallery", count: albums, description: "Photo albums for events and campus life." },
-        { href: "/admin/events", label: "Events", icon: "events", count: events, description: "Holidays, exams and school activities." },
+        { href: "/admin/daily-activities", label: "Daily Activities", icon: "today", count: daily, description: "What the classes did today, shown on the home page." },
+        { href: "/admin/events", label: "Events & Calendar", icon: "events", count: events, description: "Holidays, exams and school activities. These fill the academic calendar." },
         { href: "/admin/documents", label: "Documents", icon: "documents", count: documents, description: "Fee structure, forms, syllabus and circulars." },
         { href: "/admin/achievements", label: "Achievements", icon: "achievements", count: achievements, description: "Board results, awards and student wins." },
         { href: "/admin/alumni", label: "Alumni", icon: "alumni", count: alumni, description: "Former students featured on the Alumni page." },
         { href: "/admin/milestones", label: "History", icon: "history", count: milestones, description: "Founding year and key moments on the About page timeline." },
         { href: "/admin/staff", label: "Staff", icon: "staff", count: staff, description: "Principal, leadership and faculty on the About page." },
+      ],
+    },
+    {
+      title: "Pages",
+      cards: [
+        { href: "/admin/page-text", label: "Page Text", icon: "pageText", description: "Headings and paragraphs on the home, Academics, Admissions and About pages." },
+        { href: "/admin/page-images", label: "Page Images", icon: "pageImages", description: "The fixed photos on the Academics page." },
+        { href: "/admin/subjects", label: "Subjects", icon: "subjects", count: subjects, description: "Core subjects on the Academics page, by stage." },
+        { href: "/admin/co-curricular", label: "Co-curricular", icon: "activities", count: activities, description: "Clubs, sports and activities on the Academics page." },
+        { href: "/admin/disclosure", label: "Mandatory Disclosure", icon: "disclosure", count: disclosures, description: "The CBSE mandatory public disclosure page." },
       ],
     },
     {

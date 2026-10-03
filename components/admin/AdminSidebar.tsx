@@ -15,13 +15,23 @@ const GROUPS: { title: string; items: Item[] }[] = [
     items: [
       { href: "/admin/notices", label: "Notices", icon: "notices" },
       { href: "/admin/gallery", label: "Gallery", icon: "gallery" },
-      { href: "/admin/page-images", label: "Page Images", icon: "pageImages" },
-      { href: "/admin/events", label: "Events", icon: "events" },
+      { href: "/admin/daily-activities", label: "Daily Activities", icon: "today" },
+      { href: "/admin/events", label: "Events & Calendar", icon: "events" },
       { href: "/admin/documents", label: "Documents", icon: "documents" },
       { href: "/admin/achievements", label: "Achievements", icon: "achievements" },
       { href: "/admin/alumni", label: "Alumni", icon: "alumni" },
       { href: "/admin/milestones", label: "History", icon: "history" },
       { href: "/admin/staff", label: "Staff", icon: "staff" },
+    ],
+  },
+  {
+    title: "Pages",
+    items: [
+      { href: "/admin/page-text", label: "Page Text", icon: "pageText" },
+      { href: "/admin/page-images", label: "Page Images", icon: "pageImages" },
+      { href: "/admin/subjects", label: "Subjects", icon: "subjects" },
+      { href: "/admin/co-curricular", label: "Co-curricular", icon: "activities" },
+      { href: "/admin/disclosure", label: "Mandatory Disclosure", icon: "disclosure" },
     ],
   },
   {

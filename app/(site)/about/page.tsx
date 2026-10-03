@@ -3,6 +3,7 @@ import PageHeader from "@/components/site/PageHeader";
 import ValueCard from "@/components/site/ValueCard";
 import PersonCard from "@/components/site/PersonCard";
 import { getSiteSettings } from "@/lib/site-settings";
+import { getPageText } from "@/lib/page-content";
 import { createPublicClient } from "@/lib/supabase/public";
 
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const settings = await getSiteSettings();
+  const [settings, t] = await Promise.all([getSiteSettings(), getPageText()]);
 
   const publicClient = createPublicClient();
   const { data: staff } = await publicClient
@@ -37,7 +38,7 @@ export default async function AboutPage() {
 
   return (
     <>
-      <PageHeader crumb="About" eyebrow="About the School" title="About The Laurels" intro="Our mission, our values, and the people behind the school." />
+      <PageHeader crumb="About" eyebrow="About the School" title={t["about.title"]} intro={t["about.intro"]} />
 
       <section className="wrap" style={{ paddingTop: 0 }}>
         <div className="mission-panel">
@@ -51,22 +52,22 @@ export default async function AboutPage() {
       <section className="wrap">
         <div className="section-head">
           <span className="eyebrow">What we build</span>
-          <h2>Eight Things Every Child Grows In</h2>
+          <h2>{t["about.values.title"]}</h2>
         </div>
         <div>
           <div className="values-grid">
             <ValueCard
-              title="Confidence"
+              title={t["about.value.1.title"]}
               icon={
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M12 2l2.6 6.6L21 11l-6.4 2.4L12 20l-2.6-6.6L3 11l6.4-2.4L12 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
                 </svg>
               }
             >
-              Building self-belief through supported, real learning experiences.
+              {t["about.value.1.text"]}
             </ValueCard>
             <ValueCard
-              title="Curiosity"
+              title={t["about.value.2.title"]}
               icon={
                 <svg viewBox="0 0 24 24" fill="none">
                   <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.6" />
@@ -74,30 +75,30 @@ export default async function AboutPage() {
                 </svg>
               }
             >
-              Encouraging students to ask questions and explore ideas.
+              {t["about.value.2.text"]}
             </ValueCard>
             <ValueCard
-              title="Responsibility"
+              title={t["about.value.3.title"]}
               icon={
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
                 </svg>
               }
             >
-              Instilling strong values and accountability in everyday choices.
+              {t["about.value.3.text"]}
             </ValueCard>
             <ValueCard
-              title="Communication"
+              title={t["about.value.4.title"]}
               icon={
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M4 5h16v11H8l-4 4V5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
                 </svg>
               }
             >
-              Helping students express ideas clearly, in speech and writing.
+              {t["about.value.4.text"]}
             </ValueCard>
             <ValueCard
-              title="Creativity"
+              title={t["about.value.5.title"]}
               icon={
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M12 2a5 5 0 0 1 5 5c0 2.5-1.5 3.6-2.2 4.8-.5.8-.8 1.5-.8 2.2H10c0-.7-.3-1.4-.8-2.2C8.5 10.6 7 9.5 7 7a5 5 0 0 1 5-5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
@@ -105,20 +106,20 @@ export default async function AboutPage() {
                 </svg>
               }
             >
-              Space for original thinking across art, science and ideas.
+              {t["about.value.5.text"]}
             </ValueCard>
             <ValueCard
-              title="Critical Thinking"
+              title={t["about.value.6.title"]}
               icon={
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M9 21h6M12 17v4M5 3h14l-1 8a6 6 0 0 1-12 0L5 3Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
                 </svg>
               }
             >
-              Learning to reason, question and evaluate with care.
+              {t["about.value.6.text"]}
             </ValueCard>
             <ValueCard
-              title="Leadership"
+              title={t["about.value.7.title"]}
               icon={
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M12 2l9 4.5-9 4.5-9-4.5L12 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
@@ -126,10 +127,10 @@ export default async function AboutPage() {
                 </svg>
               }
             >
-              Preparing students to guide, collaborate and take initiative.
+              {t["about.value.7.text"]}
             </ValueCard>
             <ValueCard
-              title="Technology & Life Skills"
+              title={t["about.value.8.title"]}
               icon={
                 <svg viewBox="0 0 24 24" fill="none">
                   <rect x="4" y="4" width="16" height="12" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
@@ -137,7 +138,7 @@ export default async function AboutPage() {
                 </svg>
               }
             >
-              Practical, future-ready skills alongside academic learning.
+              {t["about.value.8.text"]}
             </ValueCard>
           </div>
         </div>

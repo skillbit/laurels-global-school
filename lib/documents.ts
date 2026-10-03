@@ -3,6 +3,7 @@ export const DOCUMENT_CATEGORIES = [
   { value: "fee_structure", label: "Fee structure" },
   { value: "admission_form", label: "Admission forms" },
   { value: "syllabus", label: "Syllabus" },
+  { value: "academic_calendar", label: "Academic calendar" },
   { value: "circular", label: "Circulars" },
   { value: "newsletter", label: "Newsletters" },
 ] as const;
