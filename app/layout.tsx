@@ -43,8 +43,8 @@ export async function generateMetadata(): Promise<Metadata> {
     verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
       ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
       : undefined,
-    // Uploaded from /admin/branding; falls back to the default icon in public/.
-    icons: { icon: faviconUrl ?? "/favicon.ico" },
+    // Uploaded from /admin/branding; falls back to the school shield in public/.
+    icons: { icon: faviconUrl ?? "/favicon.ico", apple: "/apple-icon.png" },
   };
 }
 
