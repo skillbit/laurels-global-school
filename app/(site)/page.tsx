@@ -134,13 +134,6 @@ export default async function HomePage() {
             <SchoolLogo src={settings.logoUrl} className="b-logo" alt="The Laurels Global School logo" />
           </div>
           <PhotoSlots photos={photos} count={2} className="b-collage-sm" sizes="(max-width: 860px) 40vw, 240px" priority />
-          <div className="b-badge">
-            <span className="b-badge-dot" aria-hidden="true" />
-            <span>
-              <strong>{t["home.badge.title"]}</strong>
-              <small>{t["home.badge.sub"]}</small>
-            </span>
-          </div>
         </div>
       </section>
 

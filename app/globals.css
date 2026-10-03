@@ -635,16 +635,15 @@ footer{background:var(--laurel-deep); color:rgba(255,255,255,.82); border-top:0;
 .b-tile{background:radial-gradient(120% 90% at 50% 10%, #fff 0%, var(--surface-warm) 50%, var(--gold-soft) 100%);}
 .b-tile::before{content:""; position:absolute; inset:0; background:repeating-radial-gradient(circle at 50% 40%, transparent 0 26px, color-mix(in srgb, var(--gold) 22%, transparent) 26px 27px);}
 .b-collage-sm.b-tile:nth-child(3){background:radial-gradient(120% 90% at 50% 10%, #fff 0%, var(--laurel-tint) 70%);}
-.b-badge{position:absolute; left:clamp(-1.6rem, -2vw, -.6rem); bottom:1.6rem; z-index:2; display:flex; align-items:center; gap:.75rem; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:.7rem 1rem .7rem .7rem; box-shadow:var(--shadow);}
-.b-badge{padding:.75rem 1.1rem;}
-.b-badge-dot{width:10px; height:10px; flex:none; border-radius:50%; background:var(--laurel); box-shadow:0 0 0 5px var(--laurel-tint);}
-/* the logo tile: a plain rounded card with soft warm light behind the shield */
-.b-collage-logo{display:grid; place-items:center; background:radial-gradient(80% 60% at 50% 50%, #fff 0%, #fff 45%, var(--surface-warm) 100%); border:1px solid var(--border);}
+/* the logo tile: a warm card with a dotted gold texture, a glow behind the shield and a brand-coloured base */
+.b-collage-logo{display:grid; place-items:center; border:1px solid var(--border); background:linear-gradient(155deg, var(--surface-warm) 0%, #fff 42%, var(--gold-soft) 100%);}
+/* a fine gold dot pattern that fades out towards the shield */
+.b-collage-logo::before{content:""; position:absolute; inset:0; background-image:radial-gradient(color-mix(in srgb, var(--gold) 55%, transparent) 1.2px, transparent 1.6px); background-size:18px 18px; -webkit-mask:radial-gradient(70% 55% at 50% 50%, transparent 55%, #000 100%); mask:radial-gradient(70% 55% at 50% 50%, transparent 55%, #000 100%);}
+/* a white glow behind the shield and a crimson and gold edge along the bottom */
+.b-collage-logo::after{content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(0deg, var(--laurel) 0 6px, var(--gold) 6px 9px, transparent 9px), radial-gradient(52% 40% at 50% 50%, #fff 0%, #fff 55%, transparent 100%);}
 /* the logo is a JPEG on white: multiply hides the white box on light backgrounds */
 .b-logo{position:relative; z-index:1; width:78%; height:auto; aspect-ratio:1; mix-blend-mode:multiply;}
 .brand .mark{mix-blend-mode:multiply;}
-.b-badge strong{display:block; font-family:var(--font-fraunces), serif; font-weight:650; font-size:1.02rem; line-height:1.2;}
-.b-badge small{display:block; color:var(--ink-faint); font-size:.8rem;}
 .h-call{margin-left:0;}
 
 /* facts bar */
@@ -720,7 +719,6 @@ footer{background:var(--laurel-deep); color:rgba(255,255,255,.82); border-top:0;
 @media (max-width:860px){
   .b-hero{grid-template-columns:1fr;}
   .b-collage{max-width:520px; width:100%; margin-inline:auto;}
-  .b-badge{left:.6rem;}
   .b-why-grid, .b-news, .b-academics{grid-template-columns:1fr;}
   .b-ticker li:nth-child(n+2){display:none;}
 }

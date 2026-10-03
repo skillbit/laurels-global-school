@@ -39,8 +39,6 @@ export const PAGE_TEXT = [
     hint: "The main quote, banner and quick facts are in Site Settings.",
     paths: ["/"],
     fields: [
-      { key: "home.badge.title", label: "Small card on the photos: title", text: "Admissions open", max: 40 },
-      { key: "home.badge.sub", label: "Small card on the photos: line below", text: "Nursery to Class 10 · CBSE", max: 60 },
       { key: "home.today.title", label: "Daily activities heading", text: "Today at Laurels", max: 60 },
       { key: "home.academics.title", label: "Academics heading", text: "A Path from Nursery to Class 10" },
       { key: "home.academics.text", label: "Academics paragraph", text: "Four stages, one CBSE curriculum. Each stage builds on the last, from learning through play to focused preparation for the Class 10 board examinations.", long: true },
