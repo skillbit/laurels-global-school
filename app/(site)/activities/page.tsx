@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import PageHeader from "@/components/site/PageHeader";
+import ActivityCards from "@/components/site/ActivityCards";
 import { getDailyActivities } from "@/lib/school-content";
 import { todayInIndia } from "@/lib/events";
 
@@ -26,24 +26,7 @@ export default async function ActivitiesPage() {
           days.map((day) => (
             <div className="da-day" key={day}>
               <h2 className="h2-sm">{day === today ? `Today, ${longDate(day)}` : longDate(day)}</h2>
-              <div className="card-grid">
-                {activities
-                  .filter((a) => a.date === day)
-                  .map((a) => (
-                    <article className="info-card" key={a.id}>
-                      {a.photoUrl && (
-                        <div className="info-media">
-                          <Image src={a.photoUrl} alt={a.title} fill sizes="(max-width: 520px) 100vw, (max-width: 860px) 50vw, 380px" />
-                        </div>
-                      )}
-                      <div className="body">
-                        {a.classLabel && <span className="meta">{a.classLabel}</span>}
-                        <h3>{a.title}</h3>
-                        {a.description && <p className="da-text">{a.description}</p>}
-                      </div>
-                    </article>
-                  ))}
-              </div>
+              <ActivityCards activities={activities.filter((a) => a.date === day)} />
             </div>
           ))
         ) : (

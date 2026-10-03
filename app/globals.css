@@ -501,6 +501,9 @@ footer{border-top:1px solid var(--border); padding-block:2.4rem; margin-top:1rem
 .contact-grid{grid-template-columns:.85fr 1.15fr; align-items:stretch;}
 .contact-card{border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);}
 .contact-line{align-items:center;}
+/* long emails, addresses and notes wrap inside the card instead of widening the page on phones */
+.contact-grid > *{min-width:0;}
+.contact-line > div{min-width:0; overflow-wrap:anywhere;}
 .contact-line svg{width:44px; height:44px; padding:11px; border-radius:50%; background:var(--laurel-tint); color:var(--laurel); flex:none; margin:0;}
 .contact-line a{font-weight:600; color:var(--laurel-deep);}
 .contact-line a:hover{text-decoration:underline;}
@@ -873,6 +876,16 @@ footer{background:var(--laurel-deep); color:rgba(255,255,255,.82); border-top:0;
 /* daily activities */
 .da-day{margin-bottom:2.2rem;}
 .da-text{white-space:pre-line;}
+/* a day with one entry: a wide card, photo beside the text */
+.da-single{grid-template-columns:1fr;}
+.da-single .info-card{flex-direction:row; gap:0;}
+.da-single .info-media{flex:0 0 42%; aspect-ratio:auto; min-height:240px;}
+.da-single .body{flex:1; min-width:0; justify-content:center; padding:1.6rem 1.8rem;}
+.da-single h3{font-size:1.4rem;}
+@media (max-width:640px){
+  .da-single .info-card{flex-direction:column;}
+  .da-single .info-media{flex:none; aspect-ratio:4/3; min-height:0;}
+}
 
 /* mandatory disclosure: label and value rows */
 .md-section{margin-bottom:2.2rem;}

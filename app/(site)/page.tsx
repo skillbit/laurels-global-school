@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import SchoolLogo from "@/components/site/SchoolLogo";
+import ActivityCards from "@/components/site/ActivityCards";
 import { PhotoSlots, PhotoReel } from "@/components/site/RandomPhotos";
 import { getSiteSettings, telHref } from "@/lib/site-settings";
 import { createPublicClient } from "@/lib/supabase/public";
@@ -181,22 +181,7 @@ export default async function HomePage() {
               All daily activities &rarr;
             </Link>
           </div>
-          <div className="card-grid">
-            {dayActivities.map((a) => (
-              <article className="info-card" key={a.id}>
-                {a.photoUrl && (
-                  <div className="info-media">
-                    <Image src={a.photoUrl} alt={a.title} fill sizes="(max-width: 520px) 100vw, (max-width: 860px) 50vw, 380px" />
-                  </div>
-                )}
-                <div className="body">
-                  {a.classLabel && <span className="meta">{a.classLabel}</span>}
-                  <h3>{a.title}</h3>
-                  {a.description && <p className="da-text">{a.description}</p>}
-                </div>
-              </article>
-            ))}
-          </div>
+          <ActivityCards activities={dayActivities} />
         </section>
       )}
 
