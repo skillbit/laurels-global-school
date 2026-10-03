@@ -132,6 +132,10 @@ export default async function HomePage() {
         <div className="b-collage reveal">
           <div className="b-collage-main b-collage-logo">
             <SchoolLogo src={settings.logoUrl} className="b-logo" alt="The Laurels Global School logo" />
+            <p className="b-logo-base">
+              <strong>{t["home.tile.title"]}</strong>
+              <span>{t["home.tile.sub"]}</span>
+            </p>
           </div>
           <PhotoSlots photos={photos} count={2} className="b-collage-sm" sizes="(max-width: 860px) 40vw, 240px" priority />
         </div>

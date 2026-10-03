@@ -635,14 +635,13 @@ footer{background:var(--laurel-deep); color:rgba(255,255,255,.82); border-top:0;
 .b-tile{background:radial-gradient(120% 90% at 50% 10%, #fff 0%, var(--surface-warm) 50%, var(--gold-soft) 100%);}
 .b-tile::before{content:""; position:absolute; inset:0; background:repeating-radial-gradient(circle at 50% 40%, transparent 0 26px, color-mix(in srgb, var(--gold) 22%, transparent) 26px 27px);}
 .b-collage-sm.b-tile:nth-child(3){background:radial-gradient(120% 90% at 50% 10%, #fff 0%, var(--laurel-tint) 70%);}
-/* the logo tile: a warm card with a dotted gold texture, a glow behind the shield and a brand-coloured base */
-.b-collage-logo{display:grid; place-items:center; border:1px solid var(--border); background:linear-gradient(155deg, var(--surface-warm) 0%, #fff 42%, var(--gold-soft) 100%);}
-/* a fine gold dot pattern that fades out towards the shield */
-.b-collage-logo::before{content:""; position:absolute; inset:0; background-image:radial-gradient(color-mix(in srgb, var(--gold) 55%, transparent) 1.2px, transparent 1.6px); background-size:18px 18px; -webkit-mask:radial-gradient(70% 55% at 50% 50%, transparent 55%, #000 100%); mask:radial-gradient(70% 55% at 50% 50%, transparent 55%, #000 100%);}
-/* a white glow behind the shield and a crimson and gold edge along the bottom */
-.b-collage-logo::after{content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(0deg, var(--laurel) 0 6px, var(--gold) 6px 9px, transparent 9px), radial-gradient(52% 40% at 50% 50%, #fff 0%, #fff 55%, transparent 100%);}
+/* the logo tile: the shield on warm cream, above a crimson panel with the place and classes */
+.b-collage-logo{display:grid; grid-template-rows:1fr auto; justify-items:center; align-items:center; background:var(--surface-warm); border:1px solid var(--border);}
+.b-logo-base{align-self:end; justify-self:stretch; margin:0; display:flex; flex-direction:column; gap:.1rem; text-align:center; background:var(--laurel-deep); color:#fff; padding:.85rem .6rem 1rem;}
+.b-logo-base strong{font-family:var(--font-fraunces), serif; font-weight:650; font-size:1.05rem; line-height:1.2;}
+.b-logo-base span{font-size:.78rem; letter-spacing:.04em; color:#f1d9a3;}
 /* the logo is a JPEG on white: multiply hides the white box on light backgrounds */
-.b-logo{position:relative; z-index:1; width:78%; height:auto; aspect-ratio:1; mix-blend-mode:multiply;}
+.b-logo{position:relative; z-index:1; width:78%; height:auto; max-height:100%; min-height:0; aspect-ratio:1; mix-blend-mode:multiply;}
 .brand .mark{mix-blend-mode:multiply;}
 .h-call{margin-left:0;}
 

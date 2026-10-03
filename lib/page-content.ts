@@ -39,6 +39,8 @@ export const PAGE_TEXT = [
     hint: "The main quote, banner and quick facts are in Site Settings.",
     paths: ["/"],
     fields: [
+      { key: "home.tile.title", label: "Crimson panel under the logo: main line", text: "Dehri-on-Sone", max: 30 },
+      { key: "home.tile.sub", label: "Crimson panel under the logo: small line", text: "Nursery to Class 10", max: 40 },
       { key: "home.today.title", label: "Daily activities heading", text: "Today at Laurels", max: 60 },
       { key: "home.academics.title", label: "Academics heading", text: "A Path from Nursery to Class 10" },
       { key: "home.academics.text", label: "Academics paragraph", text: "Four stages, one CBSE curriculum. Each stage builds on the last, from learning through play to focused preparation for the Class 10 board examinations.", long: true },
