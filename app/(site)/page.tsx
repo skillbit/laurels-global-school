@@ -10,6 +10,8 @@ import { getPageText } from "@/lib/page-content";
 import { getDailyActivities } from "@/lib/school-content";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { redirect } from "next/navigation";
+import { getHomeRedirect } from "@/lib/flags";
 
 // Refreshed hourly so the upcoming-events list drops events once they have passed.
 export const revalidate = 3600;
@@ -48,6 +50,10 @@ const shortDate = (d: string) =>
   new Date(`${d}T00:00:00`).toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
 
 export default async function HomePage() {
+  // Owner switch from /flags (hidden page). Off = normal homepage.
+  const redirectTo = await getHomeRedirect();
+  if (redirectTo) redirect(redirectTo);
+
   const settings = await getSiteSettings();
   const client = createPublicClient();
   const [{ data: eventRows }, { data: notices }, photos, t, recentActivities] = await Promise.all([
