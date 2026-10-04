@@ -30,7 +30,7 @@ export default async function FlagsPage() {
     <FlagsPanel
       email={user!.email ?? ""}
       homeRedirectOn={values[FLAG_HOME_REDIRECT_ON] === "on"}
-      homeRedirectTo={values[FLAG_HOME_REDIRECT_TO] ?? "/"}
+      homeRedirectTo={values[FLAG_HOME_REDIRECT_TO] ?? ""}
     />
   );
 }

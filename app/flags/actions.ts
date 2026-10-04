@@ -22,17 +22,16 @@ export async function saveHomeRedirect(_prev: FlagsState, formData: FormData): P
 
   const on = formData.get("enabled") === "on";
   const target = String(formData.get("target") ?? "").trim();
-  if (!isValidRedirectPath(target)) {
+  const validTarget = isValidRedirectPath(target);
+  if (on && !validTarget) {
     return { error: "Enter a path on this site, starting with / (for example /gallery). The homepage itself can't be used." };
   }
 
+  // Switching off doesn't need a path: the last valid path is kept.
   const now = new Date().toISOString();
-  const { error } = await createAdminClient()
-    .from("site_flags")
-    .upsert([
-      { key: FLAG_HOME_REDIRECT_ON, value: on ? "on" : "off", updated_at: now },
-      { key: FLAG_HOME_REDIRECT_TO, value: target, updated_at: now },
-    ]);
+  const rows = [{ key: FLAG_HOME_REDIRECT_ON, value: on ? "on" : "off", updated_at: now }];
+  if (validTarget) rows.push({ key: FLAG_HOME_REDIRECT_TO, value: target, updated_at: now });
+  const { error } = await createAdminClient().from("site_flags").upsert(rows);
   if (error) return { error: "Could not save. Please try again." };
 
   // Refresh the (cached) homepage so the switch takes effect right away.

@@ -44,7 +44,7 @@ export default function FlagsPanel({ email, homeRedirectOn, homeRedirectTo }: Pr
           </div>
           <div className="field">
             <Label htmlFor="flags-target">Send visitors to (path)</Label>
-            <Input id="flags-target" name="target" required defaultValue={homeRedirectTo} placeholder="/gallery" />
+            <Input id="flags-target" name="target" defaultValue={homeRedirectTo} placeholder="/gallery" />
           </div>
 
           <button className={buttonVariants()} type="submit" disabled={pending}>
